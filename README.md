@@ -80,6 +80,73 @@ Claude 插件清单位于：
 
 工程类 skill 面向代码仓库中的真实开发流程，包括规划、拆分、实现、调试、测试、架构和本地 issue 工作区。
 
+#### 如何组合使用
+
+工程类 skill 不是并列菜单，而是一条从“想法”到“可交付改动”的工作流。用户通常只需要显式调用用户类 skill；模型类 skill 会在实现、调试、测试、设计时作为支撑纪律被调用。
+
+```text
+第一次接入仓库
+  setup-agent-skills
+        |
+        v
+新想法 / 新功能 / 重构方向
+  grill-with-docs
+        |
+        +-- 需要跑起来验证想法 -> prototype -> handoff -> 回到主线
+        |
+        +-- 小改动 -> implement
+        |
+        +-- 长线改动 -> to-prd -> to-issues -> 每个 issue 单独 implement
+
+已有 bug / 性能问题
+  diagnosing-bugs -> tdd / implement
+
+已有外部请求或待办堆积
+  triage -> ready-for-agent -> implement
+
+代码库健康治理
+  improve-codebase-architecture -> grill-with-docs -> implement 或 to-prd/to-issues
+```
+
+#### 什么时候用哪个
+
+| 你现在的情况 | 首选 skill | 后续组合 |
+|---|---|---|
+| 不知道该用哪个 skill | `ask-skills` | 让它按当前任务推荐路线。 |
+| 第一次在一个仓库使用工程类 skill | `setup-agent-skills` | 建立 `.codex/agents/`、triage 标签和领域文档配置。 |
+| 有一个模糊想法、产品需求或重构方向 | `grill-with-docs` | 问清楚后，小任务直接 `implement`；大任务走 `to-prd` -> `to-issues`。 |
+| 需要先验证状态机、业务逻辑或 UI 方案 | `prototype` | 原型结论用 `handoff` 带回主线，再进入 `to-prd` 或 `implement`。 |
+| 已经讨论清楚，需要沉淀成规格 | `to-prd` | 生成 PRD 后用 `to-issues` 拆成可独立执行的 issue。 |
+| PRD 或计划太大，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，带着 PRD 和单个 issue 调用 `implement`。 |
+| 已经有明确 issue 或 PRD，要开始做 | `implement` | 实现中按需要自动使用 `tdd`、`codebase-design`、`diagnosing-bugs`。 |
+| 报错、回归、性能变慢、行为不对 | `diagnosing-bugs` | 先建立可重复反馈循环，再修复；适合接 `tdd` 固化回归测试。 |
+| 想测试先行开发 | `tdd` | 适合明确接口和行为后，用 red-green-refactor 推进。 |
+| 接口边界混乱、模块太浅、难测 | `codebase-design` | 作为设计词汇支撑 `to-prd`、`tdd`、`implement` 或架构治理。 |
+| 术语混乱、领域概念不清、需要 ADR | `domain-modeling` | 通常由 `grill-with-docs` 或架构类流程带起，沉淀 `CONTEXT.md` 和 ADR。 |
+| issue、需求、bug 报告堆积，需要筛选 | `triage` | 输出 `ready-for-agent` 后交给 `implement`。 |
+| 想主动改善代码库结构 | `improve-codebase-architecture` | 先生成 HTML 架构报告，再选择一个机会进入 `grill-with-docs` 或 `implement`。 |
+| merge/rebase 冲突 | `resolving-merge-conflicts` | 专注保留两边意图，解决后跑相关验证。 |
+
+#### 推荐工作流
+
+| 工作流 | 使用顺序 | 适合场景 |
+|---|---|---|
+| 快速小改 | `grill-with-docs` -> `implement` | 需求能在同一会话里问清楚，改动范围小。 |
+| 标准功能交付 | `setup-agent-skills` -> `grill-with-docs` -> `to-prd` -> `to-issues` -> `implement` | 多步骤功能、需要可追踪规格和可拆 issue。 |
+| 原型驱动决策 | `grill-with-docs` -> `handoff` -> `prototype` -> `handoff` -> `to-prd` 或 `implement` | 讨论无法替代运行验证，例如复杂交互、状态机、算法取舍。 |
+| Bug 修复 | `diagnosing-bugs` -> `tdd` -> `implement` | 先拿到可复现、可回归的红灯，再修。 |
+| 请求池治理 | `triage` -> `grill-with-docs` -> `ready-for-agent` -> `implement` | 从原始 issue、反馈、需求池中筛出可执行任务。 |
+| 架构治理 | `improve-codebase-architecture` -> `grill-with-docs` -> `to-prd/to-issues` 或 `implement` | 主动降低耦合、补测试边界、改善 Agent 可维护性。 |
+
+#### 用户类和模型类的区别
+
+| 类型 | 谁来调用 | 应该如何理解 |
+|---|---|---|
+| 用户显式调用 | 由用户点名，例如 `grill-with-docs`、`to-prd`、`triage` | 这些是工作流入口，会改变任务阶段或产出文档。 |
+| 模型可自动调用 | 用户可以点名，模型也可以在合适时使用 | 这些是工程纪律，例如调试循环、TDD、领域建模、模块设计、冲突解决。 |
+
+如果只记一条规则：**不确定时先用 `ask-skills`；做正式工程任务前先在目标仓库跑一次 `setup-agent-skills`。**
+
 #### 用户显式调用
 
 | Skill | 作用 |
