@@ -116,6 +116,7 @@ Claude 插件清单位于：
 | 第一次在一个仓库使用工程类 skill | `setup-agent-skills` | 建立 `.codex/agents/`、triage 标签和领域文档配置。 |
 | 有一个模糊想法、产品需求或重构方向 | `grill-with-docs` | 问清楚后，小任务直接 `implement`；大任务走 `to-prd` -> `to-issues`。 |
 | 需要先验证状态机、业务逻辑或 UI 方案 | `prototype` | 原型结论用 `handoff` 带回主线，再进入 `to-prd` 或 `implement`。 |
+| 不熟悉一片代码，需要先看它在系统里的位置 | `zoom-out` | 让 agent 上升一层抽象，按领域语言梳理相关模块和调用方。 |
 | 已经讨论清楚，需要沉淀成规格 | `to-prd` | 生成 PRD 后用 `to-issues` 拆成可独立执行的 issue。 |
 | PRD 或计划太大，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，带着 PRD 和单个 issue 调用 `implement`。 |
 | 已经有明确 issue 或 PRD，要开始做 | `implement` | 实现中按需要自动使用 `tdd`、`codebase-design`、`diagnosing-bugs`。 |
@@ -159,6 +160,7 @@ Claude 插件清单位于：
 | [to-issues](./skills/engineering/to-issues/SKILL.md) | 将计划、规格或 PRD 拆成可独立执行的实现 issue。 |
 | [to-prd](./skills/engineering/to-prd/SKILL.md) | 将当前对话整理成 PRD，并写入 `.codex/agents/work/`。 |
 | [prototype](./skills/engineering/prototype/SKILL.md) | 为状态机、业务逻辑或 UI 方案构建一次性原型。 |
+| [zoom-out](./skills/engineering/zoom-out/SKILL.md) | 在不熟悉的代码区域中，上升一层抽象梳理相关模块和调用方。 |
 
 #### 模型可自动调用
 

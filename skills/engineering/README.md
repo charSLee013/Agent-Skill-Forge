@@ -14,6 +14,7 @@ Reachable only when you type them (`disable-model-invocation: true`).
 - **[to-issues](./to-issues/SKILL.md)** — Break any plan, spec, or PRD into independently-grabbable issues using vertical slices.
 - **[to-prd](./to-prd/SKILL.md)** — Turn the current conversation into a PRD and publish it to `.codex/agents/work/`.
 - **[prototype](./prototype/SKILL.md)** — Build a throwaway prototype — a runnable terminal app for state/logic questions, or several toggleable UI variations.
+- **[zoom-out](./zoom-out/SKILL.md)** — Ask the agent to zoom out a level and map relevant modules and callers in unfamiliar code.
 
 ## Model-invoked
 
