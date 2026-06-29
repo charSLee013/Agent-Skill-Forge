@@ -24,5 +24,6 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 - **[tdd](./tdd/SKILL.md)** — Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
 - **[domain-modeling](./domain-modeling/SKILL.md)** — Actively build and sharpen a project's domain model — challenge terms, stress-test with scenarios, update `CONTEXT.md` and ADRs inline.
 - **[codebase-design](./codebase-design/SKILL.md)** — Shared discipline and vocabulary for designing deep modules: small interfaces, clean seams, testable through the interface.
+- **[karpathy-guidelines](./karpathy-guidelines/SKILL.md)** — Behavioral guardrails for careful assumptions, simple code, surgical edits, and verifiable success criteria.
 - **[implement](./implement/SKILL.md)** — Execute an implementation plan with focused engineering discipline.
 - **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** — Resolve merge conflicts while preserving intent from both sides.

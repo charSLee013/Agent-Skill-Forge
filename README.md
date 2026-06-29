@@ -2,14 +2,15 @@
 
 面向工程协作、任务规划、长期学习和知识交接的 Agent Skills 集合。
 
-本项目提供一组可直接安装到 Agent 运行环境中的技能包，覆盖工程开发、计划澄清、任务交接、长期学习和 skill 写作。仓库内容保持精简，只包含当前可维护、可验证、可组合使用的 skill 与配套文档。
+本项目提供一组可直接安装到 Agent 运行环境中的技能包，覆盖工程开发、计划澄清、任务交接、长期学习、科研论文摄取和 skill 写作。仓库内容保持精简，只包含当前可维护、可验证、可组合使用的 skill 与配套文档。
 
 ## 特性
 
 - **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、TDD、架构改进、领域建模和本地 triage。
 - **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs` 和 `handoff`，适合多轮计划、跨会话协作和上下文压缩。
 - **学习系统能力**：支持概念学习、技能训练、论文深读、仓库课程、科研路线和长线课程 proof loop。
-- **精简项目结构**：正式 skill 只分为 `engineering` 和 `productivity` 两类，入口、文档和插件清单保持一致。
+- **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
+- **精简项目结构**：正式 skill 分为 `engineering`、`productivity` 和 `research` 三类，入口、文档和插件清单保持一致。
 - **可验证的 skill 包**：提供脚本检查 skill 清单、学习系统结构、source matrix、manifest 和 HTML 教学模板。
 
 ## 快速开始
@@ -123,6 +124,7 @@ Claude 插件清单位于：
 | 报错、回归、性能变慢、行为不对 | `diagnosing-bugs` | 先建立可重复反馈循环，再修复；适合接 `tdd` 固化回归测试。 |
 | 想测试先行开发 | `tdd` | 适合明确接口和行为后，用 red-green-refactor 推进。 |
 | 接口边界混乱、模块太浅、难测 | `codebase-design` | 作为设计词汇支撑 `to-prd`、`tdd`、`implement` 或架构治理。 |
+| 需要减少错误假设、过度设计和无关改动 | `karpathy-guidelines` | 用于写代码、review 或重构时保持简单、克制、可验证。 |
 | 术语混乱、领域概念不清、需要 ADR | `domain-modeling` | 通常由 `grill-with-docs` 或架构类流程带起，沉淀 `CONTEXT.md` 和 ADR。 |
 | issue、需求、bug 报告堆积，需要筛选 | `triage` | 输出 `ready-for-agent` 后交给 `implement`。 |
 | 想主动改善代码库结构 | `improve-codebase-architecture` | 先生成 HTML 架构报告，再选择一个机会进入 `grill-with-docs` 或 `implement`。 |
@@ -170,6 +172,7 @@ Claude 插件清单位于：
 | [tdd](./skills/engineering/tdd/SKILL.md) | 使用 red-green-refactor 循环开发功能或修复 bug。 |
 | [domain-modeling](./skills/engineering/domain-modeling/SKILL.md) | 建立和修正项目领域语言，维护 `CONTEXT.md` 与 ADR。 |
 | [codebase-design](./skills/engineering/codebase-design/SKILL.md) | 提供深模块、小接口、clean seam 和可测试边界的设计词汇。 |
+| [karpathy-guidelines](./skills/engineering/karpathy-guidelines/SKILL.md) | 降低 LLM 编码中的错误假设、过度设计、无关改动和弱验收风险。 |
 | [implement](./skills/engineering/implement/SKILL.md) | 按既定计划执行实现任务。 |
 | [resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md) | 解决 merge/rebase 冲突，同时保留两侧意图。 |
 
@@ -191,6 +194,32 @@ Claude 插件清单位于：
 | Skill | 作用 |
 |---|---|
 | [grilling](./skills/productivity/grilling/SKILL.md) | `grill-me` 和 `grill-with-docs` 背后的可复用访谈循环。 |
+
+### Research
+
+科研类 skill 面向论文材料摄取、arXiv 元数据查询和可供后续深读/教学使用的 Markdown reference doc 生成。
+
+#### 模型可自动调用
+
+| Skill | 作用 |
+|---|---|
+| [arxiv-lookup](./skills/research/arxiv-lookup/SKILL.md) | 查询 arXiv 元数据，通过标题/关键词找 arXiv ID，或从 arXiv 记录获取 journal DOI。 |
+| [arxiv-doc-builder](./skills/research/arxiv-doc-builder/SKILL.md) | 下载 arXiv source/PDF，并将论文转换为带来源元数据的 Markdown reference doc。 |
+
+推荐组合：
+
+```text
+找论文 ID / DOI
+  arxiv-lookup
+        |
+        v
+下载 source/PDF 并转 Markdown
+  arxiv-doc-builder
+        |
+        v
+深读、课程、证据矩阵或科研路线
+  teach / pdf / long-horizon-runner
+```
 
 ## Teach
 
@@ -247,14 +276,15 @@ python3 skills/productivity/teach/scripts/verify_html_artifacts.py \
 ├── scripts/                 # 安装、列表和验证脚本
 └── skills/
     ├── engineering/         # 工程类 skill
-    └── productivity/        # 规划、交接、教学和 skill 写作
+    ├── productivity/        # 规划、交接、教学和 skill 写作
+    └── research/            # arXiv 查询和论文材料摄取
 ```
 
 ## 维护约束
 
 - 每个正式保留的 skill 必须出现在 `.claude-plugin/plugin.json`、顶层 `README.md` 和对应 bucket README 中。
 - 每个 README 中的 skill 名称必须链接到对应 `SKILL.md`。
-- `skills/engineering/` 和 `skills/productivity/` 是当前唯一正式 bucket。
+- `skills/engineering/`、`skills/productivity/` 和 `skills/research/` 是当前正式 bucket。
 - `.codex/` 和 `artifacts/` 用于本地运行输出，默认由 `.gitignore` 忽略。
 - 新增或重命名 skill 后，应运行：
 

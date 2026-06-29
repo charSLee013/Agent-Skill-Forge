@@ -13,6 +13,7 @@
     "./skills/engineering/prototype",
     "./skills/engineering/domain-modeling",
     "./skills/engineering/codebase-design",
+    "./skills/engineering/karpathy-guidelines",
     "./skills/engineering/implement",
     "./skills/engineering/resolving-merge-conflicts",
     "./skills/engineering/zoom-out",
@@ -20,6 +21,8 @@
     "./skills/productivity/grilling",
     "./skills/productivity/handoff",
     "./skills/productivity/teach",
-    "./skills/productivity/writing-great-skills"
+    "./skills/productivity/writing-great-skills",
+    "./skills/research/arxiv-doc-builder",
+    "./skills/research/arxiv-lookup"
   ]
 }

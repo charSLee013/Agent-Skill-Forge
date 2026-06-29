@@ -1,6 +1,6 @@
 ---
 name: teach
-description: Build durable learning systems, course workspaces, deep paper courses, codebase courses, research-route preparation, and HTML learning artifacts with evidence, reader-audit, and proof loops. Use when the user asks to learn, be taught, master a topic, study papers/PDFs, prepare a research route, understand a repository, build a course, or produce teaching HTML/reference material.
+description: Build durable learning systems, course workspaces, rigor-profiled courses, deep paper courses, codebase courses, research-route preparation, and HTML learning artifacts with evidence, reader-audit, expert-audit, and proof loops. Use when the user asks to learn, be taught, master a topic, study papers/PDFs, prepare a research route, understand a repository/system/process, build a course, or produce teaching HTML/reference material.
 disable-model-invocation: true
 argument-hint: "What would you like to learn or teach?"
 ---
@@ -11,7 +11,7 @@ You are running a learning system, not just writing a lesson. Success means the 
 
 ## Route First
 
-Choose the narrowest mode that fits; if modes conflict, use the more rigorous one.
+Choose the narrowest task mode that fits, then choose the rigor profile. If modes or profiles conflict, use the more rigorous one.
 
 | Mode | Use when | Main outputs |
 |---|---|---|
@@ -22,7 +22,21 @@ Choose the narrowest mode that fits; if modes conflict, use the more rigorous on
 | `research-route` | Research plan, literature route, open problems, or system transfer | Reading path, concept graph, boundary map, migration plan |
 | `long-course` | Complete mastery, multi-phase, multi-HTML, subagent review, later engineering transfer | Manifest, phase gates, audits, proof loop |
 
-Complex mode triggers include: "完整掌握", "从浅入深", "越具体越好", "多论文", "多 PDF", "代码仓库", "研究路线", "迁移到系统", "长期课程", "proof loop", "弱读者", "source matrix", or "不要只做一个 MD".
+Complex mode triggers include: "完整掌握", "从浅入深", "越具体越好", "多论文", "多 PDF", "代码仓库", "系统", "流程", "研究路线", "迁移到系统", "长期课程", "proof loop", "弱读者", "source matrix", "严谨", "可追溯", "证据化", "专家级", or "不要只做一个 MD".
+
+## Rigor Profiles
+
+After task routing, select one rigor profile:
+
+| Profile | Use when | Adds |
+|---|---|---|
+| `lightweight` | A small concept or quick skill is enough | Short explanation, retrieval prompts |
+| `guided` | The learner needs practice or a sequence | Examples, feedback, learning records |
+| `evidence-intensive` | Claims affect technical, research, implementation, or evaluation decisions | Visible evidence, source matrix, boundaries |
+| `report-grade` | The user asks for rigorous, complete, traceable, architecture-level, process-level, or report-style learning | Rigor contract, structured object map, mechanism explanations |
+| `expert-audited` | Serious readers, long courses, or high-stakes transfer may reject shallow or imprecise work | Skeptical expert audit and hard failure gates |
+
+For `evidence-intensive`, `report-grade`, and `expert-audited`, freeze the genre, rigor, evidence style, and reader level before writing student pages. Use `references/rigor-contract.md` when available.
 
 ## Workspace
 
@@ -36,9 +50,9 @@ Do not collapse a complex request into one giant Markdown file or one giant HTML
 ## Operating Loop
 
 1. Read workspace state and infer the learner's current zone of proximal development.
-2. Freeze the learning contract: goal, audience level, target use, deliverables, constraints, success criteria.
+2. Freeze the learning contract: goal, audience level, target use, deliverables, constraints, success criteria, genre, rigor profile, and evidence style.
 3. Build the truth layer before teaching. For complex modes, create or update `artifacts/source-matrix.md` before writing student pages.
-4. Design the course architecture: map, sequence, references, practice, retrieval, and review gates.
+4. Design the course architecture: structured object map, sequence, references, practice, retrieval, and review gates.
 5. Produce the smallest complete artifact for the current phase.
 6. Run evidence, misconception, student-boundary, HTML, and long-course proof checks as applicable.
 7. Update learning records, glossary, manifest, resources, and notes.
@@ -55,9 +69,9 @@ For complex modes, classify every strong claim before it reaches a student page:
 - `engineering_transfer`: advice applied to the learner's system.
 - `unknown`: public evidence is missing or insufficient.
 
-Hard rules: unclassified strong claims stay out of student pages; a citation does not make an inference a paper fact; source matrix comes before student pages in `deep-paper`, `repo-course`, `research-route`, and `long-course`; closed-source reports must separate public, unknown, lineage-supported, and reconstructed claims; local paths, line numbers, paper anchors, and audit notes belong in appendices or `artifacts/`, not the main narrative.
+Hard rules: unclassified strong claims stay out of student pages; a citation does not make an inference a paper fact; source matrix comes before student pages in `deep-paper`, `repo-course`, `research-route`, and `long-course`; incomplete public evidence must separate confirmed facts, source-supported implications, reconstruction, unknowns, and external sources; local paths, line numbers, paper anchors, and audit notes belong in appendices or `artifacts/`, not the main narrative.
 
-See `references/evidence-layer.md` and `templates/source-matrix.md` when available.
+For `evidence-intensive` or stricter profiles, student pages need learner-friendly visible evidence for major claims. Detailed anchors can remain backstage, but the learner must see why a claim is justified. See `references/evidence-layer.md`, `references/visible-evidence.md`, `templates/source-matrix.md`, and `templates/claim-evidence-box.md` when available.
 
 ## Student Pages
 
@@ -67,7 +81,7 @@ Include: what to remember now, why it matters, where it sits in the course map, 
 
 Exclude by default: local paths, line numbers, agent logs, phase reviews, task-management notes, subagent reports, source-matrix filenames, governance document names, audit-report voice, and unsupported evaluative judgments.
 
-Detailed evidence may appear in a separated, default-collapsed appendix or backstage artifact. See `references/student-page-boundary.md` when available.
+Detailed anchors may appear in a separated, default-collapsed appendix or backstage artifact. Do not confuse clean student pages with evidence-free student pages. See `references/student-page-boundary.md` when available.
 
 ## Learning Mechanics
 
@@ -77,17 +91,17 @@ Individual lessons can stay focused, but required complexity must be sequenced r
 
 ## Mode Rules
 
-Use Phase 2 references when present: `references/task-modes.md`, `references/deep-paper-course.md`, `references/repo-course.md`, `references/research-route.md`, `references/long-course-proof.md`. `deep-paper` separates paper facts, lineage context, reconstruction, transfer, and unknowns; figures/tables supporting key claims enter the reading path or source matrix. `repo-course` builds a repo truth map from actual code, then translates it into clean student explanations. `research-route` distinguishes what to understand, what remains unknown, what to reproduce, and what can transfer. `long-course` maintains `manifest.json`, phase status, audits, proof artifacts, and final survival check.
+Use Phase 2 references when present: `references/task-modes.md`, `references/rigor-contract.md`, `references/structured-object-map.md`, `references/mechanism-explanation.md`, `references/deep-paper-course.md`, `references/repo-course.md`, `references/research-route.md`, `references/long-course-proof.md`. `deep-paper` separates paper facts, lineage context, reconstruction, transfer, and unknowns; figures/tables supporting key claims enter the reading path or source matrix. `repo-course` builds a repo truth map from actual code, then translates it into clean student explanations organized by object structure, contracts, flows, states, constraints, and verification rather than filesystem order. `research-route` distinguishes what to understand, what remains unknown, what to reproduce, and what can transfer. `long-course` maintains `manifest.json`, phase status, audits, proof artifacts, and final survival check.
 
 ## Blocking Audits
 
-Complex modes require misconception audit before proceeding to the next phase. Use at least three lenses: weak but serious learner (can I restate the main line in three plain sentences?), evidence prosecutor (which statements sound like facts but are inference, reconstruction, or transfer?), and course architect (where is the sequence overloaded or introducing terms too early?).
+Complex modes require misconception audit before proceeding to the next phase. Use at least three lenses: weak but serious learner (can I restate the main line in three plain sentences?), evidence prosecutor (which statements sound like facts but are inference, reconstruction, or transfer?), and course architect (where is the sequence overloaded or introducing terms too early?). For `report-grade` and `expert-audited`, add a skeptical expert reader: why should a serious reader believe this, and where is the precision or boundary missing?
 
 Blocking misunderstandings must be repaired before creating more course material. See `references/misconception-audit.md` and `templates/misconception-audit.md` when available.
 
 ## HTML Proof
 
-HTML teaching artifacts must be verified, not just made attractive. Check clear `h1`, main-line summary, remember-now section, next action, internal links, desktop/mobile readability, table/diagram readability, no text overlap, separated evidence, 2D/text fallback for canvas/3D/animation, and no backstage governance noise.
+HTML teaching artifacts must be verified, not just made attractive. Check clear `h1`, main-line summary, remember-now section, next action, internal links, desktop/mobile readability, table/diagram readability, no text overlap, separated evidence, 2D/text fallback for canvas/3D/animation, explanatory proof for nontrivial mechanisms, and no backstage governance noise.
 
 Use screenshots, browser checks, deterministic validators, or `scripts/verify_html_artifacts.py` when available. Visuals must serve the explanation.
 
