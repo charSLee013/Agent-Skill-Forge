@@ -43,6 +43,12 @@ Use the strongest available anchor:
 
 Backstage anchors may include local paths and line numbers. Student pages should not expose them by default.
 
+## Visible Evidence
+
+For `evidence-intensive`, `report-grade`, and `expert-audited` work, major student-facing claims need learner-friendly visible evidence. Use a compact claim/evidence/boundary/confidence block in the main page or near the relevant section.
+
+Detailed anchors still belong in the source matrix or collapsed appendix. The learner should not need raw paths, line numbers, or audit notes to understand why a claim is credible.
+
 ## Strong Claim Test
 
 A claim is "strong" if a learner may use it to make a technical, research, implementation, or evaluation decision. Strong claims need a source matrix entry.

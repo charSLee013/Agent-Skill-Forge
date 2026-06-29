@@ -27,6 +27,22 @@ For important HTML artifacts, capture or inspect:
 
 If Playwright is available, use it. If not, use deterministic HTML checks plus a browser inspection note.
 
+## Explanatory Proof
+
+For nontrivial mechanisms, HTML proof has two layers:
+
+1. Render proof: the page opens, links work, screenshots are readable, and no important text is hidden.
+2. Explanatory proof: the chosen medium helps explain a concept that would otherwise be easy to misread.
+
+Record:
+
+- What concept the visual, table, trace, or interaction teaches.
+- What learner action or comparison is possible.
+- What misconception it prevents.
+- What text fallback explains the same mechanism.
+
+Interaction is not mandatory. The medium must match the mechanism.
+
 ## Visual Discipline
 
 Borrow design-proof discipline without turning Teach into a design skill:
@@ -42,6 +58,7 @@ Borrow design-proof discipline without turning Teach into a design skill:
 Block delivery when:
 
 - The page is visually impressive but the learner cannot restate the point.
+- A nontrivial mechanism uses visuals without captions, variables, or fallback explanation.
 - Important text overlaps or is hidden.
 - A table cannot be read on mobile.
 - Links are broken.

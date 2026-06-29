@@ -10,6 +10,7 @@ Student pages should include:
 - Why this matters.
 - Where it sits in the course map.
 - Plain-language explanation.
+- Learner-friendly evidence for major claims when the rigor profile requires it.
 - Examples or diagrams that serve the explanation.
 - Retrieval/practice prompts.
 - Next action.
@@ -35,9 +36,12 @@ Backstage content belongs in `artifacts/`, `proof/`, `manifest.json`, or a colla
 If a student page needs evidence:
 
 - Keep the main text explanatory.
+- Surface compact claim/evidence/boundary/confidence for major claims.
 - Put detailed anchors in a collapsed appendix.
 - Label claim types in learner-friendly language.
 - Avoid making the appendix required for basic comprehension.
+
+Do not confuse evidence with path dumping. A good student page can show why a claim is justified without requiring the learner to inspect file paths, line numbers, or raw audit notes.
 
 ## Clean Page Test
 

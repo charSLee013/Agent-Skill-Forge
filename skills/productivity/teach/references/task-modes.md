@@ -1,6 +1,6 @@
 # Task Modes
 
-Use task modes to avoid applying the lightweight lesson workflow to a research-grade course.
+Use task modes and rigor profiles to avoid applying the lightweight lesson workflow to a research-grade course.
 
 ## Mode Selection
 
@@ -15,9 +15,23 @@ Use task modes to avoid applying the lightweight lesson workflow to a research-g
 
 ## Routing Rules
 
-- If the user says "complete", "deep", "from shallow to deep", "paper", "PDF", "repo", "research", "migration", "proof", or "weak reader", prefer the more rigorous mode.
+- If the user says "complete", "deep", "from shallow to deep", "paper", "PDF", "repo", "system", "process", "research", "migration", "proof", "traceable", "rigorous", "expert", or "weak reader", prefer the more rigorous mode and profile.
 - `long-course` is a governance wrapper. It can wrap `deep-paper`, `repo-course`, or `research-route`.
 - Do not ask the user to choose a mode unless two modes imply materially different deliverables.
+
+## Rigor Profiles
+
+After choosing mode, choose one profile:
+
+| Profile | Fit |
+|---|---|
+| `lightweight` | One compact explanation is enough. |
+| `guided` | The learner needs examples, practice, sequence, or feedback. |
+| `evidence-intensive` | Claims need visible support because they affect decisions. |
+| `report-grade` | The artifact must read as rigorous, structured, complete, and traceable. |
+| `expert-audited` | A serious subject reader may reject shallow, imprecise, or weakly bounded work. |
+
+For `evidence-intensive` or stricter profiles, freeze the genre and evidence style using `rigor-contract.md`.
 
 ## Lightweight Modes
 
@@ -34,6 +48,8 @@ For `deep-paper`, `repo-course`, `research-route`, and `long-course`:
 
 - Build the truth layer before student pages.
 - Maintain an explicit evidence layer for strong claims.
+- Surface learner-friendly evidence for major claims.
+- Derive the subject's structured object map before choosing the student page sequence.
 - Separate learner-facing pages from backstage artifacts.
 - Run misconception audit before moving to the next phase.
 - Verify HTML artifacts if generated.

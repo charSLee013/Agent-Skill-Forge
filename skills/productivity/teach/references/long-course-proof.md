@@ -7,6 +7,8 @@ Use long-course proof when the work spans phases, many artifacts, source matrice
 Maintain:
 
 - Frozen learning contract.
+- Rigor contract when using evidence-intensive or stricter profiles.
+- Structured object map when the subject has internal structure.
 - Phase plan and gate criteria.
 - `manifest.json`.
 - `artifacts/source-matrix.md`.

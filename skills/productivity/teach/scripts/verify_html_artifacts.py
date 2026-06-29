@@ -22,6 +22,32 @@ FORBIDDEN_MAIN_TEXT = [
     "Gate 4",
 ]
 
+STRICT_PROFILE_TERMS = [
+    "evidence-intensive",
+    "report-grade",
+    "expert-audited",
+]
+
+MECHANISM_TERMS = [
+    "mechanism",
+    "state",
+    "variable",
+    "step",
+    "process",
+    "transition",
+    "procedure",
+    "equation",
+    "formula",
+    "algorithm",
+]
+
+EXPLANATORY_PROOF_TERMS = [
+    "what this teaches",
+    "learner action",
+    "misconception",
+    "fallback",
+]
+
 
 class HTMLFacts(HTMLParser):
     def __init__(self) -> None:
@@ -71,6 +97,13 @@ def check_html(path: Path, template_mode: bool) -> None:
     for forbidden in FORBIDDEN_MAIN_TEXT:
         if forbidden.lower() in body_text:
             fail(f"{path}: forbidden backstage text found: {forbidden}")
+    strict_profile = any(term in body_text for term in STRICT_PROFILE_TERMS)
+    mechanism_page = strict_profile and any(term in body_text for term in MECHANISM_TERMS)
+    explicit_explanatory_proof = "explanatory proof" in body_text
+    if not template_mode and (mechanism_page or explicit_explanatory_proof):
+        missing = [term for term in EXPLANATORY_PROOF_TERMS if term not in body_text]
+        if missing:
+            fail(f"{path}: missing explanatory proof terms: {', '.join(missing)}")
     if not template_mode:
         for href in parser.links:
             if re.match(r"^[a-z]+://", href) or href.startswith("#") or href.startswith("mailto:"):

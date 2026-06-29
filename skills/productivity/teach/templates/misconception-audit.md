@@ -25,6 +25,7 @@ Result: `pass | fail`
 | weak_reader |  |  | blocking |  | open |
 | evidence_prosecutor |  |  | blocking |  | open |
 | course_architect |  |  | blocking |  | open |
+| skeptical_expert_reader |  |  | blocking |  | open |
 
 ## Gate Decision
 

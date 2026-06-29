@@ -10,6 +10,11 @@ import sys
 
 REQUIRED_REFERENCES = [
     "task-modes.md",
+    "rigor-contract.md",
+    "structured-object-map.md",
+    "mechanism-explanation.md",
+    "visible-evidence.md",
+    "expert-audit.md",
     "evidence-layer.md",
     "deep-paper-course.md",
     "repo-course.md",
@@ -22,6 +27,11 @@ REQUIRED_REFERENCES = [
 
 REQUIRED_TEMPLATES = [
     "source-matrix.md",
+    "rigor-contract.md",
+    "structured-object-map.md",
+    "mechanism-visual-spec.md",
+    "claim-evidence-box.md",
+    "expert-audit.md",
     "manifest.json",
     "misconception-audit.md",
     "course-map.html",
@@ -42,6 +52,9 @@ REQUIRED_SKILL_PHRASES = [
     "repo-course",
     "research-route",
     "long-course",
+    "Rigor Profiles",
+    "report-grade",
+    "expert-audited",
     "artifacts/source-matrix.md",
     "misconception audit",
     "HTML Proof",
