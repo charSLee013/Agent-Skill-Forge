@@ -1,5 +1,7 @@
 # Mechanism Visual Spec: {Mechanism}
 
+Use this planning surface before creating a visual for a dynamic, spatial, temporal, or stateful mechanism.
+
 ## Mechanism
 
 - Name:
@@ -7,16 +9,15 @@
 - Initial state:
 - One step:
 - Whole process:
-- Parameters or constraints:
-- Failure modes or boundaries:
+- Parameters and constraints:
+- Scope and failure conditions:
 
 ## Visual Decision
 
 - What changes over time or steps:
 - Dimensions or axes:
-- Variables or states that must remain visible:
+- Variables or states that remain visible:
 - Learner comparison or manipulation:
-- Misconception this prevents:
+- Misunderstanding this helps resolve:
 - Chosen medium:
-- Why this medium is enough:
-- Text fallback:
+- Text explanation:

@@ -8,10 +8,10 @@
 
 - **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、TDD、架构改进、领域建模和本地 triage。
 - **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs` 和 `handoff`，适合多轮计划、跨会话协作和上下文压缩。
-- **学习系统能力**：支持概念学习、技能训练、论文深读、仓库课程、科研路线和长线课程 proof loop。
+- **学习系统能力**：把主题、资料和学习目标组合成 HTML 课程与 supporting Markdown。
 - **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
 - **精简项目结构**：正式 skill 分为 `engineering`、`productivity` 和 `research` 三类，入口、文档和插件清单保持一致。
-- **可验证的 skill 包**：提供脚本检查 skill 清单、学习系统结构、source matrix、manifest 和 HTML 教学模板。
+- **可复用的课程产物**：提供 course map、lesson、reference、source notes 和结构规划模板。
 
 ## 快速开始
 
@@ -186,7 +186,6 @@ Claude 插件清单位于：
 |---|---|
 | [grill-me](./skills/productivity/grill-me/SKILL.md) | 对计划或设计进行逐分支访谈，直到关键决策被澄清。 |
 | [handoff](./skills/productivity/handoff/SKILL.md) | 将当前对话压缩成交接文档，便于另一个 Agent 或新会话继续。 |
-| [teach](./skills/productivity/teach/SKILL.md) | 构建概念、技能、论文深读、仓库课程、科研路线和长线课程学习系统。 |
 | [writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md) | 编写和维护可预测 skill 的参考规范。 |
 
 #### 模型可自动调用
@@ -194,6 +193,7 @@ Claude 插件清单位于：
 | Skill | 作用 |
 |---|---|
 | [grilling](./skills/productivity/grilling/SKILL.md) | `grill-me` 和 `grill-with-docs` 背后的可复用访谈循环。 |
+| [teach](./skills/productivity/teach/SKILL.md) | 根据学习目标和来源组合 HTML 课程与 supporting Markdown，并支持浏览器和独立审阅。 |
 
 ### Research
 
@@ -217,54 +217,19 @@ Claude 插件清单位于：
   arxiv-doc-builder
         |
         v
-深读、课程、证据矩阵或科研路线
-  teach / pdf / long-horizon-runner
+深读、课程或研究材料整理
+  teach
 ```
 
 ## Teach
 
-`teach` 是面向长期学习任务的 Learning Course Runner，支持多种学习场景：
+`teach` 是一个单一的 `course` skill：根据学习目标、读者起点和主题资料，组合出可导航的 HTML 课程与 supporting Markdown。
 
-- `concept`：单概念学习
-- `skill`：技能训练与反馈循环
-- `deep-paper`：单/多论文深读、Figure/Table/benchmark 证据链
-- `repo-course`：代码仓库 truth map 到学生课程的转换
-- `research-route`：科研路线、阅读路径、开放问题和迁移边界
-- `long-course`：多阶段课程、manifest、misconception audit 和 final proof loop
+课程可以自由组合定位、基础、机制、证据、实践、迁移和综合模块。课程地图、lesson、reference、source notes 和可选 review 共同组成最终产物。
 
-核心约束：
+Teach 使用 Chrome DevTools 作为 HTML 的主要审阅界面，检查桌面与移动布局、Console、Network、链接、资源、文本流、表格、图表和交互状态。课程资料通过 supporting Markdown 记录来源、教学用途和适用范围。
 
-- 复杂课程必须先建立 `artifacts/source-matrix.md`，再写学生页。
-- 强判断必须分为 `paper_fact`、`lineage_context`、`course_reconstruction`、`engineering_transfer` 或 `unknown`。
-- 学生页默认不暴露本地路径、行号、Agent 日志、phase review 或 backstage governance。
-- 长线课程必须维护 manifest、误解审计和最终 artifact survival proof。
-
-相关验证脚本：
-
-```bash
-python3 skills/productivity/teach/scripts/validate_teaching_workspace.py \
-  --skill-root skills/productivity/teach \
-  --check-skill-package
-```
-
-```bash
-python3 skills/productivity/teach/scripts/check_source_matrix.py \
-  --matrix skills/productivity/teach/templates/source-matrix.md \
-  --template-mode
-```
-
-```bash
-python3 skills/productivity/teach/scripts/check_manifest.py \
-  --manifest skills/productivity/teach/templates/manifest.json \
-  --base skills/productivity/teach \
-  --template-mode
-```
-
-```bash
-python3 skills/productivity/teach/scripts/verify_html_artifacts.py \
-  --root skills/productivity/teach/templates \
-  --template-mode
-```
+多轮学习可以启用 `MISSION.md`、`RESOURCES.md`、`GLOSSARY.md` 和 `learning-records/`，这些文件记录学习状态，HTML 与 Markdown 仍然是课程交付物。
 
 ## 项目结构
 
@@ -304,12 +269,6 @@ python3 skills/productivity/teach/scripts/verify_html_artifacts.py \
 
 ```bash
 bash scripts/test-install-shape.sh
-```
-
-```bash
-python3 skills/productivity/teach/scripts/validate_teaching_workspace.py \
-  --skill-root skills/productivity/teach \
-  --check-skill-package
 ```
 
 ```bash

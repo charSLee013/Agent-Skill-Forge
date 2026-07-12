@@ -3,70 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lesson Template</title>
+  <title>{Lesson Title}</title>
   <style>
-    body { font-family: system-ui, sans-serif; line-height: 1.6; max-width: 860px; margin: 40px auto; padding: 0 20px; color: #1f2933; }
+    body { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: #1f2933; font: 1rem/1.65 system-ui, sans-serif; }
     h1, h2 { line-height: 1.15; }
-    .remember, details { border: 1px solid #cbd5df; padding: 14px; margin: 20px 0; }
+    section, details { margin: 2rem 0; }
+    .remember, .evidence { border: 1px solid #cbd5df; padding: 1rem; }
     .remember { background: #f7fafc; }
+    .evidence { background: #fffaf0; }
+    a { color: #0b5f67; }
+    @media (max-width: 600px) { body { padding: 1.25rem 1rem 3rem; } }
   </style>
 </head>
 <body>
-  <h1>Replace With Lesson Title</h1>
-  <p><strong>Main line:</strong> Replace with the simplest accurate explanation of this lesson.</p>
+  <h1>{Lesson Title}</h1>
+  <p><strong>Main line:</strong> {The simplest accurate explanation of this lesson.}</p>
 
   <section class="remember">
     <h2>Remember Now</h2>
-    <p>Replace with the memory target.</p>
+    <p>{The memory target for this lesson.}</p>
   </section>
 
   <section>
-    <h2>Why It Matters</h2>
-    <p>Connect this lesson to the mission and course map.</p>
+    <h2>Purpose</h2>
+    <p>{Where this lesson sits in the course and why it matters.}</p>
   </section>
 
   <section>
     <h2>Explanation</h2>
-    <p>Teach the concept without backstage logs, local paths, or audit voice.</p>
+    <p>{The plain-language explanation, mechanism, example, or trace.}</p>
   </section>
 
-  <section>
-    <h2>Visible Evidence</h2>
-    <p><strong>Claim:</strong> Replace with the major claim when the rigor profile requires visible evidence.</p>
-    <p><strong>Evidence:</strong> Summarize the learner-friendly support.</p>
-    <p><strong>Boundary:</strong> State what the evidence does not establish.</p>
-    <p><strong>Confidence:</strong> Replace with low, medium, or high.</p>
-  </section>
-
-  <section>
-    <h2>Mechanism Explanation</h2>
-    <p>For a nontrivial process, define the object, variables, initial state, one step, whole process, constraints, and failure modes before code, equations, or diagrams.</p>
-  </section>
-
-  <section>
-    <h2>Explanatory Proof</h2>
-    <p><strong>What this teaches:</strong> Replace with the concept the visual, table, trace, or interaction teaches.</p>
-    <p><strong>Learner action:</strong> Replace with what the learner can compare, manipulate, or restate.</p>
-    <p><strong>Misconception:</strong> Replace with the misunderstanding this prevents.</p>
-    <p><strong>Fallback:</strong> Replace with the text explanation that carries the same meaning.</p>
+  <section class="evidence">
+    <h2>Evidence and Scope</h2>
+    <p><strong>Source:</strong> {The source or observation supporting the lesson.}</p>
+    <p><strong>Teaching use:</strong> {How the source becomes learnable here.}</p>
+    <p><strong>Scope:</strong> {The setting and conditions covered.}</p>
   </section>
 
   <section>
     <h2>Retrieval Practice</h2>
     <ol>
-      <li>Ask the learner to restate the main line.</li>
-      <li>Ask the learner to distinguish fact, context, reconstruction, or transfer.</li>
+      <li>{A prompt that asks the learner to restate the main line.}</li>
+      <li>{A prompt that asks the learner to apply or compare the idea.}</li>
     </ol>
   </section>
 
   <details>
-    <summary>Evidence Appendix</summary>
-    <p>Optional summarized evidence. Keep detailed source anchors in the source matrix.</p>
+    <summary>Supporting Sources</summary>
+    <p>{Links to the supporting Markdown notes or source material.}</p>
   </details>
 
   <section>
     <h2>Next Action</h2>
-    <p>Replace with the next concrete action.</p>
+    <p>{The next concrete action for the learner.}</p>
   </section>
 </body>
 </html>

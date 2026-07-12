@@ -3,37 +3,40 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reference Template</title>
+  <title>{Reference Topic}</title>
   <style>
-    body { font-family: system-ui, sans-serif; line-height: 1.5; max-width: 980px; margin: 40px auto; padding: 0 20px; color: #1f2933; }
+    body { max-width: 980px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: #1f2933; font: 1rem/1.55 system-ui, sans-serif; }
     h1, h2 { line-height: 1.15; }
     .table-wrap { overflow-x: auto; }
-    table { border-collapse: collapse; width: 100%; min-width: 620px; }
-    th, td { border: 1px solid #cbd5df; padding: 8px; text-align: left; vertical-align: top; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #cbd5df; padding: .6rem; text-align: left; vertical-align: top; }
     th { background: #eef3f7; }
+    a { color: #0b5f67; }
+    @media (max-width: 600px) {
+      body { padding: 1.25rem 1rem 3rem; }
+      .table-wrap { overflow: visible; }
+      table, thead, tbody, tr, th, td { display: block; }
+      thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      tr { border: 1px solid #cbd5df; margin-bottom: 1rem; }
+      td { border: 0; border-bottom: 1px solid #cbd5df; display: grid; grid-template-columns: 6.5rem 1fr; gap: .75rem; }
+      td:last-child { border-bottom: 0; }
+      td::before { content: attr(data-label); font-weight: 700; }
+    }
   </style>
 </head>
 <body>
-  <h1>Reference: Replace With Topic</h1>
-  <p><strong>Use this when:</strong> Replace with the lookup scenario.</p>
+  <h1>{Reference Topic}</h1>
+  <p><strong>Use this when:</strong> {The lookup situation this page serves.}</p>
 
   <section>
     <h2>Quick Map</h2>
     <div class="table-wrap">
       <table>
         <thead>
-          <tr>
-            <th>Item</th>
-            <th>Meaning</th>
-            <th>Boundary</th>
-          </tr>
+          <tr><th>Item</th><th>Meaning</th><th>Scope</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Replace</td>
-            <td>Replace</td>
-            <td>Replace</td>
-          </tr>
+          <tr><td data-label="Item">{Term or object}</td><td data-label="Meaning">{Definition or behavior}</td><td data-label="Scope">{Conditions}</td></tr>
         </tbody>
       </table>
     </div>
@@ -42,14 +45,14 @@
   <section>
     <h2>Review Prompts</h2>
     <ol>
-      <li>Replace with a retrieval question.</li>
-      <li>Replace with a boundary-check question.</li>
+      <li>{A retrieval question.}</li>
+      <li>{A transfer or scope question.}</li>
     </ol>
   </section>
 
   <section>
     <h2>Next Action</h2>
-    <p>Replace with the next review or lesson link.</p>
+    <p>{The next review, lesson, or application.}</p>
   </section>
 </body>
 </html>

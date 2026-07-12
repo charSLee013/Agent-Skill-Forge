@@ -1,6 +1,6 @@
-# MISSION.md Format
+# Mission Format
 
-`MISSION.md` lives at the workspace root. It captures the _reason_ the user is learning this topic. Every teaching decision — what to teach next, which resources to surface, which exercises to design — should trace back to this document.
+`MISSION.md` records the learner's purpose. Use it to choose sources, examples, exercises, and the next useful course module.
 
 ## Template
 
@@ -8,24 +8,18 @@
 # Mission: {Topic}
 
 ## Why
-{1-3 sentences. The concrete real-world goal the user is chasing. What changes in their life or work when they have this skill? Avoid abstract framings like "to understand X" — push for the underlying outcome.}
+{The concrete change this learning enables in the learner's work or life.}
 
-## Success looks like
-- {A specific, observable thing the user will be able to do}
-- {Another specific thing}
-- {…}
+## Success Looks Like
+- {An observable capability}
+- {Another observable capability}
 
 ## Constraints
-- {Time, budget, prior commitments, learning preferences, anything that bounds the approach}
+- {Time, experience, tools, or preferences}
 
-## Out of scope
-- {Adjacent topics the user explicitly does not want to chase right now — protects the zone of proximal development}
+## Current Scope
+- {The subject covered by this workspace}
+- {The adjacent subject reserved for later}
 ```
 
-## Rules
-
-- **One mission per workspace.** If the user wants to learn two unrelated things, that is two workspaces.
-- **Concrete over abstract.** "Run a half marathon by October" beats "get fitter." "Ship a Rust CLI to my team" beats "learn Rust."
-- **Push back on vagueness.** If the user cannot articulate why, interview them before writing anything. A bad mission is worse than no mission.
-- **Revise when reality shifts.** Missions change. When the user's goal moves, update this file — don't leave a stale mission steering future sessions.
-- **Keep it short.** If `MISSION.md` runs past a screen, it has stopped being a compass and started being a plan.
+Keep one concise mission per learning workspace. Update it when the learner's goal changes.

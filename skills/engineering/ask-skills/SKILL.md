@@ -53,7 +53,7 @@ Not feature work — upkeep.
 Off the main flow entirely.
 
 - **`/grill-me`** — the same relentless interview as `/grill-with-docs`, but for when you have **no codebase**. Stateless: it saves nothing locally, builds no `CONTEXT.md`. Reach for it to sharpen any plan or design that doesn't live in a repo.
-- **`/teach`** — learn a concept over multiple sessions, using the current directory as a stateful workspace.
+- **`/teach`** — compose an HTML course with supporting Markdown from a learning goal, subject, and source material; optional workspace state supports multiple sessions.
 - **`/writing-great-skills`** — reference for writing and editing skills well.
 
 ## Precondition

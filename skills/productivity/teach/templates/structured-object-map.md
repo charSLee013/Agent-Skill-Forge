@@ -1,28 +1,29 @@
 # Structured Object Map: {Subject}
 
-## Core Claims
+Use this planning surface when a subject has internal structure.
 
-| claim | evidence_needed | boundary |
-|---|---|---|
-|  |  |  |
+## Core Idea
+
+{The problem this subject solves and the main line a learner should remember.}
 
 ## Object Structure
 
-| dimension | what matters | evidence anchor |
+| dimension | what matters | source or example |
 |---|---|---|
 | Purpose |  |  |
 | Interfaces |  |  |
-| Representation |  |  |
-| Process |  |  |
-| State |  |  |
+| Representations |  |  |
+| Processes |  |  |
+| States |  |  |
 | Constraints |  |  |
 | Environment |  |  |
 | Verification |  |  |
-| Unknowns |  |  |
+| Open questions |  |  |
 
-## Student Architecture
+## Course Composition
 
-- Main sequence:
-- Reference pages:
+- Main line:
+- Useful modules:
 - Mechanisms needing explanation:
-- Claims needing visible evidence:
+- Practice or transfer opportunities:
+- Supporting source notes:
