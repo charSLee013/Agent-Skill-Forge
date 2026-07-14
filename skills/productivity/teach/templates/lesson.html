@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Structural starter: expand content and visual treatment to fulfill this lesson's assigned responsibility. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -7,10 +8,11 @@
   <style>
     body { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: #1f2933; font: 1rem/1.65 system-ui, sans-serif; }
     h1, h2 { line-height: 1.15; }
-    section, details { margin: 2rem 0; }
+    section, details, nav { margin: 2rem 0; }
     .remember, .evidence { border: 1px solid #cbd5df; padding: 1rem; }
     .remember { background: #f7fafc; }
     .evidence { background: #fffaf0; }
+    .lesson-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-top: 1px solid #cbd5df; padding-top: 1.25rem; }
     a { color: #0b5f67; }
     @media (max-width: 600px) { body { padding: 1.25rem 1rem 3rem; } }
   </style>
@@ -27,6 +29,11 @@
   <section>
     <h2>Purpose</h2>
     <p>{Where this lesson sits in the course and why it matters.}</p>
+  </section>
+
+  <section>
+    <h2>Prerequisite Bridge</h2>
+    <p>{The knowledge, intuition, tool, or procedure that supports this lesson.}</p>
   </section>
 
   <section>
@@ -58,5 +65,11 @@
     <h2>Next Action</h2>
     <p>{The next concrete action for the learner.}</p>
   </section>
+
+  <nav class="lesson-nav" aria-label="Lesson navigation">
+    <a href="0000-previous.html">{Previous capability}</a>
+    <a href="../course-map.html">Course map</a>
+    <a href="0002-next.html">{Next capability}</a>
+  </nav>
 </body>
 </html>

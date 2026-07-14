@@ -1,29 +1,78 @@
-# Structured Object Map: {Subject}
+# Structured Course Map: {Subject}
 
-Use this planning surface when a subject has internal structure.
+Use this planning surface when a subject has internal structure, multiple evidence types, or a meaningful capability gap.
 
-## Core Idea
+## Target Capability
 
-{The problem this subject solves and the main line a learner should remember.}
+- Learner starting point:
+- Domain expert task:
+- Observable graduation artifact:
+- Target use:
+- Quality profile:
 
-## Object Structure
+## Main Trunk
 
-| dimension | what matters | source or example |
-|---|---|---|
-| Purpose |  |  |
-| Interfaces |  |  |
-| Representations |  |  |
-| Processes |  |  |
-| States |  |  |
-| Constraints |  |  |
-| Environment |  |  |
-| Verification |  |  |
-| Open questions |  |  |
+{The capability path a learner can restate and follow.}
 
-## Course Composition
+## Prerequisite Bridge
 
-- Main line:
-- Useful modules:
-- Mechanisms needing explanation:
-- Practice or transfer opportunities:
-- Supporting source notes:
+| prerequisite | learner state | bridge | completion signal |
+|---|---|---|---|
+|  |  |  |  |
+
+## Subject Structure
+
+| dimension | what matters | evidence | course responsibility |
+|---|---|---|---|
+| Purpose and outcomes |  |  |  |
+| Interfaces and inputs |  |  |  |
+| Representations and vocabulary |  |  |  |
+| Processes and state changes |  |  |  |
+| Constraints and environment |  |  |  |
+| Evidence and verification |  |  |  |
+| Failure modes and repairs |  |  |  |
+| Expert comparisons |  |  |  |
+| Open questions |  |  |  |
+
+## Knowledge Layers
+
+- Core Path:
+- Deep Dives:
+- Reference Atlas:
+- Evidence Map:
+- Expert Branches:
+- Deferred topics:
+
+## Page Responsibilities
+
+| page | role in trunk | prerequisites | content objects | evidence | learner action | next capability |
+|---|---|---|---|---|---|---|
+|  |  |  |  |  |  |  |
+
+## Practice and Feedback
+
+- Retrieval:
+- Reconstruction:
+- Worked application:
+- Comparison:
+- Failure diagnosis:
+- Transfer:
+- Graduated feedback:
+
+## Capstone
+
+- Authentic expert task:
+- Inputs and constraints:
+- Expected artifacts:
+- Staged checkpoints:
+- Evaluation dimensions:
+- Expert example or review:
+- Optional Agent review prompt:
+
+## Publication
+
+- Delivery target:
+- Page topology:
+- Static baseline:
+- Enhancement policy:
+- Verification mode:

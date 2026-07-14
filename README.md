@@ -193,7 +193,7 @@ Claude 插件清单位于：
 | Skill | 作用 |
 |---|---|
 | [grilling](./skills/productivity/grilling/SKILL.md) | `grill-me` 和 `grill-with-docs` 背后的可复用访谈循环。 |
-| [teach](./skills/productivity/teach/SKILL.md) | 根据学习目标和来源组合 HTML 课程与 supporting Markdown，并支持浏览器和独立审阅。 |
+| [teach](./skills/productivity/teach/SKILL.md) | 以 Standard 或 Ultra 档位构建领域能力驱动的静态 HTML 课程、supporting Markdown、Tracer 和分层审阅。 |
 
 ### Research
 
@@ -223,11 +223,13 @@ Claude 插件清单位于：
 
 ## Teach
 
-`teach` 是一个单一的 `course` skill：根据学习目标、读者起点和主题资料，组合出可导航的 HTML 课程与 supporting Markdown。
+`teach` 是一个单一的 `course` skill：根据学习目标、读者起点、领域证据和目标能力，构建可导航、可静态发布的 HTML 课程与 supporting Markdown。
 
-课程可以自由组合定位、基础、机制、证据、实践、迁移和综合模块。课程地图、lesson、reference、source notes 和可选 review 共同组成最终产物。
+Standard 是默认专业档位。Ultra 面向顶级、全面、研究级或高知识密度课程，通过用户确认后启动多 Agent 阶段编排、完整知识图谱、领域原生 Capstone、Tracer 校准和独立审阅。
 
-Teach 使用 Chrome DevTools 作为 HTML 的主要审阅界面，检查桌面与移动布局、Console、Network、链接、资源、文本流、表格、图表和交互状态。课程资料通过 supporting Markdown 记录来源、教学用途和适用范围。
+课程路径覆盖先修补桥、机制重建、worked examples、故障诊断、领域原生练习、分级反馈、Capstone 和专家标准审阅。最终 HTML 直接承载核心内容和普通导航，共享 CSS/JS 提供专业视觉与渐进增强。
+
+Teach 按 Publication、Learning and Fidelity、Design、Enhancement 的顺序审阅最终产物。Supporting Markdown 记录来源、证据角色、教学用途、公式或数据保真和适用范围。
 
 多轮学习可以启用 `MISSION.md`、`RESOURCES.md`、`GLOSSARY.md` 和 `learning-records/`，这些文件记录学习状态，HTML 与 Markdown 仍然是课程交付物。
 

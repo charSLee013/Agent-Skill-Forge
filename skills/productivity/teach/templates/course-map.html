@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Structural starter: adapt hierarchy, sections, navigation, and visual system to the Course Contract. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -16,7 +17,7 @@
 </head>
 <body>
   <h1>{Course Title}</h1>
-  <p><strong>Main line:</strong> {The central idea that connects the course.}</p>
+  <p><strong>Main trunk:</strong> {The capability path that connects the course.}</p>
   <p><strong>Remember now:</strong> {The first useful idea to carry forward.}</p>
 
   <section>
@@ -24,11 +25,16 @@
     <p>{The learner outcome and target use.}</p>
   </section>
 
+  <section>
+    <h2>Entry Points</h2>
+    <p>{The learner starting point, diagnostic entry, and prerequisite bridge.}</p>
+  </section>
+
   <nav aria-label="Course path">
     <h2>Course Path</h2>
     <ol>
-      <li><a href="lessons/0001-example.html">{Opening lesson}</a></li>
-      <li><a href="reference/example.html">{Reference page}</a></li>
+      <li><a href="lessons/0001-example.html">{Opening core-path lesson}</a></li>
+      <li><a href="reference/example.html">{Reference or deep-dive page}</a></li>
     </ol>
   </nav>
 
@@ -39,7 +45,7 @@
 
   <section>
     <h2>Next Action</h2>
-    <p>{The next concrete action for the learner.}</p>
+    <p><a href="lessons/0001-example.html">{Begin the core path.}</a></p>
   </section>
 </body>
 </html>

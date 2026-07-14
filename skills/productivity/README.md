@@ -1,6 +1,6 @@
 # Productivity
 
-General workflow tools, not code-specific.
+General planning, learning, and workflow tools.
 
 ## User-invoked
 
@@ -15,4 +15,4 @@ Reachable only when you type them (`disable-model-invocation: true`).
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
 - **[grilling](./grilling/SKILL.md)** — Resolve high-leverage decisions, prune low-impact questions, and backfill reversible details.
-- **[teach](./teach/SKILL.md)** — Compose HTML courses with supporting Markdown sources, optional learning state, browser review, and independent review.
+- **[teach](./teach/SKILL.md)** — Build capability-driven static HTML courses in Standard or Ultra profiles with supporting Markdown, tracer review, and publication gates.

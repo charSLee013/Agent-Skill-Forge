@@ -1,21 +1,30 @@
-# Source Notes: {Topic}
+# Source Note: {Topic}
 
-Use one note per important source.
+Use one note per important source or evidence-producing observation.
 
 ## Source
 
 - Title:
-- URL, path, paper identifier, or repository reference:
+- URL, path, identifier, or repository reference:
 - Version or date:
+- Evidence role: `source | derived | observed | context | explanation | transfer`
 
 ## What It Supports
 
-{The claim, behavior, definition, or example supported by this source.}
+{The precise claim, behavior, definition, formula, data point, or example supported here.}
 
 ## Teaching Use
 
-{The lesson, explanation, comparison, or exercise that uses the source.}
+{The lesson, explanation, comparison, exercise, interaction, or capstone that uses this material.}
 
 ## Scope
 
-{The setting, conditions, and reader context covered by the source.}
+{The setting, assumptions, conditions, version, units, and reader context covered by this material.}
+
+## Fidelity Check
+
+- Variables, units, or shapes checked:
+- Data provenance and transformations checked:
+- Worked example checked:
+- Static publication location:
+- Open evidence questions:

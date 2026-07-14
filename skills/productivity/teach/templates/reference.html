@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Structural starter: adapt scope, density, navigation, and visual system to the reference responsibility. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -7,6 +8,7 @@
   <style>
     body { max-width: 980px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: #1f2933; font: 1rem/1.55 system-ui, sans-serif; }
     h1, h2 { line-height: 1.15; }
+    section, nav { margin: 2rem 0; }
     .table-wrap { overflow-x: auto; }
     table { border-collapse: collapse; width: 100%; }
     th, td { border: 1px solid #cbd5df; padding: .6rem; text-align: left; vertical-align: top; }
@@ -28,6 +30,12 @@
   <h1>{Reference Topic}</h1>
   <p><strong>Use this when:</strong> {The lookup situation this page serves.}</p>
 
+  <nav aria-label="Reference navigation">
+    <a href="../course-map.html">Course map</a>
+    <span aria-hidden="true"> / </span>
+    <a href="../lessons/0001-example.html">{Related lesson}</a>
+  </nav>
+
   <section>
     <h2>Quick Map</h2>
     <div class="table-wrap">
@@ -43,6 +51,11 @@
   </section>
 
   <section>
+    <h2>Evidence and Scope</h2>
+    <p>{The source roles, assumptions, versions, units, or conditions that govern this reference.}</p>
+  </section>
+
+  <section>
     <h2>Review Prompts</h2>
     <ol>
       <li>{A retrieval question.}</li>
@@ -52,7 +65,7 @@
 
   <section>
     <h2>Next Action</h2>
-    <p>{The next review, lesson, or application.}</p>
+    <p><a href="../lessons/0002-next.html">{The next review, lesson, or application.}</a></p>
   </section>
 </body>
 </html>

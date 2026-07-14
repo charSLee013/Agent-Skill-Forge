@@ -1,47 +1,72 @@
 # Evidence and Sources
 
-Use supporting Markdown to connect a course's important claims to trustworthy material. A source note gives the learner and future sessions a short, readable account of why a claim appears in the course.
+Connect every important course claim to the strongest domain-appropriate material. Agent research supplies the evidence base and records its provenance in supporting Markdown.
+
+## Domain Evidence Ecology
+
+Choose sources according to the expert task:
+
+- local code, tests, runtime traces, and release artifacts for repository behavior;
+- target papers, primary datasets, and official implementations for research claims;
+- official documentation and standards for interfaces and procedures;
+- primary records and source criticism for historical claims;
+- authoritative recipes, food science, safety guidance, and kitchen trials for cooking;
+- professional standards, measured outcomes, and observed practice for applied skills;
+- trusted high-signal communities for practical context and unresolved questions.
+
+Use the Course Contract to define the applicable evidence ecology before research expands.
 
 ## Source Note
 
-Create `sources/{slug}.md` with these sections:
+Create `sources/{slug}.md` with:
 
 ```md
 # {Source title}
 
 ## Source
-{URL, path, paper identifier, or repository reference.}
+{URL, path, identifier, version, date, or repository reference.}
+
+## Role
+{source | derived | observed | context | explanation | transfer}
 
 ## What It Supports
-{The claim, behavior, definition, or example supported by the source.}
+{The precise claim, behavior, definition, formula, data point, or example.}
 
 ## Teaching Use
-{How the course turns the source into an explanation, example, exercise, or comparison.}
+{The lesson, explanation, comparison, exercise, or capstone that uses it.}
 
 ## Scope
-{The setting, audience, version, or conditions covered by the source.}
+{The setting, audience, version, assumptions, and applicable conditions.}
 ```
 
-## Source Roles
+## Evidence Roles
 
-Use plain labels when a distinction matters:
-
-- `source`: directly supported by the cited material;
+- `source`: the cited material states or demonstrates the claim directly;
+- `derived`: the course calculates or reconstructs the result from cited inputs;
+- `observed`: a recorded experiment, execution, measurement, or inspection produced the result;
 - `context`: surrounding history, terminology, or related work;
 - `explanation`: a course reconstruction that makes the material learnable;
-- `transfer`: guidance applied to a learner's system or goal.
+- `transfer`: guidance applied to the learner's target situation.
 
-Record the label beside the relevant claim or section. Keep a claim's source, teaching use, and scope visible to the author and concise for the learner.
+Place the role beside the relevant claim or content object.
+
+## Formula and Data Fidelity
+
+For formulas, record variables, shapes or units, assumptions, derivation source, one checked example, and scope. Use a worked reconstruction when the formula carries a learning dependency.
+
+For data, record provenance, version or date, collection conditions, transformations, and whether the values are sourced, derived, observed, or synthetic. Give synthetic examples an explicit teaching role.
+
+For repository configurations, distinguish reusable defaults, example values, runtime observations, and released model settings through their evidence roles and source paths.
 
 ## Positive Scope Language
 
-Use sentences such as:
+Use direct statements:
 
 - "This source supports the documented interface."
-- "This section reconstructs the mechanism for learning."
-- "This comparison applies to the settings described in the source."
-- "This transfer is useful when the learner's system has the same condition."
+- "This derivation follows from the cited variables and assumptions."
+- "This observation comes from the recorded execution."
+- "This reconstruction teaches the mechanism."
+- "This comparison applies to the source's stated conditions."
+- "This transfer supports systems with the same constraint."
 
-## Source Selection
-
-Prefer the strongest available source for the claim. Use local code for repository behavior, the target paper for paper claims, official documentation for interfaces, and experiments for observed outcomes. Record gaps as open source questions that guide the next research step.
+Record open evidence questions as research tasks. Give the learner a clear view of established facts, course derivations, observations, and transfer guidance.

@@ -1,39 +1,60 @@
 # Independent Review
 
-Run an independent review when the user asks for review or when a multi-page or technical course carries a meaningful risk of drift. The reviewer receives raw course artifacts and a neutral task description.
+Use a fresh reviewer for meaningful multi-page or evidence risk, user-requested review, and both Ultra tracer and final stages. Give the reviewer final learner-facing artifacts, supporting Markdown, and the minimum Course Contract context needed for the review.
 
 ## Review Prompt
 
 ```text
-Read the supplied HTML and supporting Markdown as an independent course reviewer.
-Report:
+Read the supplied Course Contract, final HTML, and supporting Markdown as an
+independent course reviewer.
 
-1. the course main line in three plain sentences;
-2. the reader's likely starting point and first point of confusion;
-3. the source support and scope for important claims;
-4. terminology or structure drift across pages;
-5. concrete repairs that improve learning or transfer.
+Begin with the publication gate. Enumerate every declared learner-facing
+artifact and determine whether each final HTML file contains its assigned
+primary content and ordinary navigation through the declared static target.
 
-Separate observations from teaching explanations and transfer guidance.
-Use positive scope language. Return concise findings in Markdown.
+Then report:
+
+1. the course main trunk in three direct sentences;
+2. the learner's starting point, prerequisite bridge, and first likely difficulty;
+3. the path from explanation through practice, feedback, and capstone;
+4. source support, evidence roles, formula or process fidelity, and scope;
+5. content objects lost, compressed, or altered during publication;
+6. terminology, structure, and evidence drift across pages;
+7. visual hierarchy, scanability, subject fit, information density, and long-form quality;
+8. the educational value and static meaning of enhanced interactions;
+9. pages whose apparent completion comes from template structure while their
+   assigned explanation, evidence, practice, feedback, or design remains thin;
+10. rhetorical contrast that can become a direct positive proposition;
+11. concrete repairs ordered by learner impact.
+
+Separate sourced facts, derived results, observations, teaching explanations,
+and transfer guidance. Return concise findings in Markdown.
 ```
 
 ## Review Result
 
-Store an optional `review.md` with:
+Store an applicable final `review.md` with:
 
 ```md
 # Course Review
 
-## Main Line
+## Publication
 
-## Reader Understanding
+## Main Trunk and Prerequisites
 
-## Source Scope
+## Learning and Content Fidelity
 
-## Structure and Terminology
+## Sources, Formulas, and Scope
+
+## Design and Information Density
+
+## Enhancement
+
+## Direct Prose
+
+## Capstone
 
 ## Repairs
 ```
 
-Keep review findings as supporting material. The course pages remain written for the learner.
+Raw subagent review stays in the session temporary workspace. The final learner-facing review contains accepted findings, completed repairs, remaining limitations, and gate results.
