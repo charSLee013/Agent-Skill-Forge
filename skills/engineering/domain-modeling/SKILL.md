@@ -41,6 +41,10 @@ Create files lazily — only when you have something to write. If no `CONTEXT.md
 
 ## During the session
 
+### Follow the grilling question gate
+
+When running alongside `/grilling`, let that skill own every user question. Route terminology ambiguity through its decision-leverage gate. Propose a canonical default for low-impact language and include it in the final calibration. Ask immediately when the distinction changes the trunk, a domain boundary, a major risk, or an irreversible decision.
+
 ### Challenge against the glossary
 
 When the user uses a term that conflicts with the existing language in `CONTEXT.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"

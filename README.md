@@ -155,7 +155,7 @@ Claude 插件清单位于：
 | Skill | 作用 |
 |---|---|
 | [ask-skills](./skills/engineering/ask-skills/SKILL.md) | 根据当前任务选择合适的 skill 或工作流。 |
-| [grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md) | 对计划进行高强度访谈，同时沉淀项目语言、`CONTEXT.md` 和 ADR。 |
+| [grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md) | 用少量高杠杆问题确定计划主干，同时沉淀已确认的项目语言、`CONTEXT.md` 和 ADR。 |
 | [triage](./skills/engineering/triage/SKILL.md) | 在本地 `.codex/agents/` 工作区中推进 issue triage 状态机。 |
 | [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md) | 扫描代码库的架构深化机会，并输出 HTML 报告。 |
 | [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 初始化工程类 skill 依赖的本地 `.codex/agents/`、triage 标签和领域文档配置。 |
@@ -184,7 +184,7 @@ Claude 插件清单位于：
 
 | Skill | 作用 |
 |---|---|
-| [grill-me](./skills/productivity/grill-me/SKILL.md) | 对计划或设计进行逐分支访谈，直到关键决策被澄清。 |
+| [grill-me](./skills/productivity/grill-me/SKILL.md) | 用主干问题明确关键决策，并由 Agent 回填可逆细节。 |
 | [handoff](./skills/productivity/handoff/SKILL.md) | 将当前对话压缩成交接文档，便于另一个 Agent 或新会话继续。 |
 | [writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md) | 编写和维护可预测 skill 的参考规范。 |
 

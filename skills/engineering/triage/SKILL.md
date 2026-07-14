@@ -67,7 +67,7 @@ Show counts and a one-line summary per item. Let the maintainer pick.
 
 3. **Verify the claim.** Before any grilling, check that the claim holds up. For a bug, reproduce it from the reporter's steps. Report what happened: confirmed (with code path), failed, or insufficient detail (a strong `needs-info` signal). A confirmed verification makes a much stronger agent brief.
 
-4. **Grill (if needed).** If the request needs fleshing out, run the `/grilling` and `/domain-modeling` skills together — grill it into shape one question at a time, sharpening domain terms and updating `CONTEXT.md`/ADRs inline as decisions land.
+4. **Grill (if needed).** If a high-leverage decision is still missing, run the `/grilling` and `/domain-modeling` skills together. Let `/grilling` find the request's main trunk and let `/domain-modeling` record established terms and durable decisions as they land.
 
 5. **Apply the outcome:**
    - `ready-for-agent` — add an agent brief note ([AGENT-BRIEF.md](AGENT-BRIEF.md)).
