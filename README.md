@@ -91,11 +91,13 @@ Claude 插件清单位于：
         |
         v
 新想法 / 新功能 / 重构方向
-  grill-with-docs
+  判断需求主干和路线
         |
-        +-- 需要跑起来验证想法 -> prototype -> handoff -> 回到主线
+        +-- 清晰 bounded request -> implement
         |
-        +-- 一次会话可厘清 -> implement
+        +-- 一次会话仍需厘清 -> grill-with-docs -> implement 或 to-prd/to-issues
+        |
+        +-- 需要运行信号 -> prototype -> handoff -> 回到主线
         |
         +-- 跨会话且有决策迷雾 -> wayfinder -> 路线清晰后选择 to-prd / to-issues / implement
         |
@@ -135,8 +137,8 @@ Claude 插件清单位于：
 
 | 工作流 | 使用顺序 | 适合场景 |
 |---|---|---|
-| 快速小改 | `grill-with-docs` -> `implement` | 需求能在同一会话里问清楚，改动范围小。 |
-| 标准功能交付 | `setup-agent-skills` -> `grill-with-docs` -> `to-prd` -> `to-issues` -> `implement` | 路线清晰、多步骤功能、需要可追踪规格和可拆 issue。 |
+| 快速小改 | `implement` | 需求、范围和验收已经清晰，不需要额外访谈。 |
+| 标准功能交付 | `setup-agent-skills` -> `to-prd` -> `to-issues` -> `implement` | 路线清晰、多步骤功能、需要可追踪规格和可拆 issue；只有主干仍不清时才先 `grill-with-docs`。 |
 | 超大且决策未定的工作 | `setup-agent-skills` -> `wayfinder` -> `to-prd` / `to-issues` / `implement` | 预计跨多个会话，先解决会改变范围、架构、风险或验收的决策，再选择最小交付流程。 |
 | 原型驱动决策 | `grill-with-docs` -> `handoff` -> `prototype` -> `handoff` -> `to-prd` 或 `implement` | 讨论无法替代运行验证，例如复杂交互、状态机、算法取舍。 |
 | Bug 修复 | `diagnosing-bugs` -> `implement` | 先定位根因；真实路径验收只在需求或最终集成 proof 要求时运行。 |

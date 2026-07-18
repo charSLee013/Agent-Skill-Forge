@@ -6,7 +6,9 @@ disable-model-invocation: true
 
 # Triage
 
-Move local issues in `.codex/agents/work/` through a small state machine of triage roles.
+Move implementation issues in `.codex/agents/work/*/issues/` through a small state machine of triage roles.
+
+Decision maps, `PRD.md`, modern `decisions/`, and legacy issue files carrying both `Wayfinder type:` and `Wayfinder status:` are not part of the default triage queue. A decision issue may be triaged only when the maintainer explicitly supplies its path; keep its Wayfinder fields authoritative and add triage `Status` only as a separate, deliberate handoff.
 
 Every triage note added to a local issue **must** start with this disclaimer:
 
@@ -36,7 +38,7 @@ Five **state** roles:
 
 Every triaged issue should carry exactly one category role and one state role. If state roles conflict, flag it and ask the maintainer before doing anything else.
 
-These are canonical role names — the local status strings may differ. The mapping should have been provided to you in `.codex/agents/triage-labels.md` - run `/setup-agent-skills` if not.
+These are canonical role names — the local status strings may differ. The mapping should have been provided to you in `.codex/agents/triage-labels.md`. If missing, recommend that the user explicitly run `/setup-agent-skills`, then stop this skill.
 
 State transitions: an unlabeled issue normally goes to `needs-triage` first; from there it moves to `needs-info`, `ready-for-agent`, `ready-for-human`, or `wontfix`. `needs-info` returns to `needs-triage` once the reporter replies. The maintainer can override at any time — flag transitions that look unusual and ask before proceeding.
 
@@ -51,17 +53,17 @@ The maintainer invokes `/triage` and describes what they want in natural languag
 
 ## Show what needs attention
 
-Query `.codex/agents/work/` and present three buckets, oldest first:
+Query implementation issue files under `.codex/agents/work/*/issues/` and present three buckets, oldest first. Exclude `MAP.md`, `PRD.md`, `decisions/`, and any legacy file with top-level Wayfinder fields:
 
 1. **Unlabeled** — never triaged.
 2. **`needs-triage`** — evaluation in progress.
 3. **`needs-info` with reporter activity since the last triage notes** — needs re-evaluation.
 
-Show counts and a one-line summary per item. Let the maintainer pick.
+Show counts and a one-line summary per item. Let the maintainer pick. Do not migrate legacy Wayfinder files here; `setup-agent-skills` is the only migration entry point.
 
 ## Triage a specific issue
 
-1. **Gather context.** Read the full local issue file, including body, status, labels, and comments. Parse any prior triage notes so you don't re-ask resolved questions. Explore the codebase using the project's domain glossary, respecting ADRs in the area. Run two checks against the codebase: (a) **redundancy** — search for an existing implementation of the requested behavior by domain concept (not just the request's wording), and report where you looked. If found, it's an already-implemented `wontfix` (step 5). (b) **prior rejection** — read `.out-of-scope/*.md` and surface any that resembles this request.
+1. **Gather context.** Read the full local issue file, including body, status, labels, and comments. If the explicit path is a Wayfinder decision issue, say that this is an exceptional triage handoff and preserve its Wayfinder fields. Parse any prior triage notes so you don't re-ask resolved questions. Explore the codebase using the project's domain glossary, respecting ADRs in the area. Run two checks against the codebase: (a) **redundancy** — search for an existing implementation of the requested behavior by domain concept (not just the request's wording), and report where you looked. If found, it's an already-implemented `wontfix` (step 5). (b) **prior rejection** — read `.out-of-scope/*.md` and surface any that resembles this request.
 
 2. **Recommend.** Tell the maintainer your category and state recommendation with reasoning, plus a brief codebase summary relevant to the request — including whether it's already implemented. Wait for direction.
 

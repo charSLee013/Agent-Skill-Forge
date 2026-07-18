@@ -7,7 +7,7 @@ disable-model-invocation: true
 
 Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.
 
-If a Wayfinder map exists, include its path, current decision issue, Wayfinder status, and next frontier. Reference the map instead of copying its decisions into the handoff.
+If a Wayfinder map exists, include its path, current decision issue path under `decisions/` or its explicit legacy path, Wayfinder status, claim owner and timestamp when present, and next frontier. If pausing a claimed issue, release it to `open` before writing the handoff; a later session must explicitly take over another owner's claim. Reference the map instead of copying its decisions into the handoff.
 
 Include the next task's objective, scope, non-goals, decisions, open questions, changed files, verification state, and exact artifact paths needed to continue. Do not prescribe a skill list unless the user explicitly asks for routing advice; the next agent should choose the smallest applicable flow from the handoff.
 

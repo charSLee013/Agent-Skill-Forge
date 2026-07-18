@@ -23,7 +23,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `AGENTS.md` and `CLAUDE.md` at the repo root — does either exist? Is there already an `## Agent skills` section in either?
 - `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
-- `.codex/agents/` — does this skill's prior output already exist?
+- `.codex/agents/` — does this skill's prior output already exist? Are there legacy Wayfinder decision files under `work/*/issues/`?
 - `.git/info/exclude` — does it already exclude `.codex/`?
 
 ### 2. Present findings and ask
@@ -34,7 +34,7 @@ Assume the user does not know what these terms mean. Each section starts with a 
 
 **Section A — Triage label vocabulary.**
 
-> Explainer: These skills store decision maps, decision issues, PRDs, implementation issues, and triage notes as local markdown files under `.codex/agents/`. When the `triage` skill processes an issue, it moves it through a small state machine — needs evaluation, waiting on the reporter, ready for an AFK agent to pick up, ready for a human, or won't fix. The labels are just strings written into local files, so there is no remote label setup.
+> Explainer: These skills store decision maps, decision issues, PRDs, implementation issues, and triage notes as local markdown files under `.codex/agents/`. Wayfinder decisions live under `decisions/`; implementation issues live under `issues/`. When the `triage` skill processes an implementation issue, it moves it through a small state machine — needs evaluation, waiting on the reporter, ready for an AFK agent to pick up, ready for a human, or won't fix. The labels are just strings written into local files, so there is no remote label setup.
 
 The five canonical roles:
 
@@ -55,12 +55,15 @@ Confirm the layout:
 - **Single-context** — one `CONTEXT.md` + `docs/adr/` at the repo root. Most repos are this.
 - **Multi-context** — `CONTEXT-MAP.md` at the root pointing to per-context `CONTEXT.md` files (typically a monorepo).
 
+If the existing workspace contains legacy Wayfinder decision files under `work/*/issues/`, show the affected paths and explain that setup can normalize them into `decisions/`. This migration is performed only during the confirmed write phase; it is not a hidden runtime action.
+
 ### 3. Confirm and edit
 
 Show the user a draft of:
 
 - The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
 - The contents of `.codex/agents/issue-tracker.md`, `.codex/agents/triage-labels.md`, `.codex/agents/domain.md`
+- Any legacy decision files that will be moved from `issues/` to `decisions/`, including the path-reference updates that will be made
 - The `.git/info/exclude` entry that keeps `.codex/` out of git
 
 Let them edit before writing.
@@ -84,7 +87,7 @@ The block:
 
 ### Issue tracker
 
-Local decision maps, PRDs, issues, and triage notes live under `.codex/agents/work/`. See `.codex/agents/issue-tracker.md`.
+Local decision maps, decision issues, PRDs, implementation issues, and triage notes live under `.codex/agents/work/`. Decision issues use `decisions/`; implementation issues use `issues/`. See `.codex/agents/issue-tracker.md`.
 
 ### Triage labels
 
@@ -101,8 +104,10 @@ Then write the three docs files under `.codex/agents/` using the seed templates 
 - [triage-labels.md](./triage-labels.md) — label mapping
 - [domain.md](./domain.md) — domain doc consumer rules + layout
 
+If the user confirmed legacy migration, preflight every affected feature before moving anything. Move only files with both top-level `Wayfinder type:` and `Wayfinder status:` fields to `decisions/`, preserve their content, update exact local references, and stop that feature without partial changes if a destination or reference is ambiguous. Verify the new paths and references after the move. Do not migrate ordinary implementation issues.
+
 Create `.codex/agents/work/` if it does not exist. Add `.codex/` to `.git/info/exclude` if it is not already excluded. Do not edit the repo's `.gitignore` for this private workspace.
 
 ### 5. Done
 
-Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `.codex/agents/*.md` directly later — re-running this skill is only necessary if they want to restart the local workspace setup.
+Tell the user the setup is complete, which engineering skills will now read from these files, and whether any legacy decision files were migrated. Mention they can edit `.codex/agents/*.md` directly later — re-running this skill is also the supported way to normalize a legacy Wayfinder workspace.

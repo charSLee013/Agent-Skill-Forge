@@ -11,7 +11,12 @@ Bucket `README.md`s and the top-level `README.md` group entries into **User-invo
 
 ## Dependencies between them
 
-Dependencies are expressed as **`/skill`-style prose invocation** ("Run the `/grilling` skill"), not deep `../other-skill/FILE.md` cross-references. Shared reference docs live inside the skill that owns them; other skills reach that material by invoking the skill, not by linking across folders.
+Dependencies are expressed in prose, but the verb carries authority:
+
+- **Invoke** — the current skill may execute the target only when the target is model-invoked.
+- **Recommend** — tell the user to explicitly run the target, then stop the current phase. Use this for every user-invoked target.
+
+`/skill` syntax is a reference, not permission to execute. Write `recommend /setup-agent-skills and stop` when required local configuration is missing. Shared reference docs still live inside the skill that owns them; do not use a prose dependency to bypass invocation rules.
 
 ## Passive vs active domain work
 

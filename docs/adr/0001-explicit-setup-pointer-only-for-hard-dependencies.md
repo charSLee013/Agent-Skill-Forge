@@ -4,7 +4,7 @@ Engineering skills depend on per-repo config (local issue workspace, triage labe
 
 We split these into **hard-dependency** and **soft-dependency** skills:
 
-- **Hard dependency** (`to-issues`, `to-prd`, `triage`) — include an explicit one-liner: _"… should have been provided to you — run `/setup-agent-skills` if not."_ Without the mapping, output is wrong, not just fuzzy.
+- **Hard dependency** (`wayfinder`, `to-issues`, `to-prd`, `triage`) — include an explicit one-liner: _"… should have been provided to you — recommend that the user run `/setup-agent-skills`, then stop if not."_ A user-invoked skill must not invoke the setup skill itself. Without the mapping, output is wrong, not just fuzzy.
 - **Soft dependency** (`diagnose`, `improve-codebase-architecture`) — reference "the project's domain glossary" and "ADRs in the area you're touching" in vague prose only. If the docs aren't there, the skill still works; output is just less sharp.
 
 The split keeps soft-dependency skills token-light and avoids cargo-culting the setup pointer into places where it isn't load-bearing.

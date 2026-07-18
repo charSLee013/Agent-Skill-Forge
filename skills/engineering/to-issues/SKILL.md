@@ -8,9 +8,9 @@ disable-model-invocation: true
 
 Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
 
-If a matching local map exists at .codex/agents/work/<feature-slug>/MAP.md, read it before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope. If material decision fog remains, stop and report the next frontier issue instead of turning a decision into an implementation slice.
+Resolve a matching local map using an explicit MAP path first, then the feature directory of an explicit PRD or issue path, then an exact feature-slug or Destination match under `.codex/agents/work/`. If there are zero or multiple matches, stop and ask rather than guessing. Read the map before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If the map uses the legacy decision path under `issues/`, read it in place and do not migrate or mix layouts; setup-agent-skills is the migration entry point. If material decision fog remains, stop and report the next frontier issue instead of turning a decision into an implementation slice.
 
-The local issue workspace and triage label vocabulary should have been provided to you in `.codex/agents/` — run `/setup-agent-skills` if not.
+The local issue workspace and triage label vocabulary should have been provided to you in `.codex/agents/`. If missing, recommend that the user explicitly run `/setup-agent-skills`, then stop this skill.
 
 ## Process
 
@@ -63,9 +63,9 @@ Iterate until the user approves the breakdown.
 
 ### 5. Publish the issues to the local issue workspace
 
-For each approved slice, write a new issue to `.codex/agents/work/<feature-slug>/issues/<NN>-<slug>.md`. Use the issue body template below. These issues are considered ready for AFK agents, so publish them with the correct triage label unless instructed otherwise.
+For each approved slice, write a new implementation issue to `.codex/agents/work/<feature-slug>/issues/<NN>-<slug>.md`. Decision issues belong under `decisions/` and must not be republished here. Use the issue body template below. These issues are considered ready for AFK agents, so publish them with the correct triage label unless instructed otherwise.
 
-Publish issues in dependency order (blockers first) so you can reference real issue identifiers in the "Blocked by" field.
+Publish issues in dependency order (blockers first) so you can reference real relative paths in the "Blocked by" field.
 
 <issue-template>
 ## Parent
@@ -93,7 +93,7 @@ Avoid specific file paths or code snippets — they go stale fast. Exception: if
 
 ## Blocked by
 
-- A reference to the blocking issue (if any)
+- A relative path to the blocking implementation issue, for example `issues/01-build-api.md` (if any)
 
 Or "None - can start immediately" if no blockers.
 

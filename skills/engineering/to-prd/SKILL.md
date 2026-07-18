@@ -6,9 +6,9 @@ disable-model-invocation: true
 
 This skill takes the current conversation context and codebase understanding and produces a PRD. Do NOT interview the user — just synthesize what you already know.
 
-If a matching local map exists at .codex/agents/work/<feature-slug>/MAP.md, read it before synthesising the PRD. Use its resolved Decisions so far and linked decision issues as the source of established decisions. If material decision fog remains, stop and report the next frontier issue instead of guessing in the PRD.
+Resolve a matching local map using an explicit MAP path first, then the feature directory of an explicit PRD or issue path, then an exact feature-slug or Destination match under `.codex/agents/work/`. If there are zero or multiple matches, stop and ask rather than guessing. Read the map before synthesising the PRD and use its resolved `Decisions so far` and linked decision issues as the source of established decisions. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If the map uses the legacy decision path under `issues/`, read it in place and do not migrate or mix layouts; setup-agent-skills is the migration entry point. If material decision fog remains, stop and report the next frontier issue instead of guessing in the PRD.
 
-The local issue workspace and triage label vocabulary should have been provided to you in `.codex/agents/` — run `/setup-agent-skills` if not.
+The local issue workspace and triage label vocabulary should have been provided to you in `.codex/agents/`. If missing, recommend that the user explicitly run `/setup-agent-skills`, then stop this skill.
 
 ## Process
 

@@ -33,7 +33,7 @@ These skills support a selected workflow. They must not create a new phase or ex
     unclear plan or design       -> grill-with-docs
     incoming issue pool          -> triage
     hard uncertain bug           -> diagnosing-bugs
-    large cross-session fog      -> wayfinder -> to-prd/to-issues/implement
+    large cross-session fog      -> wayfinder (MAP + decisions/) -> to-prd/to-issues/implement
     real-path proof selected     -> implement -> real-path-verification
     three or more slices         -> final integration -> recommend real-path-verification once
     explicit architecture work  -> improve-codebase-architecture
