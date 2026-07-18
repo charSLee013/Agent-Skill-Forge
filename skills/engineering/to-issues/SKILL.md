@@ -8,7 +8,9 @@ disable-model-invocation: true
 
 Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
 
-Resolve a matching local map using an explicit MAP path first, then the feature directory of an explicit PRD or issue path, then an exact feature-slug or Destination match under `.codex/agents/work/`. If there are zero or multiple matches, stop and ask rather than guessing. Read the map before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If the map uses the legacy decision path under `issues/`, read it in place and do not migrate or mix layouts; setup-agent-skills is the migration entry point. If material decision fog remains, stop and report the next frontier issue instead of turning a decision into an implementation slice.
+Resolve an optional local map before slicing. If an explicit `MAP.md` path was supplied but does not exist, stop and report the missing path. Without an explicit map path, use `MAP.md` from an explicit PRD or issue's feature directory when present; otherwise search by exact feature slug or Destination under `.codex/agents/work/`. If multiple maps match, stop and ask for the exact `MAP.md` path. If no matching map exists and no explicit `MAP.md` path was supplied, continue when the source material is clear enough for this skill; a map is optional.
+
+When a map exists, read it before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If the map uses the legacy decision path under `issues/`, read it in place and do not migrate or mix layouts; `setup-agent-skills` is the migration entry point. If material decision fog remains, stop and report the next frontier issue instead of turning a decision into an implementation slice.
 
 The local issue workspace and triage label vocabulary should have been provided to you in `.codex/agents/`. If missing, recommend that the user explicitly run `/setup-agent-skills`, then stop this skill.
 
@@ -65,9 +67,11 @@ Iterate until the user approves the breakdown.
 
 For each approved slice, write a new implementation issue to `.codex/agents/work/<feature-slug>/issues/<NN>-<slug>.md`. Decision issues belong under `decisions/` and must not be republished here. Use the issue body template below. These issues are considered ready for AFK agents, so publish them with the correct triage label unless instructed otherwise.
 
-Publish issues in dependency order (blockers first) so you can reference real relative paths in the "Blocked by" field.
+Publish issues in dependency order (blockers first) so every `Blocked by` value names a real path relative to `.codex/agents/work/<feature-slug>/`.
 
 <issue-template>
+Completion: open
+
 ## Parent
 
 A reference to the parent local issue path (if the source was an existing issue, otherwise omit this section).
@@ -93,7 +97,7 @@ Avoid specific file paths or code snippets — they go stale fast. Exception: if
 
 ## Blocked by
 
-- A relative path to the blocking implementation issue, for example `issues/01-build-api.md` (if any)
+- A feature-root-relative path to a blocking decision or implementation issue, for example `decisions/01-data-shape.md` or `issues/01-build-api.md` (if any)
 
 Or "None - can start immediately" if no blockers.
 

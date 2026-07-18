@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 Move implementation issues in `.codex/agents/work/*/issues/` through a small state machine of triage roles.
 
+Preserve an implementation issue's `Completion` field. It is the dependency completion oracle and is separate from triage `Status`; triage must not set or reinterpret it.
+
 Decision maps, `PRD.md`, modern `decisions/`, and legacy issue files carrying both `Wayfinder type:` and `Wayfinder status:` are not part of the default triage queue. A decision issue may be triaged only when the maintainer explicitly supplies its path; keep its Wayfinder fields authoritative and add triage `Status` only as a separate, deliberate handoff.
 
 Every triage note added to a local issue **must** start with this disclaimer:

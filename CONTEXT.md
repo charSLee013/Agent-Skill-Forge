@@ -20,7 +20,8 @@ A canonical state-machine label applied to an **Issue** during triage (e.g. `nee
 - A **Local issue workspace** holds maps and many **Issues**
 - A map indexes decision issues under `decisions/`; it does not replace the issue's own detail
 - An implementation **Issue** carries one **Triage role** when it enters triage; a Wayfinder decision issue uses its separate Wayfinder status and is excluded from default triage unless it is deliberately handed to triage
-- Implementation issues remain under `issues/`; a `Blocked by` reference uses a relative path so decision and implementation dependencies cannot share an ambiguous numeric identifier
+- Implementation issues remain under `issues/`; their two-value `Completion` field is separate from triage `Status`
+- Every `Blocked by` reference is relative to the feature directory; a decision target uses Wayfinder status as its oracle and an implementation target uses `Completion`
 
 ## Flagged ambiguities
 

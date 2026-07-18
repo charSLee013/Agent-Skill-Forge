@@ -10,6 +10,7 @@ Decision maps, decision issues, PRDs, implementation issues, and triage notes fo
 - New Wayfinder decision issues are `.codex/agents/work/<feature-slug>/decisions/<NN>-<slug>.md`, numbered from `01`
 - Implementation issues are `.codex/agents/work/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`
 - Triage state is recorded as a `Status:` line near the top of implementation issues (see `triage-labels.md` for the role strings)
+- Implementation completion is recorded separately as `Completion: open` or `Completion: done`
 - Comments and conversation history append to the bottom of the file under a `## Comments` heading
 - `.codex/` is private local agent state. Keep it out of git with `.git/info/exclude`.
 
@@ -37,34 +38,42 @@ Each decision issue has:
 - `Wayfinder type`: `research`, `prototype`, `grilling`, or `task`
 - `Wayfinder status`: `open`, `claimed`, `resolved`, or `out-of-scope`
 - `Claimed by` and `Claimed at` when the issue is claimed
-- `Blocked by` with relative paths when applicable
+- `Blocked by` with feature-root-relative paths when applicable
 - `Question`, followed by `Answer` after resolution
 
-Wayfinder status belongs to decision issues. Triage `Status` belongs to triage-managed implementation issues. If a decision issue is deliberately handed to triage, its Wayfinder fields remain authoritative for decision progress and its additional `Status` must not reinterpret them.
+Wayfinder status belongs to decision issues. Triage `Status` belongs to triage-managed implementation issues. `Completion` is only the implementation dependency oracle; it does not add triage roles. If a decision issue is deliberately handed to triage, its Wayfinder fields remain authoritative for decision progress and its additional `Status` must not reinterpret them.
 
 ### References and blocking
 
-Use relative paths, never bare numeric identifiers, in `Blocked by`:
+Every `Blocked by` path is relative to `.codex/agents/work/<feature-slug>/`, regardless of which issue contains it. Allowed targets stay inside the same feature under `decisions/` or `issues/`; reject bare numeric identifiers, absolute paths, `..` traversal, missing targets, and ambiguous targets.
 
 ```text
 Blocked by: decisions/01-data-shape.md
 Blocked by: issues/01-build-api.md
 ```
 
-A decision is unblocked only when every referenced decision has `Wayfinder status: resolved`. `out-of-scope` is terminal for that decision but does not automatically unblock a dependent decision. The dependent must be explicitly re-scoped, have its dependency rewritten, or be marked out-of-scope.
+A target under `decisions/` unblocks only when it has `Wayfinder status: resolved`.
 
-When an out-of-scope blocker affects a dependent decision, record the consequence in the dependent issue:
+A modern target under `issues/` unblocks only when it has `Completion: done`.
+
+A legacy target under `issues/` that carries both top-level Wayfinder fields remains a decision target and uses `Wayfinder status: resolved` until migration succeeds. A legacy implementation issue without `Completion` is treated as `Completion: open`.
+
+The target type, not the source type, selects the oracle for decision-to-decision, implementation-to-implementation, and cross-type dependencies. Triage `Status` never satisfies a blocker.
+
+An `out-of-scope` decision or implementation carrying the configured `wontfix` role is terminal for that blocker but does not automatically unblock a dependent issue. Re-scope the dependent, remove or replace the blocker, or close the dependent explicitly.
+
+When an out-of-scope or `wontfix` blocker affects a dependent issue, record the consequence in the dependent issue:
 
 ````markdown
 ## Dependency resolution
 
 - Blocker: decisions/01-storage-shape.md
-- Blocker outcome: out-of-scope
+- Blocker outcome: out-of-scope | wontfix
 - Effect: re-scoped | no longer required | out-of-scope
 - Reason: ...
 ````
 
-`Effect: out-of-scope` closes the dependent decision. `Effect: re-scoped` and `Effect: no longer required` require a new Question before the issue returns to `open`.
+For a dependent decision, `Effect: out-of-scope` sets its Wayfinder status accordingly; the other effects require a revised `Question` before it returns to `open`. For a dependent implementation issue, `Effect: out-of-scope` uses the configured `wontfix` triage role; the other effects require updated `What to build` and acceptance criteria while `Completion` remains `open`.
 
 The frontier is the first open, unblocked, unclaimed decision issue by numeric filename order within the map's layout. Claim it before doing work.
 
@@ -92,16 +101,17 @@ Legacy decision issues are identified only when they contain both top-level `Way
 
 ## Setup migration
 
-`setup-agent-skills` is the only automatic migration entry point. It discovers legacy decision files during exploration, presents the affected paths, and moves them only after the user confirms the setup write phase.
+`setup-agent-skills` is the only migration entry point. It discovers legacy decision files during exploration, includes a dry-run summary in the normal setup draft, and automatically migrates unambiguous features after that draft is approved. There is no separate migration question.
 
 Migration must:
 
-1. Preflight every legacy decision in a feature directory.
-2. Move it to `decisions/` with the same basename, preserving its content and existing `Status` if present.
-3. Update exact paths in `MAP.md`, decision issues, and implementation issues in that feature directory.
-4. Convert a bare numeric blocker only when it resolves uniquely; otherwise stop that feature's migration without partial changes.
-5. Refuse to overwrite an existing destination or proceed through an ambiguous reference.
-6. Verify that new paths exist, old paths are gone, and all updated local references resolve.
+1. Preflight every legacy decision, destination, and inbound reference in a feature before changing it. A conflict leaves the whole feature untouched while other features may continue.
+2. Copy the entire feature directory to a unique system temporary directory and verify the rollback snapshot before writing.
+3. Move each legacy decision to `decisions/` with the same basename, preserving its content and existing `Status` if present.
+4. Scan every Markdown file under the feature and update only exact local references to moved paths. Convert a bare numeric blocker only when it resolves uniquely.
+5. Refuse to overwrite a destination or proceed through an ambiguous reference.
+6. Verify that new paths exist, old paths are gone, and all rewritten paths resolve from the feature directory.
+7. Restore the entire feature snapshot after any move, rewrite, or verification failure. Delete the snapshot only after success.
 
 No other skill silently moves files. `wayfinder`, `to-prd`, `to-issues`, and `handoff` remain read-compatible with a legacy MAP and report that setup migration is available when normalization is needed.
 

@@ -277,6 +277,10 @@ bash scripts/test-install-shape.sh
 ```
 
 ```bash
+bash scripts/test-engineering-contracts.sh
+```
+
+```bash
 git diff --check
 ```
 

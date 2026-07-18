@@ -55,7 +55,7 @@ Confirm the layout:
 - **Single-context** — one `CONTEXT.md` + `docs/adr/` at the repo root. Most repos are this.
 - **Multi-context** — `CONTEXT-MAP.md` at the root pointing to per-context `CONTEXT.md` files (typically a monorepo).
 
-If the existing workspace contains legacy Wayfinder decision files under `work/*/issues/`, show the affected paths and explain that setup can normalize them into `decisions/`. This migration is performed only during the confirmed write phase; it is not a hidden runtime action.
+If the existing workspace contains legacy Wayfinder decision files under `work/*/issues/`, show the affected paths and explain that setup will normalize every unambiguous feature into `decisions/` during the confirmed write phase. Legacy migration is automatic after the user approves the setup draft; do not ask a separate migration question. A conflicting feature stays unchanged and is reported.
 
 ### 3. Confirm and edit
 
@@ -63,8 +63,10 @@ Show the user a draft of:
 
 - The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
 - The contents of `.codex/agents/issue-tracker.md`, `.codex/agents/triage-labels.md`, `.codex/agents/domain.md`
-- Any legacy decision files that will be moved from `issues/` to `decisions/`, including the path-reference updates that will be made
+- Any legacy decision files that will be moved from `issues/` to `decisions/`, including exact path-reference updates and any conflicts that will leave a feature unchanged
 - The `.git/info/exclude` entry that keeps `.codex/` out of git
+
+Include an automatic legacy migration dry-run summary in the setup draft. The summary is part of the normal draft approval, not a separate decision.
 
 Let them edit before writing.
 
@@ -104,7 +106,14 @@ Then write the three docs files under `.codex/agents/` using the seed templates 
 - [triage-labels.md](./triage-labels.md) — label mapping
 - [domain.md](./domain.md) — domain doc consumer rules + layout
 
-If the user confirmed legacy migration, preflight every affected feature before moving anything. Move only files with both top-level `Wayfinder type:` and `Wayfinder status:` fields to `decisions/`, preserve their content, update exact local references, and stop that feature without partial changes if a destination or reference is ambiguous. Verify the new paths and references after the move. Do not migrate ordinary implementation issues.
+After the draft is approved, migrate each affected feature independently:
+
+1. Treat only files with both top-level `Wayfinder type:` and `Wayfinder status:` fields as legacy decisions. Preflight every source, destination, and inbound reference in the feature before moving anything. If a destination exists or any reference is ambiguous, leave that feature unchanged, report the conflict, and continue with other features.
+2. Before changing a feature, copy its entire directory to a unique system temporary directory as a rollback snapshot. If the snapshot cannot be created and verified, do not modify the feature.
+3. Move each legacy decision to `decisions/` with the same basename and content. Preserve any triage `Status` field. Do not migrate ordinary implementation issues.
+4. Scan every Markdown file under the feature directory and rewrite only exact local path references. Replace `issues/<basename>` with `decisions/<basename>` for moved files; convert a bare numeric blocker only when it resolves uniquely.
+5. Verify that every destination exists, every source is gone, all rewritten references resolve from the feature directory, and no stale exact reference remains. If any move, rewrite, or verification fails, restore the feature from its snapshot and report the failure.
+6. Remove the temporary snapshot after successful verification. A failed or conflicting feature remains entirely in its legacy layout; never leave a mixed or partially migrated feature.
 
 Create `.codex/agents/work/` if it does not exist. Add `.codex/` to `.git/info/exclude` if it is not already excluded. Do not edit the repo's `.gitignore` for this private workspace.
 

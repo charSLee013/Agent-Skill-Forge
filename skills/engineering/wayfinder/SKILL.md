@@ -14,10 +14,11 @@ Wayfinder plans by default. It does not implement the destination, create an imp
 
 Resolve the feature map in this order:
 
-1. Use an explicit `MAP.md` path from the user, handoff, PRD, or issue.
-2. Use the feature directory containing an explicit PRD or issue path.
-3. Search `.codex/agents/work/*/MAP.md` by feature slug and Destination. Continue only when there is exactly one match.
-4. If there are zero or multiple matches, stop and ask. Do not guess a feature directory.
+1. If the user, handoff, PRD, or issue supplies an explicit `MAP.md` path, use it when it exists. If an explicit `MAP.md` path does not exist, stop and report that path. Do not infer a replacement.
+2. Otherwise, if the user supplies an explicit PRD or issue path, use `MAP.md` from that feature directory when it exists. If it does not exist, treat this as zero matches for that feature; do not search a different feature.
+3. Otherwise, search `.codex/agents/work/*/MAP.md` by exact feature slug or Destination. If there is exactly one match, use it.
+4. If there are multiple matches, stop and ask the user to supply the exact `MAP.md` path.
+5. If no explicit `MAP.md` path was supplied and there are zero matches, evaluate the new-map entry gate below.
 
 If a matching map exists, enter resume/work mode. Do not apply the new-map entry gate or create a second map.
 
@@ -59,7 +60,7 @@ Each decision issue contains:
 - `Wayfinder type`: `research`, `prototype`, `grilling`, or `task`;
 - `Wayfinder status`: `open`, `claimed`, `resolved`, or `out-of-scope`;
 - `Claimed by` and `Claimed at` when work is claimed;
-- `Blocked by` with relative paths, never bare numeric identifiers;
+- `Blocked by` with paths relative to the feature directory, never bare numeric identifiers;
 - a `Question` heading;
 - an `Answer` heading after resolution.
 
@@ -74,7 +75,7 @@ If an existing map still uses the legacy decision path `issues/`, keep that map 
 3. If the route is already clear, stop without creating a map and recommend the smallest next workflow.
 4. Keep only questions sharp enough to state now as decision issues. Put foreseeable but unclear questions in `Not yet specified`; do not pre-slice the fog.
 5. Show the proposed destination, first decision issues, dependencies, risk, and expected evidence. Write `MAP.md` and decision issues only after the user approves that scope.
-6. Create only the issues currently sharp. Record blockers with relative paths and stop charting. Do not resolve issues, implement the destination, or dispatch a batch of research work during charting.
+6. Create only the issues currently sharp. Record blockers with feature-root-relative `decisions/` or `issues/` paths and stop charting. A decision target requires `Wayfinder status: resolved`; an implementation target requires `Completion: done`. A legacy decision still under `issues/` uses its Wayfinder status until setup migration succeeds. Do not resolve issues, implement the destination, or dispatch a batch of research work during charting.
 
 ## Work through the map
 
@@ -96,7 +97,7 @@ If an existing map still uses the legacy decision path `issues/`, keep that map 
    Recommend these user-invoked workflows to the user and stop this decision session: `grill-with-docs`, `prototype`, `zoom-out`, `to-prd`, `to-issues`, or `implement`. Do not trigger them from Wayfinder.
 6. Keep the work limited to the question. Use existing commands and artifacts first. Put temporary experiments and research artifacts under the system temporary directory, or an isolated copy/worktree inside it, not in the repository. A prototype's co-location rule applies inside that isolated copy. Modifying the current worktree requires explicit user approval with risk, cleanup, and stop conditions.
 7. Record the answer, relevant non-sensitive evidence, unresolved uncertainty, and any newly sharp question. Set the issue to `resolved` or `out-of-scope`, then update `Decisions so far` or `Out of scope` in the map.
-8. A decision marked `out-of-scope` does not automatically unblock dependent decisions. Re-scope the dependent, rewrite its blocker, or mark it out-of-scope explicitly and record the required `Dependency resolution` section.
+8. A decision marked `out-of-scope` does not automatically unblock a dependent issue. Re-scope the dependent, rewrite its blocker, or close it through its own terminal state and record the required `Dependency resolution` section.
 9. Before every write, re-read the issue and stop if its owner or status changed. On a planned handoff, return a claimed issue to `open` and record the progress in the handoff.
 10. Stop after one decision issue in the session. Recommend the next frontier issue or the next workflow; do not automatically chain user-invoked skills, migrate files, or dispatch parallel subagents.
 
