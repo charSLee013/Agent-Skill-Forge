@@ -5,11 +5,11 @@ A neutral collection of agent skills loaded by supported agent runtimes. Skills 
 ## Language
 
 **Local issue workspace**:
-The repo-local `.codex/agents/` workspace that stores PRDs, implementation issues, and triage notes as markdown files.
+The repo-local `.codex/agents/` workspace that stores decision maps, decision issues, PRDs, implementation issues, and triage notes as markdown files.
 _Avoid_: issue tracker, backlog manager, backlog backend, issue host
 
 **Issue**:
-A single tracked unit of work inside the **Local issue workspace** — a bug, task, PRD, or slice produced by `to-issues`.
+A single tracked unit of work inside the **Local issue workspace** — a decision issue, bug, task, PRD, or implementation slice.
 _Avoid_: ticket (use only when quoting external systems that call them tickets)
 
 **Triage role**:
@@ -17,8 +17,9 @@ A canonical state-machine label applied to an **Issue** during triage (e.g. `nee
 
 ## Relationships
 
-- A **Local issue workspace** holds many **Issues**
-- An **Issue** carries one **Triage role** at a time
+- A **Local issue workspace** holds maps and many **Issues**
+- A map indexes decision issues; it does not replace the issue's own detail
+- An **Issue** carries one **Triage role** when it enters triage; a Wayfinder decision issue uses its separate Wayfinder status unless it is deliberately handed to triage
 
 ## Flagged ambiguities
 

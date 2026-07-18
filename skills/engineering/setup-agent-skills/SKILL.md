@@ -34,7 +34,7 @@ Assume the user does not know what these terms mean. Each section starts with a 
 
 **Section A — Triage label vocabulary.**
 
-> Explainer: These skills store PRDs, implementation issues, and triage notes as local markdown files under `.codex/agents/`. When the `triage` skill processes an issue, it moves it through a small state machine — needs evaluation, waiting on the reporter, ready for an AFK agent to pick up, ready for a human, or won't fix. The labels are just strings written into local files, so there is no remote label setup.
+> Explainer: These skills store decision maps, decision issues, PRDs, implementation issues, and triage notes as local markdown files under `.codex/agents/`. When the `triage` skill processes an issue, it moves it through a small state machine — needs evaluation, waiting on the reporter, ready for an AFK agent to pick up, ready for a human, or won't fix. The labels are just strings written into local files, so there is no remote label setup.
 
 The five canonical roles:
 
@@ -48,7 +48,7 @@ Default: each role's string equals its name. Ask the user if they want to overri
 
 **Section B — Domain docs.**
 
-> Explainer: Some skills (`improve-codebase-architecture`, `diagnosing-bugs`, `tdd`) read a `CONTEXT.md` file to learn the project's domain language, and `docs/adr/` for past architectural decisions. They need to know whether the repo has one global context or multiple (e.g. a monorepo with separate frontend/backend contexts) so they look in the right place.
+> Explainer: Some skills (`improve-codebase-architecture`, `diagnosing-bugs`) read a `CONTEXT.md` file to learn the project's domain language, and `docs/adr/` for past architectural decisions. They need to know whether the repo has one global context or multiple (e.g. a monorepo with separate frontend/backend contexts) so they look in the right place.
 
 Confirm the layout:
 
@@ -84,7 +84,7 @@ The block:
 
 ### Issue tracker
 
-Local markdown PRDs, issues, and triage notes live under `.codex/agents/work/`. See `.codex/agents/issue-tracker.md`.
+Local decision maps, PRDs, issues, and triage notes live under `.codex/agents/work/`. See `.codex/agents/issue-tracker.md`.
 
 ### Triage labels
 

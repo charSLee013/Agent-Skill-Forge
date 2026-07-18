@@ -6,7 +6,7 @@
 
 ## 特性
 
-- **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、TDD、架构改进、领域建模和本地 triage。
+- **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、真实路径验收、架构改进、领域建模和本地 triage。
 - **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs` 和 `handoff`，适合多轮计划、跨会话协作和上下文压缩。
 - **学习系统能力**：把主题、资料和学习目标组合成 HTML 课程与 supporting Markdown。
 - **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
@@ -79,7 +79,7 @@ Claude 插件清单位于：
 
 ### Engineering
 
-工程类 skill 面向代码仓库中的真实开发流程，包括规划、拆分、实现、调试、测试、架构和本地 issue 工作区。
+工程类 skill 面向代码仓库中的真实开发流程，包括决策地图、规划、拆分、实现、调试、架构和本地 issue 工作区。
 
 #### 如何组合使用
 
@@ -95,12 +95,14 @@ Claude 插件清单位于：
         |
         +-- 需要跑起来验证想法 -> prototype -> handoff -> 回到主线
         |
-        +-- 小改动 -> implement
+        +-- 一次会话可厘清 -> implement
         |
-        +-- 长线改动 -> to-prd -> to-issues -> 每个 issue 单独 implement
+        +-- 跨会话且有决策迷雾 -> wayfinder -> 路线清晰后选择 to-prd / to-issues / implement
+        |
+        +-- 路线已清晰的长线改动 -> to-prd -> to-issues -> 每个 issue 单独 implement
 
 已有 bug / 性能问题
-  diagnosing-bugs -> tdd / implement
+  diagnosing-bugs -> implement
 
 已有外部请求或待办堆积
   triage -> ready-for-agent -> implement
@@ -113,18 +115,17 @@ Claude 插件清单位于：
 
 | 你现在的情况 | 首选 skill | 后续组合 |
 |---|---|---|
-| 不知道该用哪个 skill | `ask-skills` | 让它按当前任务推荐路线。 |
+| 需求主干不清 | `grill-with-docs` | 只在目标、范围或验收真的不清楚时澄清。 |
 | 第一次在一个仓库使用工程类 skill | `setup-agent-skills` | 建立 `.codex/agents/`、triage 标签和领域文档配置。 |
-| 有一个模糊想法、产品需求或重构方向 | `grill-with-docs` | 问清楚后，小任务直接 `implement`；大任务走 `to-prd` -> `to-issues`。 |
+| 有一个模糊想法、产品需求或重构方向 | `grill-with-docs` | 一次会话能厘清就直接进入后续流程；跨会话且仍有决策迷雾才进入 `wayfinder`。 |
+| 规模很大、预计跨多个会话且路线不清 | `wayfinder` | 建立本地决策地图，逐个解决 decision issue；路线清晰后选择 `to-prd`、`to-issues` 或 `implement`。 |
 | 需要先验证状态机、业务逻辑或 UI 方案 | `prototype` | 原型结论用 `handoff` 带回主线，再进入 `to-prd` 或 `implement`。 |
 | 不熟悉一片代码，需要先看它在系统里的位置 | `zoom-out` | 让 agent 上升一层抽象，按领域语言梳理相关模块和调用方。 |
 | 已经讨论清楚，需要沉淀成规格 | `to-prd` | 生成 PRD 后用 `to-issues` 拆成可独立执行的 issue。 |
-| PRD 或计划太大，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，带着 PRD 和单个 issue 调用 `implement`。 |
-| 已经有明确 issue 或 PRD，要开始做 | `implement` | 实现中按需要自动使用 `tdd`、`codebase-design`、`diagnosing-bugs`。 |
-| 报错、回归、性能变慢、行为不对 | `diagnosing-bugs` | 先建立可重复反馈循环，再修复；适合接 `tdd` 固化回归测试。 |
-| 想测试先行开发 | `tdd` | 适合明确接口和行为后，用 red-green-refactor 推进。 |
-| 接口边界混乱、模块太浅、难测 | `codebase-design` | 作为设计词汇支撑 `to-prd`、`tdd`、`implement` 或架构治理。 |
-| 需要减少错误假设、过度设计和无关改动 | `karpathy-guidelines` | 用于写代码、review 或重构时保持简单、克制、可验证。 |
+| PRD 或计划已经清楚，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，带着 PRD 和单个 issue 调用 `implement`；未决策问题先回到 `wayfinder`。 |
+| 已经有明确 issue 或 PRD，要开始做 | `implement` | 只执行已批准范围；验收要求真实路径时联动 `real-path-verification`。 |
+| 困难或不确定的故障 | `diagnosing-bugs` | 先建立根因反馈循环，再修复；不自动创建测试。 |
+| 明确的架构、接口或模块深化工作 | `codebase-design` | 只在架构任务中提供设计词汇，不作为普通实现前置。 |
 | 术语混乱、领域概念不清、需要 ADR | `domain-modeling` | 通常由 `grill-with-docs` 或架构类流程带起，沉淀 `CONTEXT.md` 和 ADR。 |
 | issue、需求、bug 报告堆积，需要筛选 | `triage` | 输出 `ready-for-agent` 后交给 `implement`。 |
 | 想主动改善代码库结构 | `improve-codebase-architecture` | 先生成 HTML 架构报告，再选择一个机会进入 `grill-with-docs` 或 `implement`。 |
@@ -135,9 +136,10 @@ Claude 插件清单位于：
 | 工作流 | 使用顺序 | 适合场景 |
 |---|---|---|
 | 快速小改 | `grill-with-docs` -> `implement` | 需求能在同一会话里问清楚，改动范围小。 |
-| 标准功能交付 | `setup-agent-skills` -> `grill-with-docs` -> `to-prd` -> `to-issues` -> `implement` | 多步骤功能、需要可追踪规格和可拆 issue。 |
+| 标准功能交付 | `setup-agent-skills` -> `grill-with-docs` -> `to-prd` -> `to-issues` -> `implement` | 路线清晰、多步骤功能、需要可追踪规格和可拆 issue。 |
+| 超大且决策未定的工作 | `setup-agent-skills` -> `wayfinder` -> `to-prd` / `to-issues` / `implement` | 预计跨多个会话，先解决会改变范围、架构、风险或验收的决策，再选择最小交付流程。 |
 | 原型驱动决策 | `grill-with-docs` -> `handoff` -> `prototype` -> `handoff` -> `to-prd` 或 `implement` | 讨论无法替代运行验证，例如复杂交互、状态机、算法取舍。 |
-| Bug 修复 | `diagnosing-bugs` -> `tdd` -> `implement` | 先拿到可复现、可回归的红灯，再修。 |
+| Bug 修复 | `diagnosing-bugs` -> `implement` | 先定位根因；真实路径验收只在需求或最终集成 proof 要求时运行。 |
 | 请求池治理 | `triage` -> `grill-with-docs` -> `ready-for-agent` -> `implement` | 从原始 issue、反馈、需求池中筛出可执行任务。 |
 | 架构治理 | `improve-codebase-architecture` -> `grill-with-docs` -> `to-prd/to-issues` 或 `implement` | 主动降低耦合、补测试边界、改善 Agent 可维护性。 |
 
@@ -145,35 +147,34 @@ Claude 插件清单位于：
 
 | 类型 | 谁来调用 | 应该如何理解 |
 |---|---|---|
-| 用户显式调用 | 由用户点名，例如 `grill-with-docs`、`to-prd`、`triage` | 这些是工作流入口，会改变任务阶段或产出文档。 |
-| 模型可自动调用 | 用户可以点名，模型也可以在合适时使用 | 这些是工程纪律，例如调试循环、TDD、领域建模、模块设计、冲突解决。 |
+| 用户显式调用 | 由用户点名，例如 `grill-with-docs`、`wayfinder`、`to-prd`、`triage`、`implement` | 这些是工作流入口，会改变任务阶段或产出文档。 |
+| 模型可自动调用 | 用户可以点名，模型也可以在明确条件成立时使用 | 这些是当前工作流的支持阶段，例如困难诊断、真实路径验收、领域建模、模块设计、冲突解决。 |
 
-如果只记一条规则：**不确定时先用 `ask-skills`；做正式工程任务前先在目标仓库跑一次 `setup-agent-skills`。**
+如果只记一条规则：**清晰需求直接进入 `implement`；一次会话能厘清的需求进入 `grill-with-docs`；只有跨会话且存在决策迷雾时才进入 `wayfinder`；需要本地工作区时才运行 `setup-agent-skills`。**
 
 #### 用户显式调用
 
 | Skill | 作用 |
 |---|---|
-| [ask-skills](./skills/engineering/ask-skills/SKILL.md) | 根据当前任务选择合适的 skill 或工作流。 |
 | [grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md) | 用少量高杠杆问题确定计划主干，同时沉淀已确认的项目语言、`CONTEXT.md` 和 ADR。 |
 | [triage](./skills/engineering/triage/SKILL.md) | 在本地 `.codex/agents/` 工作区中推进 issue triage 状态机。 |
 | [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md) | 扫描代码库的架构深化机会，并输出 HTML 报告。 |
 | [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 初始化工程类 skill 依赖的本地 `.codex/agents/`、triage 标签和领域文档配置。 |
+| [wayfinder](./skills/engineering/wayfinder/SKILL.md) | 为跨会话且存在决策迷雾的大型工作建立本地决策地图，逐个解决 decision issue。 |
 | [to-issues](./skills/engineering/to-issues/SKILL.md) | 将计划、规格或 PRD 拆成可独立执行的实现 issue。 |
 | [to-prd](./skills/engineering/to-prd/SKILL.md) | 将当前对话整理成 PRD，并写入 `.codex/agents/work/`。 |
 | [prototype](./skills/engineering/prototype/SKILL.md) | 为状态机、业务逻辑或 UI 方案构建一次性原型。 |
 | [zoom-out](./skills/engineering/zoom-out/SKILL.md) | 在不熟悉的代码区域中，上升一层抽象梳理相关模块和调用方。 |
+| [implement](./skills/engineering/implement/SKILL.md) | 按已批准的 PRD 或 issue 执行实现并关闭验收条件。 |
 
 #### 模型可自动调用
 
 | Skill | 作用 |
 |---|---|
-| [diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md) | 用复现、最小化、假设、插桩、修复、回归测试的闭环诊断问题。 |
-| [tdd](./skills/engineering/tdd/SKILL.md) | 使用 red-green-refactor 循环开发功能或修复 bug。 |
+| [diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md) | 用复现、最小化、假设和插桩定位困难故障。 |
 | [domain-modeling](./skills/engineering/domain-modeling/SKILL.md) | 建立和修正项目领域语言，维护 `CONTEXT.md` 与 ADR。 |
 | [codebase-design](./skills/engineering/codebase-design/SKILL.md) | 提供深模块、小接口、clean seam 和可测试边界的设计词汇。 |
-| [karpathy-guidelines](./skills/engineering/karpathy-guidelines/SKILL.md) | 降低 LLM 编码中的错误假设、过度设计、无关改动和弱验收风险。 |
-| [implement](./skills/engineering/implement/SKILL.md) | 按既定计划执行实现任务。 |
+| [real-path-verification](./skills/engineering/real-path-verification/SKILL.md) | 在真实或生产等价路径上验证已批准的验收条件。 |
 | [resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md) | 解决 merge/rebase 冲突，同时保留两侧意图。 |
 
 ### Productivity

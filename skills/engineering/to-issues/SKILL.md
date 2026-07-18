@@ -8,6 +8,8 @@ disable-model-invocation: true
 
 Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
 
+If a matching local map exists at .codex/agents/work/<feature-slug>/MAP.md, read it before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope. If material decision fog remains, stop and report the next frontier issue instead of turning a decision into an implementation slice.
+
 The local issue workspace and triage label vocabulary should have been provided to you in `.codex/agents/` — run `/setup-agent-skills` if not.
 
 ## Process
@@ -20,17 +22,17 @@ Work from whatever is already in the conversation context. If the user passes an
 
 If you have not already explored the codebase, do so to understand the current state of the code. Issue titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.
 
-Look for opportunities to prefactor the code to make the implementation easier. "Make the change easy, then make the easy change."
+Do not prefactor by default. Record a prefactor only when the parent plan explicitly includes it or the current design makes the requested slice impossible. Otherwise keep the issue scoped to the requested behavior.
 
 ### 3. Draft vertical slices
 
-Break the plan into **tracer bullet** issues. Each issue is a thin vertical slice that cuts through ALL integration layers end-to-end, NOT a horizontal slice of one layer.
+Break the plan into independently verifiable issues. Use a thin vertical slice when the feature crosses multiple layers, but do not force unrelated layers into every issue.
 
 <vertical-slice-rules>
 
-- Each slice delivers a narrow but COMPLETE path through every layer (schema, API, UI, tests)
+- Each slice delivers a narrow but complete path through every relevant layer.
 - A completed slice is demoable or verifiable on its own
-- Any prefactoring should be done first
+- Prefactoring is included only when the parent plan explicitly authorizes it or the requested slice cannot be implemented without it.
 
 </vertical-slice-rules>
 
@@ -47,6 +49,15 @@ Ask the user:
 - Does the granularity feel right? (too coarse / too fine)
 - Are the dependency relationships correct?
 - Should any slices be merged or split further?
+
+If the parent plan produces three or more slices, make one explicit decision at this point:
+
+- real-path-proof: recommended-at-final-integration
+- real-path-proof: required
+- real-path-proof: not-applicable
+
+Explain the risk and expected runtime evidence. Do not run verification during issue slicing and do not repeat this question for every issue.
+When real-path proof is required or recommended, show the user the environment, side effects, traffic/cost, data exposure, rollback, cleanup, and stop condition. Record the user's risk choice once before publishing the issues.
 
 Iterate until the user approves the breakdown.
 
@@ -73,9 +84,16 @@ Avoid specific file paths or code snippets — they go stale fast. Exception: if
 - [ ] Criterion 2
 - [ ] Criterion 3
 
+## Verification profile
+
+- Real-path proof: recommended-at-final-integration / required / not-applicable
+- Runtime entrypoint or replay source:
+- Risk choice shown to user: yes / no / pending
+- Risk approval and rollback owner:
+
 ## Blocked by
 
-- A reference to the blocking ticket (if any)
+- A reference to the blocking issue (if any)
 
 Or "None - can start immediately" if no blockers.
 
