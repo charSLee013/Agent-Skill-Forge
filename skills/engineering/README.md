@@ -9,7 +9,7 @@ These skills change the task phase or create a durable artifact. Use them only w
 - [grill-with-docs](./grill-with-docs/SKILL.md) — resolve an unclear plan or design while recording domain language and durable decisions.
 - [triage](./triage/SKILL.md) — move incoming local issues through the triage state machine.
 - [improve-codebase-architecture](./improve-codebase-architecture/SKILL.md) — inspect explicit architecture-maintenance work and present deepening opportunities.
-- [setup-agent-skills](./setup-agent-skills/SKILL.md) — configure the local workspace, triage labels, and domain-doc layout. Its Codex/Claude Code file-selection behavior is runtime-specific and must remain unchanged.
+- [setup-agent-skills](./setup-agent-skills/SKILL.md) — configure the local workspace and write all repository Agent instructions to root `AGENTS.md`; root `CLAUDE.md` is always the one-line `@AGENTS.md` adapter.
 - [wayfinder](./wayfinder/SKILL.md) — map large cross-session work whose material decisions are not yet clear.
 - [to-issues](./to-issues/SKILL.md) — split an approved plan into independently verifiable issues.
 - [to-prd](./to-prd/SKILL.md) — synthesize the current conversation into a PRD.

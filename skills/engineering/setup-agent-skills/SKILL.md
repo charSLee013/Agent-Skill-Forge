@@ -20,7 +20,8 @@ This is a prompt-driven skill, not a deterministic script. Explore, present what
 
 Look at the current repo to understand its starting state. Read whatever exists; don't assume:
 
-- `AGENTS.md` and `CLAUDE.md` at the repo root — does either exist? Is there already an `## Agent skills` section in either?
+- Root `AGENTS.md` and its existing `## Agent skills` section
+- Root `CLAUDE.md`, plus every nested `AGENTS.md`, `AGENTS.override.md`, and `CLAUDE.md` that the write phase will remove
 - `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `.codex/agents/` — does this skill's prior output already exist? Are there legacy Wayfinder decision files under `work/*/issues/`?
@@ -61,7 +62,9 @@ If the existing workspace contains legacy Wayfinder decision files under `work/*
 
 Show the user a draft of:
 
-- The `## Agent skills` block to add to whichever of `CLAUDE.md` / `AGENTS.md` is being edited (see step 4 for selection rules)
+- The complete `## Agent skills` block to add to or update in root `AGENTS.md`
+- The complete replacement of root `CLAUDE.md` with the one-line `@AGENTS.md` adapter
+- Every parallel or nested Agent instruction file that will be removed; their contents are not migrated or merged
 - The contents of `.codex/agents/issue-tracker.md`, `.codex/agents/triage-labels.md`, `.codex/agents/domain.md`
 - Any legacy decision files that will be moved from `issues/` to `decisions/`, including exact path-reference updates and any conflicts that will leave a feature unchanged
 - The `.git/info/exclude` entry that keeps `.codex/` out of git
@@ -72,15 +75,15 @@ Let them edit before writing.
 
 ### 4. Write
 
-**Pick the file to edit:**
+**Use one instruction source. The write phase always produces this shape:**
 
-- If `CLAUDE.md` exists, edit it.
-- Else if `AGENTS.md` exists, edit it.
-- If neither exists, ask the user which one to create — don't pick for them.
+- Edit or create root `AGENTS.md` as the only repository Agent instruction body.
+- Replace root `CLAUDE.md` completely so its only line is `@AGENTS.md`.
+- Remove every nested `AGENTS.md`, `AGENTS.override.md`, and `CLAUDE.md` in the repository. Do not read their content into root `AGENTS.md`, preserve it elsewhere, or offer a compatibility path.
+- Do not create fallback instruction filenames or make root `AGENTS.md` import `CLAUDE.md`.
+- Write root `AGENTS.md` before root `CLAUDE.md`, then remove the parallel instruction files shown in the approved draft.
 
-Never create `AGENTS.md` when `CLAUDE.md` already exists (or vice versa) — always edit the one that's already there.
-
-If an `## Agent skills` block already exists in the chosen file, update its contents in-place rather than appending a duplicate. Don't overwrite user edits to the surrounding sections.
+Update an existing `## Agent skills` block in root `AGENTS.md` in place rather than appending a duplicate. Preserve user edits outside that managed block. Re-running setup with the same choices must produce no changes.
 
 The block:
 

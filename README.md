@@ -13,67 +13,21 @@
 - **精简项目结构**：正式 skill 分为 `engineering`、`productivity` 和 `research` 三类，入口、文档和插件清单保持一致。
 - **可复用的课程产物**：提供 course map、lesson、reference、source notes 和结构规划模板。
 
-## 快速开始
+## 安装
 
-列出当前仓库中的全部 skill：
-
-```bash
-./scripts/list-skills.sh
-```
-
-安装全部 skill 到默认 Agent skill 目录：
+本地安装当前 checkout：
 
 ```bash
 bash scripts/install.sh
 ```
 
-远程安装：
+远程安装最新 `master`：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/master/scripts/install.sh | bash
 ```
 
-只安装指定 skill：
-
-```bash
-bash scripts/install.sh teach handoff grill-me
-```
-
-默认安装位置是：
-
-```text
-~/.agents/skills
-```
-
-安装到 Codex：
-
-```bash
-AGENT=codex bash scripts/install.sh
-```
-
-安装到 Claude Code：
-
-```bash
-AGENT=claude bash scripts/install.sh
-```
-
-安装到 OpenCode：
-
-```bash
-AGENT=opencode bash scripts/install.sh
-```
-
-项目仓库：
-
-```text
-https://github.com/charSLee013/Agent-Skill-Forge
-```
-
-Claude 插件清单位于：
-
-```text
-.claude-plugin/plugin.json
-```
+全部 skill 安装到 `~/.agents/skills`；只覆盖当前 skill，不删除其他目录。
 
 ## Skill 清单
 

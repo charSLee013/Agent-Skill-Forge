@@ -23,6 +23,12 @@ assert_not_contains() {
   fi
 }
 
+assert_exact_file() {
+  local expected="$1"
+  local file="$2"
+  printf '%s\n' "$expected" | cmp -s - "$file" || fail "unexpected contents in $file"
+}
+
 wayfinder="skills/engineering/wayfinder/SKILL.md"
 to_prd="skills/engineering/to-prd/SKILL.md"
 to_issues="skills/engineering/to-issues/SKILL.md"
@@ -32,6 +38,19 @@ setup="skills/engineering/setup-agent-skills/SKILL.md"
 
 # These skills are prompt contracts rather than an executable workflow engine.
 # Pin the user-visible invariants without pretending to execute a model.
+
+[[ -s AGENTS.md ]] || fail "expected a non-empty root AGENTS.md"
+assert_exact_file '@AGENTS.md' CLAUDE.md
+if find . -path './.git' -prune -o -mindepth 2 \( -name AGENTS.md -o -name AGENTS.override.md -o -name CLAUDE.md \) -print | rg -q .; then
+  fail "found a nested Agent instruction file"
+fi
+if git check-ignore --no-index -q AGENTS.md || git check-ignore --no-index -q CLAUDE.md; then
+  fail "root Agent instruction files must not be ignored"
+fi
+assert_contains 'This file is the repository' AGENTS.md
+assert_contains 'Do not create parallel or nested instruction files.' AGENTS.md
+assert_contains 'Validation' AGENTS.md
+assert_not_contains 'CLAUDE.md' AGENTS.md
 
 # A new feature has no MAP by definition. Zero matches must reach the entry
 # gate, while a missing explicit MAP or multiple matches must stop.
@@ -62,5 +81,14 @@ assert_contains 'Before changing a feature, copy its entire directory to a uniqu
 assert_contains 'Scan every Markdown file under the feature directory and rewrite only exact local path references.' "$setup"
 assert_contains 'If any move, rewrite, or verification fails, restore the feature from its snapshot and report the failure.' "$setup"
 assert_not_contains 'If the user confirmed legacy migration' "$setup"
+assert_contains 'Replace root `CLAUDE.md` completely so its only line is `@AGENTS.md`.' "$setup"
+assert_contains 'Do not read their content into root `AGENTS.md`, preserve it elsewhere, or offer a compatibility path.' "$setup"
+assert_contains 'Remove every nested `AGENTS.md`, `AGENTS.override.md`, and `CLAUDE.md` in the repository.' "$setup"
+assert_contains 'Re-running setup with the same choices must produce no changes.' "$setup"
+assert_not_contains 'Preserve any Claude-specific content' "$setup"
+assert_not_contains 'Pick the file to edit' "$setup"
+assert_not_contains 'runtime-specific' skills/engineering/README.md
+assert_not_contains 'AGENT=codex' README.md
+assert_not_contains 'bash scripts/install.sh teach' README.md
 
 echo "engineering contract smoke checks passed"
