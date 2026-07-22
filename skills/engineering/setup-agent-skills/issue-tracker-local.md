@@ -14,6 +14,50 @@ Decision maps, decision issues, PRDs, implementation issues, and triage notes fo
 - Comments and conversation history append to the bottom of the file under a `## Comments` heading
 - `.codex/` is private local agent state. Keep it out of git with `.git/info/exclude`.
 
+## Implementation baseline
+
+A formal implementation issue starts with `Completion: open`. Before its first implementation change, run the setup-installed `Finalize Issue` entrypoint with the exact issue path and current session UUID:
+
+```bash
+python3 .codex/agents/runtime/support/scripts/finalize-issue.py begin --issue <path> --session-id <uuid>
+```
+
+The command records `## Issue-start baseline` in the issue and stores its private snapshot receipt under `.codex/agents/runtime/issue-gates/<session-id>/`. The snapshot includes the current Git HEAD, the semantic Git index entries, every tracked and non-ignored untracked worktree path, and the baseline set of ignored paths outside `.codex/`. The index must remain unchanged, and the ignored path set must return exactly to its baseline before finalization; this catches staged-only edits and newly created debug or generated files without hashing pre-existing virtual environments or caches. Do not clean or rewrite pre-existing user work before capture. A formal issue claims an atomic issue-key receipt and may not share it with another session.
+
+The runtime receipt is temporary comparison state, not a new issue tracker or memory channel. An issue without a receipt remains `Completion: open`; a direct small change with no formal issue creates no receipt.
+
+## Finalize Issue
+
+`Finalize Issue` is the only approved operation that changes `Completion: open` to `Completion: done`. Its `inspect` command compares the current worktree to the issue-start snapshot and emits a stable unit for every changed file and every textual hunk. Binary, type, ownership, and mode changes still receive a file unit. A changed Git index or ignored path set fails closed before a delta can be mapped.
+
+Before finalization, remove every unit that cannot be mapped to approved scope, acceptance, or indispensable support. Audit scratch and debug material, temporary tests, unsolicited documentation, generated noise, public interfaces, dependencies, persistence, error handling, test justification, and required acceptance. Obtain independent review when warranted. Then write this proof before invoking `finalize`:
+
+```markdown
+## Finalization proof
+
+- Baseline: `<inspect baseline digest>`
+- Final delta: `<inspect final-delta digest>`
+- Scope audit: <how every remaining unit belongs>
+- Interface audit: <approved interface impact or why there is none>
+- Dependency and persistence audit: <approved impact or why there is none>
+- Error-handling audit: <reuse and fallback result>
+- Test justification: <named risk or acceptance basis for retained tests>
+- Cleanup audit: <removed/rejected development-only material>
+- Acceptance evidence: <post-cleanup command/path and result>
+- Independent review: performed: <review evidence>
+- Result: passed
+
+### Delta mapping
+
+- `<unit-id>` -> `scope`: <reason>
+- `<unit-id>` -> `acceptance`: <criterion and reason>
+- `<unit-id>` -> `support`: <why it is indispensable>
+```
+
+Use `Independent review: not required: <reason>` only when risk, breadth, and the acceptance contract do not warrant review. Every emitted unit must appear exactly once; stale or extra mappings fail. If the delta is empty, the mapping list is empty. Placeholder proof, a changed Git HEAD, worktree drift after proof, or direct editing of `Completion` cannot pass the gate.
+
+The shared `Stop` hook consults only the current session's active receipt and verifies that the receipt still owns the issue-key claim. It allows an open issue to end a turn, blocks a done issue without a valid current proof or with index/ignored-path drift, and removes a successfully finalized receipt plus its claim. With no receipt it is a no-op, so unrelated completed issues and direct small edits are not scanned or blocked.
+
 ## Publishing and fetching
 
 When a skill says "publish to the local issue workspace", create a file under `.codex/agents/work/<feature-slug>/` and create the feature directory if needed.

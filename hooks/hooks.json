@@ -1,0 +1,29 @@
+{
+  "description": "Restore session checkpoints and backstop finalized issue proof.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/hooks/checkpoint.py\"",
+            "commandWindows": "python \"${PLUGIN_ROOT}/hooks/checkpoint.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/hooks/checkpoint.py\"",
+            "commandWindows": "python \"${PLUGIN_ROOT}/hooks/checkpoint.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
