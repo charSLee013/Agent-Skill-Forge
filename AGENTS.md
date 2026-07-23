@@ -36,38 +36,6 @@ Engineering skills use a repo-local `.codex/agents/` workspace for PRDs, issues,
 
 This repository itself should not keep long-horizon run artifacts, release-process artifacts, or upstream git history.
 
-## Agent skills
-
-### Issue tracker
-
-Local decision maps, decision issues, PRDs, implementation issues, and triage notes live under `.codex/agents/work/`. Decision issues use `decisions/`; implementation issues use `issues/`. See `.codex/agents/issue-tracker.md`.
-
-### Triage labels
-
-Use the five canonical roles with their default strings: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`. See `.codex/agents/triage-labels.md`.
-
-### Domain docs
-
-Single-context layout: root `CONTEXT.md` and root `docs/adr/`. See `.codex/agents/domain.md`.
-
-### Execution reliability
-
-Checkpoints own session continuity facts. Issues own scope, acceptance, issue-start baselines, and finalization proofs. Delegation directories own temporary request and result exchange. Keep session identifiers, task paths, findings, mistakes, issue facts, and delegation conclusions out of this static policy.
-
-Create and maintain a checkpoint at the `SessionStart`-provided path only for non-trivial work with durable confirmed facts. The file must start with `# Checkpoint`, followed exactly once each by these `##` headings in order: `Task`, `Progress`, `Decisions`, `Mistakes and corrections`, `Binding rules`, `Verification`, and `Next action`. Update it only when confirmed facts, scope, decisions, corrections, verification evidence, or the next action changes. Ordinary reads, repeated tests, formatting, searches, and unchanged tool calls do not update it.
-
-A direct small edit with no active issue or non-trivial session state uses an ordinary final-diff review. It does not require a checkpoint, formal issue finalization, delegation artifacts, or new process documents.
-
-### Subagents
-
-Use subagents only for bounded exploration, independent review, or acceptance verification. Do not delegate final scope, architecture, writes, or proof ownership.
-
-Always set `fork_turns` explicitly; use `none` for independent exploration and review.
-
-For non-trivial delegation, exchange detail through the fixed `REQUEST.md` and `RESULT.md` section contract in a unique assigned temporary directory. Write `RESULT.md.part` first and atomically rename it to `RESULT.md`; treat `wait_agent` as status only. The final agent message is only a completion notification. The parent must verify the result, consume its evidence, and delete the complete delegation directory.
-
-The main agent owns the final worktree diff, scope decision, acceptance evidence, and user-facing result. Do not automatically invoke the user-level `handoff` skill or preserve unapproved legacy or fallback behavior.
-
 ## Validation
 
 Run these checks after changing a skill, installer, or repository contract:

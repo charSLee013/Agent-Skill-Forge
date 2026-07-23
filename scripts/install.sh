@@ -5,7 +5,6 @@ owner="charSLee013"
 repo="Agent-Skill-Forge"
 ref="master"
 tmp_dir=""
-runtime_stage=""
 
 if [[ "$#" -ne 0 ]]; then
   echo "error: install.sh takes no arguments" >&2
@@ -16,9 +15,6 @@ fi
 cleanup() {
   if [[ -n "$tmp_dir" && -d "$tmp_dir" ]]; then
     rm -rf "$tmp_dir"
-  fi
-  if [[ -n "$runtime_stage" && -d "$runtime_stage" ]]; then
-    rm -rf "$runtime_stage"
   fi
 }
 trap cleanup EXIT
@@ -61,24 +57,7 @@ if [[ "${#skill_names[@]}" -eq 0 ]]; then
   exit 1
 fi
 
-runtime_files=(
-  "hooks/hooks.json"
-  "hooks/checkpoint.py"
-  "hooks/issue_gate.py"
-  "scripts/finalize-issue.py"
-  "scripts/delegation.py"
-)
-
-for relative_path in "${runtime_files[@]}"; do
-  if [[ ! -f "$repo_root/$relative_path" ]]; then
-    echo "error: runtime support file is missing: $relative_path" >&2
-    exit 1
-  fi
-done
-
-agents_root="$HOME/.agents"
-dest_root="$agents_root/skills"
-runtime_dest="$agents_root/agent-skill-forge"
+dest_root="$HOME/.agents/skills"
 mkdir -p "$dest_root"
 
 echo "Installing ${#skill_names[@]} current skill(s):"
@@ -99,27 +78,5 @@ for i in "${!skill_names[@]}"; do
 
   echo "  installed $name"
 done
-
-echo "Installing execution-reliability support:"
-echo "  $runtime_dest"
-
-runtime_stage="$(mktemp -d "$agents_root/.agent-skill-forge-stage.XXXXXX")"
-for relative_path in "${runtime_files[@]}"; do
-  mkdir -p "$runtime_stage/$(dirname "$relative_path")"
-  cp -p "$repo_root/$relative_path" "$runtime_stage/$relative_path"
-done
-
-for relative_path in "${runtime_files[@]}"; do
-  if [[ ! -f "$runtime_stage/$relative_path" ]]; then
-    echo "error: runtime support verification failed for $relative_path" >&2
-    exit 1
-  fi
-done
-
-if [[ -e "$runtime_dest" || -L "$runtime_dest" ]]; then
-  rm -rf "$runtime_dest"
-fi
-mv "$runtime_stage" "$runtime_dest"
-runtime_stage=""
 
 echo "Done."

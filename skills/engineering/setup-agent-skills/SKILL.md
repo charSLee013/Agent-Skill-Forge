@@ -1,6 +1,6 @@
 ---
 name: setup-agent-skills
-description: Configure this repo for the engineering skills — set up its local `.codex/agents/` workspace, execution-reliability support, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.
+description: Configure this repo for the engineering skills — set up its local `.codex/agents/` workspace, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.
 disable-model-invocation: true
 ---
 
@@ -9,7 +9,6 @@ disable-model-invocation: true
 Scaffold the per-repo configuration that the engineering skills assume:
 
 - **Issue tracker** — a local markdown workspace under `.codex/agents/`
-- **Execution reliability** — the private runtime support and static ownership rules for checkpoints, issue finalization, and bounded delegation
 - **Triage labels** — the strings used for the five canonical triage roles
 - **Domain docs** — where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
 
@@ -26,7 +25,6 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `.codex/agents/` — does this skill's prior output already exist? Are there legacy Wayfinder decision files under `work/*/issues/`?
-- The supported execution-reliability source: either the package root containing `.claude-plugin/plugin.json`, or the standalone installer bundle at `$HOME/.agents/agent-skill-forge/`
 - `.git/info/exclude` — does it already exclude `.codex/`?
 
 ### 2. Present findings and ask
@@ -68,7 +66,6 @@ Show the user a draft of:
 - The complete replacement of root `CLAUDE.md` with the one-line `@AGENTS.md` adapter
 - Every parallel or nested Agent instruction file that will be removed; their contents are not migrated or merged
 - The contents of `.codex/agents/issue-tracker.md`, `.codex/agents/triage-labels.md`, `.codex/agents/domain.md`
-- The exact execution-reliability files that will be installed under `.codex/agents/runtime/support/`, including their resolved supported source
 - Any legacy decision files that will be moved from `issues/` to `decisions/`, including exact path-reference updates and any conflicts that will leave a feature unchanged
 - The `.git/info/exclude` entry that keeps `.codex/` out of git
 
@@ -104,24 +101,6 @@ Local decision maps, decision issues, PRDs, implementation issues, and triage no
 ### Domain docs
 
 [one-line summary of layout — "single-context" or "multi-context"]. See `.codex/agents/domain.md`.
-
-### Execution reliability
-
-Checkpoints own session continuity facts. Issues own scope, acceptance, issue-start baselines, and finalization proofs. Delegation directories own temporary request and result exchange. Keep session identifiers, task paths, findings, mistakes, issue facts, and delegation conclusions out of this static policy.
-
-Create and maintain a checkpoint at the `SessionStart`-provided path only for non-trivial work with durable confirmed facts. The file must start with `# Checkpoint`, followed exactly once each by these `##` headings in order: `Task`, `Progress`, `Decisions`, `Mistakes and corrections`, `Binding rules`, `Verification`, and `Next action`. Update it only when confirmed facts, scope, decisions, corrections, verification evidence, or the next action changes. Ordinary reads, repeated tests, formatting, searches, and unchanged tool calls do not update it.
-
-A direct small edit with no active issue or non-trivial session state uses an ordinary final-diff review. It does not require a checkpoint, formal issue finalization, delegation artifacts, or new process documents.
-
-### Subagents
-
-Use subagents only for bounded exploration, independent review, or acceptance verification. Do not delegate final scope, architecture, writes, or proof ownership.
-
-Always set `fork_turns` explicitly; use `none` for independent exploration and review.
-
-For non-trivial delegation, exchange detail through the fixed `REQUEST.md` and `RESULT.md` section contract in a unique assigned temporary directory. Write `RESULT.md.part` first and atomically rename it to `RESULT.md`; treat `wait_agent` as status only. The final agent message is only a completion notification. The parent must verify the result, consume its evidence, and delete the complete delegation directory.
-
-The main agent owns the final worktree diff, scope decision, acceptance evidence, and user-facing result. Do not automatically invoke the user-level `handoff` skill or preserve unapproved legacy or fallback behavior.
 ```
 
 Then write the three docs files under `.codex/agents/` using the seed templates in this skill folder as a starting point:
@@ -129,18 +108,6 @@ Then write the three docs files under `.codex/agents/` using the seed templates 
 - [issue-tracker-local.md](./issue-tracker-local.md) — local Codex workspace
 - [triage-labels.md](./triage-labels.md) — label mapping
 - [domain.md](./domain.md) — domain doc consumer rules + layout
-
-Install the execution-reliability support into `.codex/agents/runtime/support/` after `.codex/` is excluded from Git:
-
-1. Resolve the source from the invocation mode. A plugin invocation uses its package root, which must contain `.claude-plugin/plugin.json` and every file listed below. A standalone skill invocation uses `$HOME/.agents/agent-skill-forge/`. These are the only supported sources; if the selected source is incomplete, stop and report it. Do not search for, generate, or preserve an alternate compatibility path.
-2. Copy exactly these files through a unique staging directory under `.codex/agents/runtime/`:
-   - `hooks/hooks.json`
-   - `hooks/checkpoint.py`
-   - `hooks/issue_gate.py`
-   - `scripts/finalize-issue.py`
-   - `scripts/delegation.py`
-3. Verify that the staged tree contains exactly those regular files and that the Python entrypoints remain executable. If the installed support tree already has the same file set and bytes, leave it unchanged. Otherwise replace only `.codex/agents/runtime/support/` after validation, then remove the staging directory.
-4. Do not copy tests, register hooks through an invented config file, add a `hooks` field to `.claude-plugin/plugin.json`, invoke the user-level `handoff` skill, or retain an older support path as a fallback. Plugin loading discovers the package-root `hooks/hooks.json`; standalone installation exposes the same contract through the documented bundle and private setup copy.
 
 After the draft is approved, migrate each affected feature independently:
 
@@ -155,4 +122,4 @@ Create `.codex/agents/work/` if it does not exist. Add `.codex/` to `.git/info/e
 
 ### 5. Done
 
-Tell the user the setup is complete, which engineering skills will now read from these files, where the private execution-reliability support was installed, and whether any legacy decision files were migrated. Mention they can edit `.codex/agents/*.md` directly later — re-running this skill is also the supported way to normalize a legacy Wayfinder workspace.
+Tell the user the setup is complete, which engineering skills will now read from these files, and whether any legacy decision files were migrated. Mention they can edit `.codex/agents/*.md` directly later — re-running this skill is also the supported way to normalize a legacy Wayfinder workspace.
