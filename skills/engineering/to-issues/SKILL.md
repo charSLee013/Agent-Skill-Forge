@@ -38,6 +38,18 @@ Break the plan into independently verifiable issues. Use a thin vertical slice w
 
 </vertical-slice-rules>
 
+### 3a. Wide mechanical migration
+
+A wide mechanical migration is an exception to vertical slicing. Use it only when a shared mechanical change must touch many callers and no individual vertical slice can remain buildable, verifiable, or deployable. Do not use it for a normal cross-layer feature, a speculative abstraction, an unapproved refactor, or a change that can move through an existing seam in small green slices.
+
+When the exception applies, publish these phases in dependency order:
+
+1. **Expand**: introduce the new form. Any temporary bridge for the old form must be explicitly approved, name the local relative path of the Contract-phase issue that will remove it, and exist only until that issue completes.
+2. **Migrate**: move stable caller groups by package, directory, or caller group. Each batch has its own issue, acceptance criteria, and `Blocked by` references; do not publish a batch whose work is merely "update all callers".
+3. **Contract**: depend on every migrate issue reaching `Completion: done`, prove the old form has no remaining callers, remove the old form and every temporary bridge, then run final acceptance and any selected real-path proof.
+
+Keep every migrate batch green when possible. When a batch cannot remain green independently, record that constraint before publishing and make the batches block a named final-integration issue. Do not present them as independently verifiable slices.
+
 ### 4. Quiz the user
 
 Present the proposed breakdown as a numbered list. For each slice, show:
@@ -68,6 +80,21 @@ Iterate until the user approves the breakdown.
 For each approved slice, write a new implementation issue to `.codex/agents/work/<feature-slug>/issues/<NN>-<slug>.md`. Decision issues belong under `decisions/` and must not be republished here. Use the issue body template below. These issues are considered ready for AFK agents, so publish them with the correct triage label unless instructed otherwise.
 
 Publish issues in dependency order (blockers first) so every `Blocked by` value names a real path relative to `.codex/agents/work/<feature-slug>/`.
+
+For a wide mechanical migration issue only, add this section after `## Verification profile`; omit it for ordinary vertical slices:
+
+```markdown
+## Transition
+
+- Phase: expand / migrate / contract (choose one)
+- Old form:
+- New form:
+- Contract issue: <relative path to the Contract-phase issue>
+- Batch boundary:
+- Final removal oracle:
+```
+
+Set `Phase` to exactly one phase. Every wide-migration issue must set `Contract issue` to the relative path of its Contract-phase issue. The Contract issue must list its own local relative path and remove every temporary bridge.
 
 <issue-template>
 Completion: open

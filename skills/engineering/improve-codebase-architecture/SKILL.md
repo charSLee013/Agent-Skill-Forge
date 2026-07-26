@@ -17,7 +17,15 @@ This command is _informed_ by the project's domain model and built on a shared d
 
 ### 1. Explore
 
-Read the project's domain glossary (`CONTEXT.md`) and any ADRs in the area you're touching first.
+Choose the active area before exploring:
+
+- When the user names a module, directory, fault, or improvement direction, inspect only that area and its direct calling relationships.
+- Otherwise, inspect recent non-merge commits and their changed paths. Prioritize areas that change repeatedly or together, while ignoring documentation-only, formatting-only, generated, and lockfile churn.
+- When history has no reliable hotspot, say so and choose the smallest area that can explain the current domain friction. Do not present it as a whole-codebase conclusion.
+
+Do not use uncommitted worktree changes to infer hotness. This choice sets exploration priority; it does not decide which deepening opportunity to propose.
+
+Read the project's domain glossary (`CONTEXT.md`) and any ADRs in the selected area first.
 
 Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't follow rigid heuristics — explore organically and note where you experience friction:
 
