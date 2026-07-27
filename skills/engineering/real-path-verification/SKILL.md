@@ -1,6 +1,6 @@
 ---
 name: real-path-verification
-description: Verify an approved behavior through an existing real runtime path or a production-equivalent replay. Use during implement when the task requires production, real traffic, canary, shadow, replay, migration, release verification, explicit end-to-end acceptance, or final integration of a work item with three or more slices. Do not use for routine unit, smoke, mock, minimal-repro, documentation, or trivial-edit work.
+description: Verify an approved behavior through an existing real runtime path or a production-equivalent replay. Use during implement when an acceptance criterion explicitly requires production, real traffic, canary, shadow, replay, migration, release verification, or end-to-end evidence. Do not use for routine unit, smoke, mock, minimal-repro, documentation, or trivial-edit work.
 ---
 
 # Real Path Verification
@@ -9,15 +9,9 @@ Verify the requested behavior at the runtime path that the acceptance criterion 
 
 ## Entry contract
 
-Run only when the parent implement flow has established one of these:
+Run only when a parent acceptance criterion has `real-path` evidence, or when a `target` criterion names an approved real runtime path as its measurement source.
 
-- the acceptance criterion explicitly requires a real path or production-equivalent proof;
-- the task requires production traffic, canary, shadow, replay, migration, release verification, or explicit end-to-end acceptance;
-- a parent work item has three or more slices and the final integration point has recommended this verification.
-
-For three or more slices, recommend one run at the complete integration point. Do not run this once per slice unless an issue explicitly says that the slice is an independently deployed unit with its own real-path acceptance.
-
-Consume the parent task's existing goal, scope, non-goals, acceptance criteria, oracle, environment, risk decision, and known runtime entrypoint. Do not re-interview, repartition the work, or expand the scope.
+Consume the parent task's existing goal, scope, non-goals, acceptance criteria, inline evidence, oracle, environment, risk decision, and known runtime entrypoint. Do not re-interview, repartition the work, or expand the scope.
 
 ## Safety gate
 
@@ -29,7 +23,7 @@ Before any action that can write data, send traffic, incur material cost, expose
 - the evidence that will be collected;
 - the remaining uncertainty.
 
-If issue slicing already recorded the user's risk choice and the actual action has not widened, consume that choice instead of asking again. Ask again only when the actual environment, side effect, traffic, cost, or data exposure differs. A read-only local inspection of an existing command does not need this gate.
+If the parent task already records the user's concrete risk choice and the actual action has not widened, consume that choice instead of asking again. Ask again only when the actual environment, side effect, traffic, cost, or data exposure differs. A read-only local inspection of an existing command does not need this gate.
 
 Use the current system temporary directory for experiment state. Set `run_dir` to a unique `real-path-verification/<timestamp>-<task-slug>` subdirectory under `TMPDIR` when it is set, otherwise under `/tmp`.
 

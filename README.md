@@ -77,9 +77,9 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | 规模很大、预计跨多个会话且路线不清 | `wayfinder` | 建立本地决策地图，逐个解决 decision issue；路线清晰后选择 `to-prd`、`to-issues` 或 `implement`。 |
 | 需要先验证状态机、业务逻辑或 UI 方案 | `prototype` | 原型结论用 `handoff` 带回主线，再进入 `to-prd` 或 `implement`。 |
 | 不熟悉一片代码，需要先看它在系统里的位置 | `zoom-out` | 让 agent 上升一层抽象，按领域语言梳理相关模块和调用方。 |
-| 已经讨论清楚，需要沉淀成规格 | `to-prd` | 生成 PRD 后用 `to-issues` 拆成可独立执行的 issue。 |
-| PRD 或计划已经清楚，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，带着 PRD 和单个 issue 调用 `implement`；未决策问题先回到 `wayfinder`。 |
-| 已经有明确 issue 或 PRD，要开始做 | `implement` | 只执行已批准范围；验收要求真实路径时联动 `real-path-verification`。 |
+| 已经讨论清楚，需要沉淀成规格 | `to-prd` | 生成带内联验收证据的 PRD 后用 `to-issues` 拆成可独立执行的 issue。 |
+| PRD 或计划已经清楚，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，继承 PRD 的验收条件和证据；未决策问题先回到 `wayfinder`。 |
+| 已经有明确 issue 或 PRD，要开始做 | `implement` | 只执行已批准范围和内联证据；明确要求真实路径时联动 `real-path-verification`。 |
 | 困难或不确定的故障 | `diagnosing-bugs` | 先建立根因反馈循环，再修复；不自动创建测试。 |
 | 明确的架构、接口或模块深化工作 | `codebase-design` | 只在架构任务中提供设计词汇，不作为普通实现前置。 |
 | 术语混乱、领域概念不清、需要 ADR | `domain-modeling` | 通常由 `grill-with-docs` 或架构类流程带起，沉淀 `CONTEXT.md` 和 ADR。 |
@@ -95,7 +95,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | 标准功能交付 | `setup-agent-skills` -> `to-prd` -> `to-issues` -> `implement` | 路线清晰、多步骤功能、需要可追踪规格和可拆 issue；只有主干仍不清时才先 `grill-with-docs`。 |
 | 超大且决策未定的工作 | `setup-agent-skills` -> `wayfinder` -> `to-prd` / `to-issues` / `implement` | 预计跨多个会话，先解决会改变范围、架构、风险或验收的决策，再选择最小交付流程。 |
 | 原型驱动决策 | `grill-with-docs` -> `handoff` -> `prototype` -> `handoff` -> `to-prd` 或 `implement` | 讨论无法替代运行验证，例如复杂交互、状态机、算法取舍。 |
-| Bug 修复 | `diagnosing-bugs` -> `implement` | 先定位根因；真实路径验收只在需求或最终集成 proof 要求时运行。 |
+| Bug 修复 | `diagnosing-bugs` -> `implement` | 先定位根因；真实路径验收只在已批准验收证据要求时运行。 |
 | 请求池治理 | `triage` -> `grill-with-docs` -> `ready-for-agent` -> `implement` | 从原始 issue、反馈、需求池中筛出可执行任务。 |
 | 架构治理 | `improve-codebase-architecture` -> `grill-with-docs` -> `to-prd/to-issues` 或 `implement` | 主动降低耦合、补测试边界、改善 Agent 可维护性。 |
 

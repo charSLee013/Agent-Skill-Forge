@@ -16,7 +16,7 @@ The gate is: write, main-agent baseline-aware diff review, then an independent r
 
 ## Start gate
 
-Before writing, read the exact issue or PRD, applicable ADRs, and existing mechanisms in the affected area. Establish the approved scope, non-goals, acceptance criteria, and whether real-path proof belongs to this issue, a named final-integration issue, or is not applicable. Stop if any of these material facts is unresolved.
+Before writing, read the exact issue or PRD, applicable ADRs, and existing mechanisms in the affected area. Establish the approved scope, non-goals, acceptance criteria, and inline evidence. Stop if any material criterion, evidence fact, or selected oracle is missing, unresolved, or conflicting.
 
 Capture the issue-start worktree as working evidence: `git status --short`, working-tree and staged diffs, and non-ignored untracked paths. Treat every pre-existing change as user-owned. Preserve it, do not map it to the current task, and do not delete or reformat it. Keep this baseline in the current task evidence only; do not create a receipt, proof file, or new state record.
 
@@ -28,9 +28,9 @@ When an implementation issue has `Blocked by`, resolve each path from that issue
 
 Keep temporary exploration, diagnostics, generated output, and scratch work in the system temporary directory by default. A repository-local temporary artifact needs a current acceptance purpose and must be removed before delivery. Do not write plans, to-dos, tool errors, protocol failures, execution status, debug explanations, or other process text into source, configuration, tests, comments, scripts, logs, or documentation.
 
-Run the existing checks relevant to the changed behavior. Do not create a test file for documentation, comments, copy, or non-behavioral metadata. Run the full suite only when repository policy, the task, or the breadth of the change requires it.
+Run the existing checks named by `static` evidence and any other checks relevant to the changed behavior. Do not create a test file for documentation, comments, copy, or non-behavioral metadata. Run the full suite only when repository policy, the task, or the breadth of the change requires it.
 
-If the acceptance criteria require a real runtime path or production-equivalent proof, invoke /real-path-verification as the verification phase. If a parent work item has three or more slices, recommend one real-path run at final integration; do not run it once per slice unless the issue explicitly requires that.
+Execute acceptance evidence exactly as approved. Invoke /real-path-verification only when an acceptance criterion has `real-path` evidence or a `target` criterion names an approved real runtime path as its measurement source. For `target` evidence, require a falsifiable recorded metric or definition, comparison, threshold or named baseline, unit, measurement source, and observation window; measure it through the recorded source during the recorded window. Do not weaken, replace, or defer evidence during implementation.
 
 ## Delivery squash
 
@@ -45,6 +45,6 @@ Remove every agent-added item without a mapping: debug output, scratch files, te
 
 After both axes are clean, rerun the final required acceptance. A fresh read-only explorer may review a non-trivial final delta when the environment actually supports it; it reports only concrete `file:line` findings, and the main agent owns the final decision. Do not claim independent review when no agent actually returned evidence.
 
-Finalization proof is the main agent's concise final check that the baseline-relative delta is mapped, delivery noise is gone, and every acceptance criterion has evidence. It is not a repository artifact. If the source is an implementation issue, add or change its field to `Completion: done` only after that evidence is complete. Do not invoke another workflow to repair unrelated findings. Do not commit, stage unrelated changes, or delete existing files unless the user or task explicitly authorizes it.
+Finalization proof is the main agent's concise final check that the baseline-relative delta is mapped, delivery noise is gone, and every acceptance criterion has evidence. A `target` criterion is complete only when the observed value satisfies its recorded target in its recorded observation window. When it does not, leave the issue open and report the target, observed value, measurement source, observation window, and an evidence-based explanation. It is not a repository artifact. If the source is an implementation issue, add or change its field to `Completion: done` only after that evidence is complete. Do not invoke another workflow to repair unrelated findings. Do not commit, stage unrelated changes, or delete existing files unless the user or task explicitly authorizes it.
 
 Lead the final user delivery with the outcome. Include only delivered behavior, verification results, and unresolved deviations. Omit introductions, plan recaps, raw tool output, debug detail, and process narrative.

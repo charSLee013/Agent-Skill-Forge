@@ -38,6 +38,8 @@ Break the plan into independently verifiable issues. Use a thin vertical slice w
 
 </vertical-slice-rules>
 
+For every source acceptance criterion covered by a slice, copy its behavior and inline `Evidence` facts into the issue. If the source lacks material acceptance evidence, including a `target` without a falsifiable predicate, ask for it during the breakdown; do not leave that choice to `implement`. An issue has one effective evidence requirement. When its criteria differ, use the strongest evidence: `target` > `real-path` > `static` only when it satisfies every retained criterion's original oracle. Otherwise split the slice before publishing. Do not choose, weaken, or substitute evidence during issue slicing.
+
 ### 3a. Wide mechanical migration
 
 A wide mechanical migration is an exception to vertical slicing. Use it only when a shared mechanical change must touch many callers and no individual vertical slice can remain buildable, verifiable, or deployable. Do not use it for a normal cross-layer feature, a speculative abstraction, an unapproved refactor, or a change that can move through an existing seam in small green slices.
@@ -56,22 +58,14 @@ Present the proposed breakdown as a numbered list. For each slice, show:
 
 - **Title**: short descriptive name
 - **Blocked by**: which other slices (if any) must complete first
-- **User stories covered**: which user stories this addresses (if the source material has them)
+- **Capabilities or user stories covered**: which source behavior this addresses
+- **Acceptance evidence**: the inherited evidence and its required facts
 
 Ask the user:
 
 - Does the granularity feel right? (too coarse / too fine)
 - Are the dependency relationships correct?
 - Should any slices be merged or split further?
-
-If the parent plan produces three or more slices, make one explicit decision at this point:
-
-- real-path-proof: recommended-at-final-integration
-- real-path-proof: required
-- real-path-proof: not-applicable
-
-Explain the risk and expected runtime evidence. Do not run verification during issue slicing and do not repeat this question for every issue.
-When real-path proof is required or recommended, show the user the environment, side effects, traffic/cost, data exposure, rollback, cleanup, and stop condition. Record the user's risk choice once before publishing the issues.
 
 Iterate until the user approves the breakdown.
 
@@ -81,7 +75,7 @@ For each approved slice, write a new implementation issue to `.codex/agents/work
 
 Publish issues in dependency order (blockers first) so every `Blocked by` value names a real path relative to `.codex/agents/work/<feature-slug>/`.
 
-For a wide mechanical migration issue only, add this section after `## Verification profile`; omit it for ordinary vertical slices:
+For a wide mechanical migration issue only, add this section after `## Acceptance criteria`; omit it for ordinary vertical slices:
 
 ```markdown
 ## Transition
@@ -111,16 +105,10 @@ Avoid specific file paths or code snippets — they go stale fast. Exception: if
 
 ## Acceptance criteria
 
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+- [ ] Copy the source criterion's observable behavior.
+  Evidence: copy the source `static`, `real-path`, or `target` facts exactly.
 
-## Verification profile
-
-- Real-path proof: recommended-at-final-integration / required / not-applicable
-- Runtime entrypoint or replay source:
-- Risk choice shown to user: yes / no / pending
-- Risk approval and rollback owner:
+Retain every source criterion covered by this issue. State the one effective evidence requirement when it satisfies every source oracle; otherwise split the issue before publishing.
 
 ## Blocked by
 

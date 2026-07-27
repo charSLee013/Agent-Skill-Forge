@@ -34,8 +34,7 @@ These skills support a selected workflow. They must not create a new phase or ex
     incoming issue pool          -> triage
     hard uncertain bug           -> diagnosing-bugs
     large cross-session fog      -> wayfinder (MAP + decisions/) -> to-prd/to-issues/implement
-    real-path proof selected     -> implement -> real-path-verification
-    three or more slices         -> final integration -> recommend real-path-verification once
+    real-path evidence selected  -> implement -> real-path-verification
     explicit architecture work  -> improve-codebase-architecture
 
 No engineering skill is a license to add adjacent work. The selected task, its acceptance criteria, and existing project rules remain authoritative.
