@@ -48,7 +48,7 @@ When the exception applies, publish these phases in dependency order:
 
 1. **Expand**: introduce the new form. Any temporary bridge for the old form must be explicitly approved, name the local relative path of the Contract-phase issue that will remove it, and exist only until that issue completes.
 2. **Migrate**: move stable caller groups by package, directory, or caller group. Each batch has its own issue, acceptance criteria, and `Blocked by` references; do not publish a batch whose work is merely "update all callers".
-3. **Contract**: depend on every migrate issue reaching `Completion: done`, prove the old form has no remaining callers, remove the old form and every temporary bridge, then run final acceptance and any selected real-path proof.
+3. **Contract**: depend on every migrate issue reaching `Completion: done`, prove the old form has no remaining callers, remove the old form and every temporary bridge, then run final acceptance and any selected real-path evidence.
 
 Keep every migrate batch green when possible. When a batch cannot remain green independently, record that constraint before publishing and make the batches block a named final-integration issue. Do not present them as independently verifiable slices.
 
