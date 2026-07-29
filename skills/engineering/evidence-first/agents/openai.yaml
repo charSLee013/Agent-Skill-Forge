@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evidence First"
+  short_description: "Establish a contract and verify behavior layer by layer"
+  default_prompt: "Use $evidence-first to establish the task contract and verify each claimed behavior at its owning evidence layer."

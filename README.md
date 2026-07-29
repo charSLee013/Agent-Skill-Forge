@@ -6,7 +6,7 @@
 
 ## 特性
 
-- **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、真实路径验收、架构改进、领域建模和本地 triage。
+- **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、跨层证据校验、真实路径验收、架构改进、领域建模和本地 triage。
 - **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs`、`handoff` 和 `prepare-goals`，适合多轮计划、跨会话协作、上下文压缩和长期 Goal 准备。
 - **学习系统能力**：把主题、资料和学习目标组合成 HTML 课程与 supporting Markdown。
 - **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
@@ -62,6 +62,9 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 已有 bug / 性能问题
   diagnosing-bugs -> implement
 
+跨配置 / prompt / tool / permission / runtime 的行为声明
+  evidence-first -> 回到当前 task-specific workflow
+
 已有外部请求或待办堆积
   triage -> ready-for-agent -> implement
 
@@ -83,6 +86,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | PRD 或计划已经清楚，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，继承 PRD 的验收条件和证据；未决策问题先回到 `wayfinder`。 |
 | 已批准的工作预计持续数小时或数天 | `prepare-goals` | 将现有 PRD、ADR 和 issue 整理成可直接启动的 `/goal`；普通小任务仍直接执行。 |
 | 已经有明确 issue 或 PRD，要开始做 | `implement` | 只执行已批准范围和内联证据；明确要求真实路径时联动 `real-path-verification`。 |
+| 一个行为声明跨配置、prompt、tool、权限或 runtime | `evidence-first` | 先冻结最小契约并逐层确认因果链，再把结论交还当前工程流程；单层明确检查直接执行。 |
 | 困难或不确定的故障 | `diagnosing-bugs` | 先建立根因反馈循环，再修复；不自动创建测试。 |
 | 明确的架构、接口或模块深化工作 | `codebase-design` | 只在架构任务中提供设计词汇，不作为普通实现前置。 |
 | 术语混乱、领域概念不清、需要 ADR | `domain-modeling` | 通常由 `grill-with-docs` 或架构类流程带起，沉淀 `CONTEXT.md` 和 ADR。 |
@@ -108,7 +112,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | 类型 | 谁来调用 | 应该如何理解 |
 |---|---|---|
 | 用户显式调用 | 由用户点名，例如 `grill-with-docs`、`wayfinder`、`to-prd`、`triage`、`implement` | 这些是工作流入口，会改变任务阶段或产出文档。 |
-| 模型可自动调用 | 用户可以点名，模型也可以在明确条件成立时使用 | 这些是当前工作流的支持阶段，例如困难诊断、真实路径验收、领域建模、模块设计、冲突解决。 |
+| 模型可自动调用 | 用户可以点名，模型也可以在明确条件成立时使用 | 这些是当前工作流的支持纪律，例如跨层证据校验、困难诊断、真实路径验收、领域建模、模块设计、冲突解决。 |
 
 如果只记一条规则：**清晰需求直接进入 `implement`；一次会话能厘清的需求进入 `grill-with-docs`；只有跨会话且存在决策迷雾时才进入 `wayfinder`；需要本地工作区时才运行 `setup-agent-skills`。**
 
@@ -131,6 +135,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 | Skill | 定义性约束与使用路径 |
 |---|---|
+| [evidence-first](./skills/engineering/evidence-first/SKILL.md) | 为跨配置、prompt、tool、权限或 runtime 的请求冻结最小契约并逐层验证声明；区别于困难 bug 诊断和已选定的真实路径验收；需可观察的验收声明，出口是交还当前流程的证据边界与结论。 |
 | [diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md) | 用复现、最小化、假设和插桩定位困难或不确定故障；区别于已知路径的机械修复；需可观察的失败信号，出口是可证伪根因和交给 `implement` 的修复边界。 |
 | [domain-modeling](./skills/engineering/domain-modeling/SKILL.md) | 建立或修正领域语言并维护 `CONTEXT.md` 与 ADR；用于真实领域决策，区别于被动读取术语；需具体概念冲突或决策，出口是稳定词汇和记录。 |
 | [codebase-design](./skills/engineering/codebase-design/SKILL.md) | 为显式模块、接口或架构深化提供设计词汇；区别于普通实现、测试规划和诊断；需明确设计对象，出口是可执行的边界与约束。 |

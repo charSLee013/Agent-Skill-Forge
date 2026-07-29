@@ -21,6 +21,7 @@ These skills change the task phase or create a durable artifact. Use them only w
 
 These skills support a selected workflow. They must not create a new phase or expand scope.
 
+- [evidence-first](./evidence-first/SKILL.md) — establishes a bounded contract and verifies claims at their owning evidence layer; use it when a request spans configuration, prompts, tools, permissions, or runtime behavior, not for an obvious single-layer check; it requires an observable acceptance claim and returns evidence-backed boundaries to the active workflow.
 - [diagnosing-bugs](./diagnosing-bugs/SKILL.md) — isolates the root cause of a hard or uncertain failure; use it when the failure path is unknown, not for a mechanical fix; it requires an observable signal and exits with a falsifiable diagnosis for `implement`.
 - [real-path-verification](./real-path-verification/SKILL.md) — checks an approved real or production-equivalent acceptance criterion; use it only when the parent criterion selects that evidence, not for routine tests; it requires an executable path and cleanup plan and returns a conclusion to `implement`.
 - [domain-modeling](./domain-modeling/SKILL.md) — sharpens domain terms and records decisions; use it for a real terminology or model conflict, not passive context reading; it requires a concrete decision and exits with updated `CONTEXT.md` or ADRs.
@@ -32,6 +33,7 @@ These skills support a selected workflow. They must not create a new phase or ex
     clear bounded request        -> implement
     unclear plan or design       -> grill-with-docs
     incoming issue pool          -> triage
+    multi-layer support claim    -> evidence-first -> selected workflow
     hard uncertain bug           -> diagnosing-bugs
     large cross-session fog      -> wayfinder (MAP + decisions/) -> to-prd/to-issues/implement
     real-path evidence selected  -> implement -> real-path-verification
