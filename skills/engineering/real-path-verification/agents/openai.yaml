@@ -1,0 +1,3 @@
+interface:
+  display_name: "Real Path Verification"
+  short_description: "Verify behavior through a real path"

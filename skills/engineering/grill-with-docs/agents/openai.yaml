@@ -1,0 +1,5 @@
+interface:
+  display_name: "Grill with Docs"
+  short_description: "Clarify a plan and record durable decisions"
+policy:
+  allow_implicit_invocation: false

@@ -35,11 +35,14 @@ Wayfinding is a user-invoked decision-map phase for work that spans sessions and
 
 Each decision issue has:
 
+- A first-level heading used as the decision title
 - `Wayfinder type`: `research`, `prototype`, `grilling`, or `task`
 - `Wayfinder status`: `open`, `claimed`, `resolved`, or `out-of-scope`
 - `Claimed by` and `Claimed at` when the issue is claimed
 - `Blocked by` with feature-root-relative paths when applicable
 - `Question`, followed by `Answer` after resolution
+
+Human-facing references use `<decision title> (<feature-root-relative path>)`. The relative path is the stable identity used by fields, map links, handoffs, and file operations; the title is display text and may change. Duplicate titles remain distinct because their paths differ. For a legacy issue without a first-level heading, derive display text from its filename without rewriting it. Never substitute a tracker ID for the path.
 
 Wayfinder status belongs to decision issues. Triage `Status` belongs to triage-managed implementation issues. `Completion` is only the implementation dependency oracle; it does not add triage roles. If a decision issue is deliberately handed to triage, its Wayfinder fields remain authoritative for decision progress and its additional `Status` must not reinterpret them.
 

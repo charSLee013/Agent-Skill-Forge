@@ -1,0 +1,3 @@
+interface:
+  display_name: "arXiv Doc Builder"
+  short_description: "Convert arXiv papers to Markdown"

@@ -1,6 +1,7 @@
 ---
 name: wayfinder
 description: Plan work that spans multiple agent sessions while material decisions remain unresolved. Use only when a destination can be named but the route is still unclear and direct planning or implementation would require guessing.
+argument-hint: "What destination should be mapped?"
 disable-model-invocation: true
 ---
 
@@ -51,18 +52,21 @@ Implementation issues, when later published by `to-issues`, remain under the sib
 
 - Destination: what reaching the end of the map means;
 - Notes: domain language, skills, and standing constraints;
-- Decisions so far: one-line gists with relative links to resolved decision issues;
+- Decisions so far: one-line gists that show each resolved decision's title and feature-root-relative path;
 - Not yet specified: in-scope uncertainty that is not sharp enough to make an issue;
 - Out of scope: work explicitly ruled out.
 
 Each decision issue contains:
 
+- a first-level heading used as the decision title;
 - `Wayfinder type`: `research`, `prototype`, `grilling`, or `task`;
 - `Wayfinder status`: `open`, `claimed`, `resolved`, or `out-of-scope`;
 - `Claimed by` and `Claimed at` when work is claimed;
 - `Blocked by` with paths relative to the feature directory, never bare numeric identifiers;
 - a `Question` heading;
 - an `Answer` heading after resolution.
+
+Whenever Wayfinder shows a decision issue to the user, format it as `<decision title> (<feature-root-relative path>)`. The path remains the stable identity in `Blocked by`, map links, handoffs, and file operations; the title is display text and may change. Duplicate titles are disambiguated by their paths. For a legacy issue without a first-level heading, derive display text from its filename without rewriting the file. Never replace the relative path with a tracker ID.
 
 Keep the existing triage `Status` field separate. Add it only when the user deliberately hands a decision issue to triage. Do not add another tracker or triage state family, and do not change the meaning of `ready-for-agent`.
 
@@ -80,7 +84,7 @@ If an existing map still uses the legacy decision path `issues/`, keep that map 
 ## Work through the map
 
 1. Load `MAP.md`, then read only the selected decision issue and the linked context needed for it.
-2. Choose the user-named issue, or the first open, unblocked, unclaimed decision issue in numeric filename order.
+2. Choose the user-named issue, or the first open, unblocked, unclaimed decision issue in numeric filename order. Show the selected issue as its title plus feature-root-relative path.
 3. Before working, re-read the issue. If it is claimed by another owner, report `Claimed by` and `Claimed at` and wait for explicit user approval before taking it over. A legacy claim without `Claimed at` has unknown age and is not automatically stale.
 4. Claim it by writing:
 
@@ -99,7 +103,7 @@ If an existing map still uses the legacy decision path `issues/`, keep that map 
 7. Record the answer, relevant non-sensitive evidence, unresolved uncertainty, and any newly sharp question. Set the issue to `resolved` or `out-of-scope`, then update `Decisions so far` or `Out of scope` in the map.
 8. A decision marked `out-of-scope` does not automatically unblock a dependent issue. Re-scope the dependent, rewrite its blocker, or close it through its own terminal state and record the required `Dependency resolution` section.
 9. Before every write, re-read the issue and stop if its owner or status changed. On a planned handoff, return a claimed issue to `open` and record the progress in the handoff.
-10. Stop after one decision issue in the session. Recommend the next frontier issue or the next workflow; do not automatically chain user-invoked skills, migrate files, or dispatch parallel subagents.
+10. Stop after one decision issue in the session. Show any next frontier issue as its title plus feature-root-relative path, then recommend that issue or the next workflow; do not automatically chain user-invoked skills, migrate files, or dispatch parallel subagents.
 
 Research work requires an explicit user-approved question and scope. Use an existing specialized research capability only when it matches the subject. Keep one research issue in progress at a time and return its evidence before creating another.
 

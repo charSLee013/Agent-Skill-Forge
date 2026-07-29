@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Agent Skills"
+  short_description: "Configure the local agent workspace"
+policy:
+  allow_implicit_invocation: false

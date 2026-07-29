@@ -7,7 +7,7 @@
 ## 特性
 
 - **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、真实路径验收、架构改进、领域建模和本地 triage。
-- **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs` 和 `handoff`，适合多轮计划、跨会话协作和上下文压缩。
+- **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs`、`handoff` 和 `prepare-goals`，适合多轮计划、跨会话协作、上下文压缩和长期 Goal 准备。
 - **学习系统能力**：把主题、资料和学习目标组合成 HTML 课程与 supporting Markdown。
 - **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
 - **精简项目结构**：正式 skill 分为 `engineering`、`productivity` 和 `research` 三类，入口、文档和插件清单保持一致。
@@ -27,7 +27,9 @@ bash scripts/install.sh
 curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/master/scripts/install.sh | bash
 ```
 
-全部 skill 安装到 `~/.agents/skills`；只覆盖当前 skill，不删除其他目录。
+安装器把每个完整 skill 目录复制到 `~/.agents/skills`。安装后的文件由用户持有，不会自动更新；更新时重新运行安装器。
+
+重新安装会替换本仓库当前提供的同名 skill，其他 skill 目录保持不变。不要同时通过其他渠道安装同名 skill，避免同一入口被重复发现。
 
 ## Skill 清单
 
@@ -55,7 +57,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
         |
         +-- 跨会话且有决策迷雾 -> wayfinder -> 路线清晰后选择 to-prd / to-issues / implement
         |
-        +-- 路线已清晰的长线改动 -> to-prd -> to-issues -> 每个 issue 单独 implement
+        +-- 路线已清晰的长线改动 -> to-prd -> to-issues -> prepare-goals -> 每个 Goal 独立执行
 
 已有 bug / 性能问题
   diagnosing-bugs -> implement
@@ -79,6 +81,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | 不熟悉一片代码，需要先看它在系统里的位置 | `zoom-out` | 让 agent 上升一层抽象，按领域语言梳理相关模块和调用方。 |
 | 已经讨论清楚，需要沉淀成规格 | `to-prd` | 生成带内联验收证据的 PRD 后用 `to-issues` 拆成可独立执行的 issue。 |
 | PRD 或计划已经清楚，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，继承 PRD 的验收条件和证据；未决策问题先回到 `wayfinder`。 |
+| 已批准的工作预计持续数小时或数天 | `prepare-goals` | 将现有 PRD、ADR 和 issue 整理成可直接启动的 `/goal`；普通小任务仍直接执行。 |
 | 已经有明确 issue 或 PRD，要开始做 | `implement` | 只执行已批准范围和内联证据；明确要求真实路径时联动 `real-path-verification`。 |
 | 困难或不确定的故障 | `diagnosing-bugs` | 先建立根因反馈循环，再修复；不自动创建测试。 |
 | 明确的架构、接口或模块深化工作 | `codebase-design` | 只在架构任务中提供设计词汇，不作为普通实现前置。 |
@@ -93,6 +96,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 |---|---|---|
 | 快速小改 | `implement` | 需求、范围和验收已经清晰，不需要额外访谈。 |
 | 标准功能交付 | `setup-agent-skills` -> `to-prd` -> `to-issues` -> `implement` | 路线清晰、多步骤功能、需要可追踪规格和可拆 issue；只有主干仍不清时才先 `grill-with-docs`。 |
+| 长期 Goal 执行 | `to-prd` / `to-issues` -> `prepare-goals` -> `/goal` | 范围和验收已批准，但执行预计持续数小时或数天；每个 Goal 保持单一结果和停止条件。 |
 | 超大且决策未定的工作 | `setup-agent-skills` -> `wayfinder` -> `to-prd` / `to-issues` / `implement` | 预计跨多个会话，先解决会改变范围、架构、风险或验收的决策，再选择最小交付流程。 |
 | 原型驱动决策 | `grill-with-docs` -> `handoff` -> `prototype` -> `handoff` -> `to-prd` 或 `implement` | 讨论无法替代运行验证，例如复杂交互、状态机、算法取舍。 |
 | Bug 修复 | `diagnosing-bugs` -> `implement` | 先定位根因；真实路径验收只在已批准验收证据要求时运行。 |
@@ -110,28 +114,28 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 #### 用户显式调用
 
-| Skill | 作用 |
+| Skill | 定义性约束与使用路径 |
 |---|---|
-| [grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md) | 用少量高杠杆问题确定计划主干，同时沉淀已确认的项目语言、`CONTEXT.md` 和 ADR。 |
-| [triage](./skills/engineering/triage/SKILL.md) | 在本地 `.codex/agents/` 工作区中推进 issue triage 状态机。 |
-| [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md) | 扫描代码库的架构深化机会，并输出 HTML 报告。 |
-| [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 初始化工程类 skill 依赖的本地 `.codex/agents/`、triage 标签和领域文档配置。 |
-| [wayfinder](./skills/engineering/wayfinder/SKILL.md) | 为跨会话且存在决策迷雾的大型工作建立本地决策地图，逐个解决 decision issue。 |
-| [to-issues](./skills/engineering/to-issues/SKILL.md) | 将计划、规格或 PRD 拆成可独立执行的实现 issue。 |
-| [to-prd](./skills/engineering/to-prd/SKILL.md) | 将当前对话整理成 PRD，并写入 `.codex/agents/work/`。 |
-| [prototype](./skills/engineering/prototype/SKILL.md) | 为状态机、业务逻辑或 UI 方案构建一次性原型。 |
-| [zoom-out](./skills/engineering/zoom-out/SKILL.md) | 在不熟悉的代码区域中，上升一层抽象梳理相关模块和调用方。 |
-| [implement](./skills/engineering/implement/SKILL.md) | 按已批准的 PRD 或 issue 执行实现并关闭验收条件。 |
+| [grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md) | 在一次会话内澄清计划主干并记录领域语言和决策；用于目标、范围或验收仍不清时，区别于跨会话决策地图；需可读的仓库上下文，出口是 `implement`、`to-prd` 或 `to-issues`。 |
+| [triage](./skills/engineering/triage/SKILL.md) | 推进本地 issue 池的 triage 状态机；用于筛选待办集合，区别于直接实现单个已批准 issue；需先完成本地 workspace 配置，出口是 `ready-for-agent` 或其他终态。 |
+| [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md) | 扫描架构深化机会并生成 HTML 报告；用于显式代码库治理，区别于直接重构；需仓库和领域上下文，出口是选定机会后的 `grill-with-docs` 或 `implement`。 |
+| [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 初始化 `.codex/agents/`、triage 标签和领域文档配置；用于仓库首次接入，区别于功能工作；需仓库写权限，出口是其他工程 skill 可用的本地 workspace。 |
+| [wayfinder](./skills/engineering/wayfinder/SKILL.md) | 为跨会话且存在决策迷雾的工作建立本地决策地图；区别于一次会话澄清或已清晰的交付计划；需已配置 workspace，出口是路线清晰后的 `to-prd`、`to-issues` 或 `implement`。 |
+| [to-issues](./skills/engineering/to-issues/SKILL.md) | 将已批准计划拆成可独立验证的实现 issue；用于路线已清晰时，不负责解决未决策问题；需 PRD、计划或明确规格，出口是逐个 `implement`。 |
+| [to-prd](./skills/engineering/to-prd/SKILL.md) | 将已讨论清楚的当前对话整理成 PRD；用于规格沉淀，区别于需求访谈和决策探索；需可确认的范围与验收证据，出口是 `to-issues` 或直接 `implement`。 |
+| [prototype](./skills/engineering/prototype/SKILL.md) | 用一次性可运行原型回答状态、逻辑或 UI 决策；用于讨论不足以验证的具体问题，区别于生产实现；需明确问题和停止条件，出口是 `handoff` 后回到主线。 |
+| [zoom-out](./skills/engineering/zoom-out/SKILL.md) | 按领域语言梳理陌生模块及调用方；用于实现前定位系统位置，区别于架构重设计；需可读代码库，出口是边界清晰的计划或实现上下文。 |
+| [implement](./skills/engineering/implement/SKILL.md) | 执行已批准 PRD 或 issue 并关闭验收条件；用于范围和证据已明确时，区别于发现、访谈和路线规划；需明确工作项，出口是验证过的完成结论。 |
 
 #### 模型可自动调用
 
-| Skill | 作用 |
+| Skill | 定义性约束与使用路径 |
 |---|---|
-| [diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md) | 用复现、最小化、假设和插桩定位困难故障。 |
-| [domain-modeling](./skills/engineering/domain-modeling/SKILL.md) | 建立和修正项目领域语言，维护 `CONTEXT.md` 与 ADR。 |
-| [codebase-design](./skills/engineering/codebase-design/SKILL.md) | 提供深模块、小接口、clean seam 和可测试边界的设计词汇。 |
-| [real-path-verification](./skills/engineering/real-path-verification/SKILL.md) | 在真实或生产等价路径上验证已批准的验收条件。 |
-| [resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md) | 解决 merge/rebase 冲突，同时保留两侧意图。 |
+| [diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md) | 用复现、最小化、假设和插桩定位困难或不确定故障；区别于已知路径的机械修复；需可观察的失败信号，出口是可证伪根因和交给 `implement` 的修复边界。 |
+| [domain-modeling](./skills/engineering/domain-modeling/SKILL.md) | 建立或修正领域语言并维护 `CONTEXT.md` 与 ADR；用于真实领域决策，区别于被动读取术语；需具体概念冲突或决策，出口是稳定词汇和记录。 |
+| [codebase-design](./skills/engineering/codebase-design/SKILL.md) | 为显式模块、接口或架构深化提供设计词汇；区别于普通实现、测试规划和诊断；需明确设计对象，出口是可执行的边界与约束。 |
+| [real-path-verification](./skills/engineering/real-path-verification/SKILL.md) | 在真实或生产等价路径上验证已批准验收条件；区别于常规单元或 smoke 检查；需父验收条件明确选择该证据及清理方案，出口是传回 `implement` 的结论。 |
+| [resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md) | 解决进行中的 merge/rebase 冲突并保留两侧意图；区别于主动重构；需真实冲突状态和双方语义，出口是已验证的冲突解决。 |
 
 ### Productivity
 
@@ -139,18 +143,19 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 #### 用户显式调用
 
-| Skill | 作用 |
+| Skill | 定义性约束与使用路径 |
 |---|---|
-| [grill-me](./skills/productivity/grill-me/SKILL.md) | 用主干问题明确关键决策，并由 Agent 回填可逆细节。 |
-| [handoff](./skills/productivity/handoff/SKILL.md) | 将当前对话压缩成交接文档，便于另一个 Agent 或新会话继续。 |
-| [writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md) | 编写和维护可预测 skill 的参考规范。 |
+| [grill-me](./skills/productivity/grill-me/SKILL.md) | 用少量主干问题明确计划或设计并回填可逆细节；用于通用单会话澄清，区别于写项目文档的 `grill-with-docs`；需一个可陈述目标，出口是可执行计划。 |
+| [handoff](./skills/productivity/handoff/SKILL.md) | 将当前对话压缩成交接文档；用于换 Agent 或新会话，区别于重新规划或实现；需当前状态、决策和未完成项，出口是下一会话可直接读取的文档。 |
+| [prepare-goals](./skills/productivity/prepare-goals/SKILL.md) | 将已批准的长期工作整理成边界清晰的 Codex Goal launcher；用于预计持续数小时或数天的执行，区别于普通任务和未决规划；需明确结果与验证路径，出口是不自动启动的 `/goal` 指令。 |
+| [writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md) | 提供编写和维护可预测 skill 的规范；用于 skill 设计或评审，区别于安装和业务实现；需目标 skill 或行为契约，出口是边界清晰的 skill 文本。 |
 
 #### 模型可自动调用
 
-| Skill | 作用 |
+| Skill | 定义性约束与使用路径 |
 |---|---|
-| [grilling](./skills/productivity/grilling/SKILL.md) | `grill-me` 和 `grill-with-docs` 背后的可复用访谈循环。 |
-| [teach](./skills/productivity/teach/SKILL.md) | 以 Standard 或 Ultra 档位构建领域能力驱动的静态 HTML 课程、supporting Markdown、Tracer 和分层审阅。 |
+| [grilling](./skills/productivity/grilling/SKILL.md) | 为调用方运行高杠杆访谈循环并回填可逆默认；用于存在关键决策时，区别于用户显式工作流入口；需调用方提供目标与边界，出口是确定的决策主干。 |
+| [teach](./skills/productivity/teach/SKILL.md) | 构建能力驱动的静态 HTML 课程与 supporting Markdown；用于完整学习交付，区别于普通摘要或文档页；需学习目标、读者起点和来源，出口是 Standard 或 Ultra 课程。 |
 
 ### Research
 
@@ -158,10 +163,10 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 #### 模型可自动调用
 
-| Skill | 作用 |
+| Skill | 定义性约束与使用路径 |
 |---|---|
-| [arxiv-lookup](./skills/research/arxiv-lookup/SKILL.md) | 查询 arXiv 元数据，通过标题/关键词找 arXiv ID，或从 arXiv 记录获取 journal DOI。 |
-| [arxiv-doc-builder](./skills/research/arxiv-doc-builder/SKILL.md) | 下载 arXiv source/PDF，并将论文转换为带来源元数据的 Markdown reference doc。 |
+| [arxiv-lookup](./skills/research/arxiv-lookup/SKILL.md) | 查询 arXiv 元数据、ID 和 journal DOI；用于定位论文身份，区别于下载或转换正文；需查询词或已有 ID 及网络，出口是交给 builder 或研究流程的稳定标识。 |
+| [arxiv-doc-builder](./skills/research/arxiv-doc-builder/SKILL.md) | 获取 arXiv source/PDF 并生成 Markdown reference doc；用于论文材料摄取，区别于元数据查找和课程编排；需 arXiv ID、网络及转换工具，出口是供深读或 `teach` 使用的文档。 |
 
 推荐组合：
 
@@ -206,7 +211,7 @@ Teach 按 Publication、Learning and Fidelity、Design、Enhancement 的顺序�
 
 ## 维护约束
 
-- 每个正式保留的 skill 必须出现在 `.claude-plugin/plugin.json`、顶层 `README.md` 和对应 bucket README 中。
+- 每个正式保留的 skill 必须具有 `SKILL.md` 和 `agents/openai.yaml`，并出现在 `.claude-plugin/plugin.json`、顶层 `README.md` 和对应 bucket README 中。
 - 每个 README 中的 skill 名称必须链接到对应 `SKILL.md`。
 - `skills/engineering/`、`skills/productivity/` 和 `skills/research/` 是当前正式 bucket。
 - `.codex/` 和 `artifacts/` 用于本地运行输出，默认由 `.gitignore` 忽略。
@@ -216,7 +221,7 @@ Teach 按 Publication、Learning and Fidelity、Design、Enhancement 的顺序�
 ./scripts/list-skills.sh
 ```
 
-并确认 plugin manifest 与实际 `SKILL.md` 文件一致。
+并运行注册表校验，确认 plugin manifest、README、Codex sidecar 与实际 `SKILL.md` 文件一致。
 
 ## 验证
 
@@ -227,11 +232,11 @@ Teach 按 Publication、Learning and Fidelity、Design、Enhancement 的顺序�
 ```
 
 ```bash
-bash scripts/test-install-shape.sh
+bash scripts/test-skill-registry.sh
 ```
 
 ```bash
-bash scripts/test-engineering-contracts.sh
+bash scripts/test-install-shape.sh
 ```
 
 ```bash

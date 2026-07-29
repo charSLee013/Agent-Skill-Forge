@@ -15,6 +15,7 @@ Skills are organized into three shipped buckets under `skills/`:
 Every shipped skill must have:
 
 - a `SKILL.md`
+- an `agents/openai.yaml`
 - an entry in the matching bucket `README.md`
 - an entry in the top-level `README.md`
 - an entry in `.claude-plugin/plugin.json`
@@ -25,8 +26,8 @@ Each skill entry in a README must link the skill name to its `SKILL.md`.
 
 Every `SKILL.md` is either:
 
-- user-invoked: `disable-model-invocation: true`, reachable only when the human asks for it
-- model-invoked: model- or user-reachable through its description
+- user-invoked: `disable-model-invocation: true` plus `policy.allow_implicit_invocation: false` in `agents/openai.yaml`, reachable only when the human asks for it
+- model-invoked: both invocation restrictions omitted, model- or user-reachable through its description
 
 For the full definitions, description conventions, and why a user-invoked skill can invoke model-invoked skills but never another user-invoked one, see [docs/invocation.md](./docs/invocation.md).
 
@@ -42,7 +43,7 @@ Run these checks after changing a skill, installer, or repository contract:
 
 ```bash
 ./scripts/list-skills.sh
-bash scripts/test-engineering-contracts.sh
+bash scripts/test-skill-registry.sh
 bash scripts/test-install-shape.sh
 git diff --check
 ```

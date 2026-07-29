@@ -1,6 +1,7 @@
 ---
 name: implement
 description: "Implement a piece of work based on a PRD or set of issues."
+argument-hint: "Which PRD or issue should be implemented?"
 disable-model-invocation: true
 ---
 

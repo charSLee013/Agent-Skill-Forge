@@ -1,6 +1,7 @@
 ---
 name: to-prd
 description: Turn the current conversation into a PRD and publish it to the local `.codex/agents/` workspace — no discovery interview, with direct confirmation only for unresolved material acceptance evidence.
+argument-hint: "What should become a PRD?"
 disable-model-invocation: true
 ---
 

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Zoom Out"
+  short_description: "Map unfamiliar modules and callers"
+policy:
+  allow_implicit_invocation: false

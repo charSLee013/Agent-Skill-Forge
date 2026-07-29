@@ -1,6 +1,7 @@
 ---
 name: to-issues
 description: Break a plan, spec, or PRD into independently-grabbable issues in the local `.codex/agents/` workspace using tracer-bullet vertical slices.
+argument-hint: "What should be split into implementation issues?"
 disable-model-invocation: true
 ---
 

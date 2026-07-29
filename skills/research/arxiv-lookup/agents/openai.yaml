@@ -1,0 +1,3 @@
+interface:
+  display_name: "arXiv Lookup"
+  short_description: "Find arXiv IDs and journal DOIs"

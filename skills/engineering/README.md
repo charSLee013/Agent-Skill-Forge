@@ -6,26 +6,26 @@ Engineering skills for bounded work in an existing repository.
 
 These skills change the task phase or create a durable artifact. Use them only when the user chooses the phase.
 
-- [grill-with-docs](./grill-with-docs/SKILL.md) — resolve an unclear plan or design while recording domain language and durable decisions.
-- [triage](./triage/SKILL.md) — move incoming local issues through the triage state machine.
-- [improve-codebase-architecture](./improve-codebase-architecture/SKILL.md) — inspect explicit architecture-maintenance work and present deepening opportunities.
-- [setup-agent-skills](./setup-agent-skills/SKILL.md) — configure the local workspace and write all repository Agent instructions to root `AGENTS.md`; root `CLAUDE.md` is always the one-line `@AGENTS.md` adapter.
-- [wayfinder](./wayfinder/SKILL.md) — map large cross-session work whose material decisions are not yet clear.
-- [to-issues](./to-issues/SKILL.md) — split an approved plan into independently verifiable issues.
-- [to-prd](./to-prd/SKILL.md) — synthesize the current conversation into a PRD.
-- [prototype](./prototype/SKILL.md) — build a throwaway experiment for a state, logic, or UI decision.
-- [zoom-out](./zoom-out/SKILL.md) — map unfamiliar modules and callers before making a scoped change.
-- [implement](./implement/SKILL.md) — execute an approved PRD or issue and close its acceptance criteria.
+- [grill-with-docs](./grill-with-docs/SKILL.md) — clarifies an unclear plan in one session while recording domain language and decisions; use it before delivery when scope or acceptance is unresolved, not for cross-session mapping; it reads repository context and exits to `implement`, `to-prd`, or `to-issues`.
+- [triage](./triage/SKILL.md) — moves an incoming issue pool through local triage; use it to select work, not to implement an approved item; it requires the configured workspace and exits through `ready-for-agent` or another terminal role.
+- [improve-codebase-architecture](./improve-codebase-architecture/SKILL.md) — finds architecture deepening opportunities and presents an HTML report; use it for explicit maintenance, not direct refactoring; it requires repository context and exits to a selected `grill-with-docs` or `implement` path.
+- [setup-agent-skills](./setup-agent-skills/SKILL.md) — configures `.codex/agents/`, triage labels, domain docs, and the root instruction shape; use it once before other engineering skills, not for feature work; it requires repository write access and exits with a ready local workspace.
+- [wayfinder](./wayfinder/SKILL.md) — maps large cross-session work whose material route decisions remain open; use it only for decision fog, not a clear PRD or bounded request; it requires the configured workspace and exits to `to-prd`, `to-issues`, or `implement`.
+- [to-issues](./to-issues/SKILL.md) — splits an approved plan into independently verifiable implementation issues; use it after the route is clear, not to resolve decisions; it requires a plan, spec, or PRD and exits to per-issue `implement` sessions.
+- [to-prd](./to-prd/SKILL.md) — synthesizes a clear conversation into a PRD; use it for durable specification, not discovery or wayfinding; it requires bounded scope and acceptance evidence and exits to `to-issues` or `implement`.
+- [prototype](./prototype/SKILL.md) — builds a throwaway executable experiment for a state, logic, or UI decision; use it when discussion cannot settle a concrete question, not as production delivery; it requires a question and stop condition and exits through `handoff` to the main workflow.
+- [zoom-out](./zoom-out/SKILL.md) — maps unfamiliar modules and callers in domain language; use it to locate a change before implementation, not to redesign architecture; it requires readable code and exits with bounded implementation context.
+- [implement](./implement/SKILL.md) — executes an approved PRD or issue and closes its acceptance criteria; use it when scope and evidence are already clear, not for discovery; it requires a concrete work item and exits with a verified completion conclusion.
 
 ## Model-invoked
 
 These skills support a selected workflow. They must not create a new phase or expand scope.
 
-- [diagnosing-bugs](./diagnosing-bugs/SKILL.md) — investigate a hard or uncertain failure and identify its root cause.
-- [real-path-verification](./real-path-verification/SKILL.md) — verify an approved real-path or production-equivalent acceptance criterion.
-- [domain-modeling](./domain-modeling/SKILL.md) — sharpen domain terms when a real domain decision is being made.
-- [codebase-design](./codebase-design/SKILL.md) — provide architecture vocabulary for an explicit module, interface, or seam decision.
-- [resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md) — resolve an authorized merge or rebase conflict.
+- [diagnosing-bugs](./diagnosing-bugs/SKILL.md) — isolates the root cause of a hard or uncertain failure; use it when the failure path is unknown, not for a mechanical fix; it requires an observable signal and exits with a falsifiable diagnosis for `implement`.
+- [real-path-verification](./real-path-verification/SKILL.md) — checks an approved real or production-equivalent acceptance criterion; use it only when the parent criterion selects that evidence, not for routine tests; it requires an executable path and cleanup plan and returns a conclusion to `implement`.
+- [domain-modeling](./domain-modeling/SKILL.md) — sharpens domain terms and records decisions; use it for a real terminology or model conflict, not passive context reading; it requires a concrete decision and exits with updated `CONTEXT.md` or ADRs.
+- [codebase-design](./codebase-design/SKILL.md) — supplies vocabulary for an explicit module, interface, or architecture decision; use it for deliberate design work, not routine implementation, tests, or diagnosis; it requires a named design object and exits with executable boundaries.
+- [resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md) — resolves an active merge or rebase conflict while preserving both intentions; use it only for an authorized conflict state, not proactive refactoring; it requires the conflicting inputs and exits with verified resolution.
 
 ## Default routing
 

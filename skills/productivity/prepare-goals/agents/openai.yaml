@@ -1,0 +1,6 @@
+interface:
+  display_name: "Prepare Goals"
+  short_description: "Prepare bounded launchers for long-running Codex Goals"
+  default_prompt: "Use $prepare-goals to turn the approved work into ready-to-paste Goal launchers."
+policy:
+  allow_implicit_invocation: false

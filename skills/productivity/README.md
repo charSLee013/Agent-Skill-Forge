@@ -6,13 +6,14 @@ General planning, learning, and workflow tools.
 
 Reachable only when you type them (`disable-model-invocation: true`).
 
-- **[grill-me](./grill-me/SKILL.md)** — Find a plan or design's main trunk through focused questions and agent-filled defaults.
-- **[handoff](./handoff/SKILL.md)** — Compact the current conversation into a handoff document so another agent can continue the work.
-- **[writing-great-skills](./writing-great-skills/SKILL.md)** — Reference for writing and editing skills well: the vocabulary and principles that make a skill predictable.
+- **[grill-me](./grill-me/SKILL.md)** — finds a plan's main trunk with focused questions and reversible defaults; use it for general single-session clarification, not durable project-doc updates; it requires a stated goal and exits with an executable plan.
+- **[handoff](./handoff/SKILL.md)** — compacts the current conversation for another agent or session; use it for context transfer, not replanning or implementation; it requires current state and open work and exits with a continuation document.
+- **[prepare-goals](./prepare-goals/SKILL.md)** — turns approved long-running work into bounded Codex Goal launchers; use it for work expected to take hours or days, not ordinary execution or unresolved planning; it requires a clear outcome and verification path and exits without starting Goal mode.
+- **[writing-great-skills](./writing-great-skills/SKILL.md)** — defines how to write and review predictable skills; use it for skill design, not installation or product work; it requires a target skill or behavior contract and exits with bounded skill text.
 
 ## Model-invoked
 
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
-- **[grilling](./grilling/SKILL.md)** — Resolve high-leverage decisions, prune low-impact questions, and backfill reversible details.
-- **[teach](./teach/SKILL.md)** — Build capability-driven static HTML courses in Standard or Ultra profiles with supporting Markdown, tracer review, and publication gates.
+- **[grilling](./grilling/SKILL.md)** — resolves high-leverage decisions and backfills reversible details for a calling workflow; use it when key ambiguity exists, not as a user phase; it requires a goal and boundary and returns a decision trunk to its caller.
+- **[teach](./teach/SKILL.md)** — builds capability-driven static HTML courses with supporting Markdown; use it for complete learning delivery, not a general summary or documentation page; it requires a learning goal, audience, and sources and exits with a Standard or Ultra course.
