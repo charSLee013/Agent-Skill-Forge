@@ -1,60 +1,38 @@
 # Independent Review
 
-Use a fresh reviewer for meaningful multi-page or evidence risk, user-requested review, and both Ultra tracer and final stages. Give the reviewer final learner-facing artifacts, supporting Markdown, and the minimum Course Contract context needed for the review.
+Use a fresh reviewer for meaningful multi-page or evidence risk, user-requested review, and both Ultra tracer and final stages. Supply final learner-facing artifacts, supporting Markdown, and only the Course Contract fields needed to judge them.
 
-## Review Prompt
+## Neutral Prompt
 
 ```text
-Read the supplied Course Contract, final HTML, and supporting Markdown as an
-independent course reviewer.
+Review the supplied course as a learner-facing static publication.
 
-Begin with the publication gate. Enumerate every declared learner-facing
-artifact and determine whether each final HTML file contains its assigned
-primary content and ordinary navigation through the declared static target.
+Enumerate the declared artifacts and verify that each HTML file carries its
+assigned content and ordinary navigation through the declared delivery target.
 
-Then report:
+Report findings, ordered by learner impact, for:
 
-1. the course main trunk in three direct sentences;
-2. the learner's starting point, prerequisite bridge, and first likely difficulty;
-3. the path from explanation through practice, feedback, and capstone;
-4. source support, evidence roles, formula or process fidelity, and scope;
-5. content objects lost, compressed, or altered during publication;
-6. terminology, structure, and evidence drift across pages;
-7. visual hierarchy, scanability, subject fit, information density, and long-form quality;
-8. the educational value and static meaning of enhanced interactions;
-9. pages whose apparent completion comes from template structure while their
-   assigned explanation, evidence, practice, feedback, or design remains thin;
-10. rhetorical contrast that can become a direct positive proposition;
-11. concrete repairs ordered by learner impact.
+1. the main trunk, starting point, prerequisite bridge, and target capability;
+2. explanation, reconstruction, practice, feedback, transfer, and capstone;
+3. source support, evidence roles, terminology, formula or process fidelity,
+   and scope;
+4. content lost, compressed, invented, or altered during publication;
+5. page and paragraph coherence, sentence rhythm, register, repeated template
+   language, generic transitions, and unsupported claims;
+6. visual thesis, subject fit, hierarchy, scanability, information density,
+   responsive behavior, and accessibility;
+7. the learning claim, state synchronization, controls, static equivalent,
+   and reduced-motion behavior of each enhanced mechanism;
+8. pages whose polished shell hides thin explanation, evidence, practice,
+   feedback, or diagnosis;
+9. concrete repairs with file and location evidence.
 
 Separate sourced facts, derived results, observations, teaching explanations,
-and transfer guidance. Return concise findings in Markdown.
+and transfer guidance. Do not infer intended fixes from process notes.
 ```
 
-## Review Result
+## Result Handling
 
-Store an applicable final `review.md` with:
+Keep raw findings in the temporary workspace. Apply accepted repairs, rerun affected gates, and retain unresolved limitations in the final response.
 
-```md
-# Course Review
-
-## Publication
-
-## Main Trunk and Prerequisites
-
-## Learning and Content Fidelity
-
-## Sources, Formulas, and Scope
-
-## Design and Information Density
-
-## Enhancement
-
-## Direct Prose
-
-## Capstone
-
-## Repairs
-```
-
-Raw subagent review stays in the session temporary workspace. The final learner-facing review contains accepted findings, completed repairs, remaining limitations, and gate results.
+Create a learner-facing review document only when the Course Contract explicitly names it. Its sections follow the applicable gates rather than a fixed template.

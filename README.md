@@ -31,6 +31,22 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 重新安装会替换本仓库当前提供的同名 skill，其他 skill 目录保持不变。不要同时通过其他渠道安装同名 skill，避免同一入口被重复发现。
 
+### 可选 CTF 包
+
+CTF 包用于授权竞赛、安全研究和教育，不属于本仓库的正式 skill 集合。本地安装核心 skills 与锁定版本的 11 个外部 CTF skills：
+
+```bash
+bash scripts/install-with-ctf.sh
+```
+
+远程安装：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/master/scripts/install-with-ctf.sh | bash
+```
+
+安装器固定使用 `ljagiello/ctf-skills` 的提交 `d6662d26b5ed3caa56f5eaf6eb887964f3747162`，只复制锁文件列出的 skill 目录，不运行上游工具安装器。安装后的文件由用户持有，不会自动更新；重新运行命令会替换本包拥有的同名目录并保留其他 skills。若目标目录已存在但不属于本包，安装器会中止而不是覆盖。
+
 ## Skill 清单
 
 ### Engineering
@@ -160,7 +176,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | Skill | 定义性约束与使用路径 |
 |---|---|
 | [grilling](./skills/productivity/grilling/SKILL.md) | 为调用方运行高杠杆访谈循环并回填可逆默认；用于存在关键决策时，区别于用户显式工作流入口；需调用方提供目标与边界，出口是确定的决策主干。 |
-| [teach](./skills/productivity/teach/SKILL.md) | 构建能力驱动的静态 HTML 课程与 supporting Markdown；用于完整学习交付，区别于普通摘要或文档页；需学习目标、读者起点和来源，出口是 Standard 或 Ultra 课程。 |
+| [teach](./skills/productivity/teach/SKILL.md) | 构建编辑完整、领域原生视觉驱动的静态 HTML 课程与 supporting Markdown；用于完整学习交付，区别于普通摘要或文档页；需学习目标、读者起点和来源，出口是 Standard 或 Ultra 课程。 |
 
 ### Research
 
@@ -190,13 +206,13 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 ## Teach
 
-`teach` 是一个单一的 `course` skill：根据学习目标、读者起点、领域证据和目标能力，构建可导航、可静态发布的 HTML 课程与 supporting Markdown。
+`teach` 是一个单一的 `course` skill：根据学习目标、读者起点、领域证据和目标能力，构建经过编辑、具有领域原生视觉系统且可静态发布的 HTML 课程与 supporting Markdown。
 
-Standard 是默认专业档位。Ultra 面向顶级、全面、研究级或高知识密度课程，通过用户确认后启动多 Agent 阶段编排、完整知识图谱、领域原生 Capstone、Tracer 校准和独立审阅。
+Standard 与 Ultra 共享编辑、视觉、交互、可访问性和内容保真的专业底线。Ultra 面向顶级、全面、研究级或高知识密度课程，通过用户确认后增加多 Agent 阶段编排、完整知识图谱、领域原生 Capstone、Tracer 校准和独立审阅。
 
-课程路径覆盖先修补桥、机制重建、worked examples、故障诊断、领域原生练习、分级反馈、Capstone 和专家标准审阅。最终 HTML 直接承载核心内容和普通导航，共享 CSS/JS 提供专业视觉与渐进增强。
+课程路径覆盖先修补桥、机制重建、worked examples、故障诊断、领域原生练习、分级反馈、Capstone 和专家标准审阅。视觉系统从领域对象、证据类型和学习动作推导；动画只用于解释序列、因果、状态或同步关系，并保留静态与 reduced-motion 等价物。
 
-Teach 按 Publication、Learning and Fidelity、Design、Enhancement 的顺序审阅最终产物。Supporting Markdown 记录来源、证据角色、教学用途、公式或数据保真和适用范围。
+Teach 按 Publication、Learning, Editorial and Fidelity、Visual System、Interaction and Motion 的顺序审阅最终产物。Supporting Markdown 记录来源、证据角色、教学用途、公式或数据保真和适用范围。
 
 多轮学习可以启用 `MISSION.md`、`RESOURCES.md`、`GLOSSARY.md` 和 `learning-records/`，这些文件记录学习状态，HTML 与 Markdown 仍然是课程交付物。
 
@@ -242,6 +258,10 @@ bash scripts/test-skill-registry.sh
 
 ```bash
 bash scripts/test-install-shape.sh
+```
+
+```bash
+bash scripts/test-ctf-bundle-install.sh
 ```
 
 ```bash

@@ -1,3 +1,4 @@
 interface:
   display_name: "Teach"
-  short_description: "Build a static HTML course"
+  short_description: "Build an editorially designed static HTML course"
+  default_prompt: "Use $teach to build a source-faithful static HTML course for this learner and subject."

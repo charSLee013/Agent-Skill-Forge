@@ -1,75 +1,64 @@
 <!doctype html>
-<!-- Structural starter: expand content and visual treatment to fulfill this lesson's assigned responsibility. -->
-<html lang="en">
+<html lang="{language}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{Lesson Title}</title>
-  <style>
-    body { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: #1f2933; font: 1rem/1.65 system-ui, sans-serif; }
-    h1, h2 { line-height: 1.15; }
-    section, details, nav { margin: 2rem 0; }
-    .remember, .evidence { border: 1px solid #cbd5df; padding: 1rem; }
-    .remember { background: #f7fafc; }
-    .evidence { background: #fffaf0; }
-    .lesson-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; border-top: 1px solid #cbd5df; padding-top: 1.25rem; }
-    a { color: #0b5f67; }
-    @media (max-width: 600px) { body { padding: 1.25rem 1rem 3rem; } }
-  </style>
+  <meta name="description" content="{lesson capability and scope}">
+  <title>{Lesson Title} - {Course Title}</title>
+  <link rel="stylesheet" href="../assets/course.css">
 </head>
-<body>
-  <h1>{Lesson Title}</h1>
-  <p><strong>Main line:</strong> {The simplest accurate explanation of this lesson.}</p>
+<body class="lesson-page">
+  <a class="skip-link" href="#lesson">Skip to lesson</a>
 
-  <section class="remember">
-    <h2>Remember Now</h2>
-    <p>{The memory target for this lesson.}</p>
-  </section>
+  <header class="lesson-masthead">
+    <nav aria-label="Breadcrumb"><a href="../course-map.html">{Course Title}</a></nav>
+    <p class="lesson-position">{place in the main trunk}</p>
+    <h1>{Lesson Title}</h1>
+    <p class="lesson-promise">{specific judgment or action this lesson unlocks}</p>
+  </header>
 
-  <section>
-    <h2>Purpose</h2>
-    <p>{Where this lesson sits in the course and why it matters.}</p>
-  </section>
+  <main id="lesson">
+    <section class="lesson-opening" aria-labelledby="opening-title">
+      <h2 id="opening-title">{question, task, failure, or observation}</h2>
+      <p>{concrete setup that creates the need for this lesson}</p>
+    </section>
 
-  <section>
-    <h2>Prerequisite Bridge</h2>
-    <p>{The knowledge, intuition, tool, or procedure that supports this lesson.}</p>
-  </section>
+    <section class="causal-spine" aria-labelledby="causal-title">
+      <h2 id="causal-title">{subject-native mechanism heading}</h2>
+      {coherent paragraphs that explain objects, actions, evidence, and consequences}
 
-  <section>
-    <h2>Explanation</h2>
-    <p>{The plain-language explanation, mechanism, example, or trace.}</p>
-  </section>
+      <figure class="mechanism-view">
+        {static formula, trace, diagram, comparison, or worked state}
+        <figcaption>{interpretation and scope}</figcaption>
+      </figure>
+    </section>
 
-  <section class="evidence">
-    <h2>Evidence and Scope</h2>
-    <p><strong>Source:</strong> {The source or observation supporting the lesson.}</p>
-    <p><strong>Teaching use:</strong> {How the source becomes learnable here.}</p>
-    <p><strong>Scope:</strong> {The setting and conditions covered.}</p>
-  </section>
+    <section class="worked-reconstruction" aria-labelledby="worked-title">
+      <h2 id="worked-title">{worked case heading}</h2>
+      {inputs, intermediate states, result, and interpretation}
+    </section>
 
-  <section>
-    <h2>Retrieval Practice</h2>
-    <ol>
-      <li>{A prompt that asks the learner to restate the main line.}</li>
-      <li>{A prompt that asks the learner to apply or compare the idea.}</li>
-    </ol>
-  </section>
+    <aside class="evidence-note" aria-labelledby="evidence-title">
+      <h2 id="evidence-title">{evidence-specific heading}</h2>
+      <p>{source role, supported claim, assumptions, and boundary}</p>
+    </aside>
 
-  <details>
-    <summary>Supporting Sources</summary>
-    <p>{Links to the supporting Markdown notes or source material.}</p>
-  </details>
+    <section class="diagnosis-or-practice" aria-labelledby="practice-title">
+      <h2 id="practice-title">{diagnosis, comparison, reconstruction, or transfer task}</h2>
+      <p>{learner action and observable completion signal}</p>
+      {graduated hint or feedback structure}
+    </section>
 
-  <section>
-    <h2>Next Action</h2>
-    <p>{The next concrete action for the learner.}</p>
-  </section>
+    <section class="capability-handoff" aria-labelledby="handoff-title">
+      <h2 id="handoff-title">{conclusion that opens the next dependency}</h2>
+      <p>{what the learner can now judge and what remains unresolved}</p>
+    </section>
+  </main>
 
-  <nav class="lesson-nav" aria-label="Lesson navigation">
-    <a href="0000-previous.html">{Previous capability}</a>
+  <nav class="lesson-navigation" aria-label="Lesson navigation">
+    <a rel="prev" href="0000-previous.html">{previous capability}</a>
     <a href="../course-map.html">Course map</a>
-    <a href="0002-next.html">{Next capability}</a>
+    <a rel="next" href="0002-next.html">{next capability}</a>
   </nav>
 </body>
 </html>

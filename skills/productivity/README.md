@@ -16,4 +16,4 @@ Reachable only when you type them (`disable-model-invocation: true`).
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
 - **[grilling](./grilling/SKILL.md)** — resolves high-leverage decisions and backfills reversible details for a calling workflow; use it when key ambiguity exists, not as a user phase; it requires a goal and boundary and returns a decision trunk to its caller.
-- **[teach](./teach/SKILL.md)** — builds capability-driven static HTML courses with supporting Markdown; use it for complete learning delivery, not a general summary or documentation page; it requires a learning goal, audience, and sources and exits with a Standard or Ultra course.
+- **[teach](./teach/SKILL.md)** — builds editorially designed static HTML courses with subject-native visuals and supporting Markdown; use it for complete learning delivery, not a general summary or documentation page; it requires a learning goal, audience, and sources and exits with a Standard or Ultra course.

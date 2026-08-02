@@ -1,68 +1,68 @@
 # Browser Review
 
-Review the learner-facing publication in four ordered gates. Record the target, evidence, findings, repairs, and final result for each gate.
+Review the learner-facing publication through four ordered gates. Keep evidence in the session workspace unless the Course Contract declares a review artifact.
 
-## 1. Publication Gate
+## 1. Publication
 
-1. Enumerate every learner-facing artifact declared by the Course Contract.
-2. Inspect every generated file or deployed HTML response for page-type-appropriate primary content and ordinary links.
-3. Open the course under its declared static delivery target and traverse every ordinary local course link.
-4. Disable JavaScript and inspect core explanations, formulas or process meaning, default examples, source links, and ordinary navigation.
-5. Confirm that each declared JavaScript activity presents its static context, default representation, and runtime requirement.
-6. Verify base paths, deployed URLs, assets, page titles, local 404 behavior, and applicable CDN or CSP behavior.
-7. Run `file://`, portability, connected-host, and offline checks when the Course Contract declares them.
+1. Enumerate every learner-facing artifact in the Course Contract.
+2. Inspect generated HTML, not only source templates, for assigned primary content and ordinary links.
+3. Open the declared static target and traverse every local course link.
+4. Disable JavaScript and inspect explanations, formulas or process meaning, default examples, source links, and navigation.
+5. Verify base paths, page titles, assets, local 404 behavior, and applicable CDN or CSP behavior.
+6. Run `file://`, portability, connected-host, print, or offline checks when declared.
 
-The gate passes when the final HTML artifacts carry their declared content and course path through the delivery target.
+Pass when the final files carry the complete course path through the delivery target.
 
-## 2. Learning and Fidelity Gate
+## 2. Learning, Editorial, and Fidelity
 
-Read the final HTML and supporting Markdown as a learner. Confirm:
+Read the final HTML and supporting Markdown as the learner. Confirm:
 
-- the main trunk is easy to restate;
-- the opening matches the learner's starting point;
-- prerequisite bridges support the next mechanism;
-- every page fulfills its assigned learning responsibility;
-- explanations, formulas, processes, evidence, practice, feedback, and transfer follow the dependency path;
-- claims preserve their evidence roles and source scope;
-- generated artifacts preserve every required Course Contract content object;
-- the capstone and rubric measure the target domain capability;
-- learner-facing prose uses direct, positive propositions;
-- rhetorical contrast has been rewritten as the affirmative claim.
+- the main trunk is easy to restate and begins at the declared starting point;
+- prerequisite bridges arrive before the mechanisms that use them;
+- every page fulfills one distinct learning responsibility;
+- explanations, evidence, practice, feedback, transfer, and capstone follow the dependency path;
+- claims preserve evidence roles, terminology, formulas, data, and scope;
+- every Course Contract content object survives publication;
+- the capstone and rubric measure the target capability;
+- lesson arcs vary with their responsibility rather than repeating template headings;
+- paragraph openings follow prior conclusions and each paragraph advances one reasoning job;
+- sentence rhythm, register, and terminology fit the learner and subject;
+- summary echoes, generic transitions, inflated claims, and abstract filler have been removed.
 
-Use text search to locate contrastive candidates in learner-facing files, then review each sentence in context. Preserve exact mathematical logic, factual absence, and safety constraints.
+Pass when a learner can reconstruct the argument and no editorial repair would change the intended meaning or evidence.
 
-## 3. Design Gate
+## 3. Visual System
 
-Inspect the course at desktop, narrow mobile, keyboard, and declared print conditions. Confirm:
+Inspect desktop, narrow mobile, keyboard, reduced-motion, and declared print states. Confirm:
 
-- the visual system fits the subject, learner, reading duration, and information density;
-- typography and spacing create a clear long-form reading hierarchy;
-- navigation, metadata, evidence, warnings, practice, feedback, and status have stable visual roles;
+- the visual thesis is visibly derived from the subject's objects, evidence, and learner actions;
+- typography, spacing, and reading widths support long-form comprehension;
+- `font-size` declarations use stable type steps rather than viewport units;
+- navigation, evidence, warnings, practice, feedback, and status have stable roles;
 - formulas, tables, code, diagrams, figures, and citations support scanning and comparison;
-- text wraps cleanly and every viewport preserves legibility;
-- shared CSS and page shells create consistency across page types;
-- content-bearing visuals use accurate assets and labels;
-- visual details express an intentional, subject-specific direction.
+- content wraps without overlap, clipping, accidental horizontal scrolling, or layout shift;
+- semantic color, labels, focus, and contrast remain legible in every state;
+- no generic theme or decorative treatment substitutes for content structure.
 
-Capture screenshots for the tracer's representative states and final high-risk pages in the session temporary workspace. Promote screenshots only when the Course Contract declares them as final review evidence.
+Capture tracer and high-risk screenshots in the temporary workspace. Pass when each viewport preserves hierarchy, subject fit, and complete content meaning.
 
-## 4. Enhancement Gate
+## 4. Interaction and Motion
 
-Enable JavaScript and exercise every meaningful enhanced state:
+Exercise every meaningful enhanced state:
 
-- direct-manipulation controls and synchronized readouts;
-- quizzes, submitted answers, hints, feedback, and scoring;
-- notes, progress, persistence, and stored-data validation;
+- play, pause, step, reset, and direct-manipulation controls;
+- synchronized values, labels, visual state, and textual interpretation;
+- quizzes, hints, feedback, scoring, progress, and persistence;
 - calculators, charts, diagrams, canvas, and responsive redraw;
-- menus, drawers, table of contents, scroll tracking, and navigation focus;
-- empty, error, boundary, reset, and recovery states;
-- keyboard operation and visible focus;
-- Console errors, warnings, Network failures, and missing assets.
+- initial, transitional, result, empty, error, boundary, and recovery states;
+- keyboard operation, visible focus, and accessible names;
+- reduced-motion and no-JavaScript equivalents;
+- console errors, warnings, network failures, and missing assets.
 
-Compare enhanced behavior with the static explanation and default representation. The gate passes when the interaction preserves the same educational meaning and every declared state behaves correctly.
+For each animation, restate the learning claim and verify that the transition exposes it. For canvas or generated visuals, inspect meaningful pixels and labels. Pass when enhanced and static paths produce the same interpretation and every declared state behaves correctly.
 
 ## Review Scope
 
-Run every gate on the tracer set. During final review, traverse every learner-facing page for publication and links, then inspect representative and high-risk pages deeply for learning, design, and enhancement.
+Run all gates on the tracer. During final review, traverse every learner-facing page for publication and links, then inspect representative and high-risk pages deeply through the remaining gates.
 
-When Chrome is unavailable, record the environment limitation, inspect final HTML and supporting Markdown directly, and complete every available content and publication check.
+Browser rendering is required for completion. When the declared browser path is unavailable, finish static inspections and report the course as unverified rather than passing the browser gates.

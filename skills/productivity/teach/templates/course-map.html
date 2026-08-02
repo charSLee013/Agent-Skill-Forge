@@ -1,51 +1,70 @@
 <!doctype html>
-<!-- Structural starter: adapt hierarchy, sections, navigation, and visual system to the Course Contract. -->
-<html lang="en">
+<html lang="{language}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{learner capability and subject}">
   <title>{Course Title}</title>
-  <style>
-    :root { color-scheme: light; }
-    body { max-width: 920px; margin: 0 auto; padding: 2rem 1.25rem 4rem; color: #1f2933; font: 1rem/1.6 system-ui, sans-serif; }
-    h1, h2 { line-height: 1.15; }
-    nav, section { margin: 2rem 0; }
-    nav { border-left: 4px solid #2f6f73; padding-left: 1rem; }
-    a { color: #0b5f67; }
-    @media (max-width: 600px) { body { padding: 1.25rem 1rem 3rem; } }
-  </style>
+  <link rel="stylesheet" href="assets/course.css">
 </head>
-<body>
-  <h1>{Course Title}</h1>
-  <p><strong>Main trunk:</strong> {The capability path that connects the course.}</p>
-  <p><strong>Remember now:</strong> {The first useful idea to carry forward.}</p>
+<body class="course-map">
+  <a class="skip-link" href="#main">Skip to course map</a>
 
-  <section>
-    <h2>Purpose</h2>
-    <p>{The learner outcome and target use.}</p>
-  </section>
+  <header class="course-masthead">
+    <p class="course-context">{subject context or governing question}</p>
+    <h1>{Course Title}</h1>
+    <p class="course-promise">{observable capability the learner will build}</p>
+    <dl class="course-conditions">
+      <div><dt>Starting point</dt><dd>{learner baseline}</dd></div>
+      <div><dt>Graduation</dt><dd>{domain-native artifact}</dd></div>
+      <div><dt>Evidence</dt><dd>{source ecology}</dd></div>
+    </dl>
+  </header>
 
-  <section>
-    <h2>Entry Points</h2>
-    <p>{The learner starting point, diagnostic entry, and prerequisite bridge.}</p>
-  </section>
+  <main id="main">
+    <section class="course-thesis" aria-labelledby="course-thesis-title">
+      <h2 id="course-thesis-title">{heading drawn from the subject's main trunk}</h2>
+      <p>{one coherent explanation of the route and why this order matters}</p>
+      <figure class="course-model">
+        {subject-native static overview}
+        <figcaption>{how to read the overview}</figcaption>
+      </figure>
+    </section>
 
-  <nav aria-label="Course path">
-    <h2>Course Path</h2>
-    <ol>
-      <li><a href="lessons/0001-example.html">{Opening core-path lesson}</a></li>
-      <li><a href="reference/example.html">{Reference or deep-dive page}</a></li>
-    </ol>
-  </nav>
+    <nav class="learning-route" aria-label="Learning route">
+      <h2>{route heading}</h2>
+      <ol>
+        <li>
+          <a href="lessons/0001-example.html">
+            <span class="route-step">{stage}</span>
+            <strong>{capability unlocked}</strong>
+            <span>{dependency or question carried forward}</span>
+          </a>
+        </li>
+        <li>
+          <a href="reference/example.html">
+            <span class="route-step">{stage}</span>
+            <strong>{reference, comparison, or deep-dive responsibility}</strong>
+            <span>{when the learner needs it}</span>
+          </a>
+        </li>
+      </ol>
+    </nav>
 
-  <section>
-    <h2>Sources</h2>
-    <p>{The sources and examples that support the course.}</p>
-  </section>
+    <section class="entry-paths" aria-labelledby="entry-paths-title">
+      <h2 id="entry-paths-title">{diagnostic or prerequisite heading}</h2>
+      <p>{how learners choose an entry without losing the main trunk}</p>
+    </section>
 
-  <section>
-    <h2>Next Action</h2>
-    <p><a href="lessons/0001-example.html">{Begin the core path.}</a></p>
-  </section>
+    <section class="capstone-preview" aria-labelledby="capstone-title">
+      <h2 id="capstone-title">{graduation task heading}</h2>
+      <p>{artifact, constraints, and judgment the capstone demonstrates}</p>
+      <a class="primary-action" href="lessons/0001-example.html">{begin with the first capability}</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>{source scope, edition, or maintenance boundary}</p>
+  </footer>
 </body>
 </html>

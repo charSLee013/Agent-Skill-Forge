@@ -76,3 +76,20 @@ Use this planning surface when a subject has internal structure, multiple eviden
 - Static baseline:
 - Enhancement policy:
 - Verification mode:
+
+## Editorial Direction
+
+- Learner register:
+- Explanatory stance:
+- Terminology policy:
+- Paragraph rhythm:
+- Evidence voice:
+
+## Visual and Motion Direction
+
+- Visual thesis:
+- Domain objects and evidence types:
+- Representation inventory:
+- Semantic visual roles:
+- Motion purposes:
+- Static and reduced-motion equivalents:

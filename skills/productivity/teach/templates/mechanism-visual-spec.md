@@ -1,64 +1,76 @@
 # Mechanism Representation Spec: {Mechanism}
 
-Use this planning surface for a formula, process, state change, comparison, diagram, or direct-manipulation activity.
-
 ## Learning Responsibility
 
 - Page or lesson:
 - Learner starting point:
 - Learning bottleneck:
-- Capability this mechanism unlocks:
-- Misunderstanding this representation resolves:
+- Capability unlocked:
+- Misunderstanding resolved:
+- Visual claim:
+- Representation type:
 
 ## Mechanism
 
-- Object being changed or reasoned about:
+- Object:
 - Inputs:
 - Variables, shapes, units, and roles:
-- Formula or governing relationship:
+- Governing relationship:
 - Initial state:
-- One step:
+- One transition:
+- Resulting state:
 - Whole process:
 - Constraints:
 - Failure modes and diagnoses:
 - Evidence role and source:
 - Applicable scope:
 
-## Default Worked State
+## Worked State
 
 - Concrete input values:
 - Intermediate states:
 - Expected result:
 - Interpretation:
-- Connection to the next case:
+- Next comparison or case:
 
-## Static Representation
+## Motion Purpose
 
-- Core explanation:
-- Variable or object table:
-- Formula, procedure, or trace:
-- Default diagram or data view:
-- Text interpretation:
-- Boundary statement:
+- Sequence, causality, state change, transformation, synchronization, or comparison revealed:
+- Observation the learner should make:
+- Why static juxtaposition alone is insufficient:
+- Playback pace and pause points:
 
-## Direct Manipulation
+## State Model
+
+| state | active objects | values | labels | interpretation | available actions |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
+
+## Interaction
 
 - Learner-controlled variables:
 - Valid ranges or states:
-- Synchronized numerical readout:
-- Synchronized visual state:
-- Synchronized textual interpretation:
-- Comparison the learner can make:
-- Reset and default behavior:
+- Play, pause, step, and reset behavior:
+- Synchronized readout, visual state, labels, and explanation:
 - Keyboard and focus behavior:
-- Error and boundary feedback:
-- Runtime requirement notice:
+- Error, boundary, and recovery behavior:
+
+## Static and Reduced Motion
+
+- Core explanation:
+- Variable or object table:
+- Formula, procedure, trace, or comparison:
+- Default visual state:
+- Text interpretation:
+- Reduced-motion state changes:
+- No-JavaScript runtime notice:
 
 ## Review Evidence
 
-- Static baseline check:
-- Formula or process fidelity check:
-- Default example check:
-- Interaction behavior check:
-- Mobile and keyboard check:
+- Formula or process fidelity:
+- Initial, transition, result, error, and reset states:
+- Static and reduced-motion equivalence:
+- Desktop and mobile bounds, overflow, collision, and label placement:
+- Keyboard, focus, and accessible names:
+- Console, network, and asset loading:
 - Learner insight demonstrated:
