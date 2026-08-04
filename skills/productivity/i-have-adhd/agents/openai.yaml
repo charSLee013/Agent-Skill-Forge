@@ -1,0 +1,6 @@
+interface:
+  display_name: "I Have ADHD"
+  short_description: "Make responses easier for an ADHD brain to act on"
+  default_prompt: "Use $i-have-adhd for every response until I say normal mode."
+policy:
+  allow_implicit_invocation: false

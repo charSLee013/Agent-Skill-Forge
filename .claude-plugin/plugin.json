@@ -1,6 +1,6 @@
 {
   "name": "agent-skill-forge",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Composable agent skills for engineering, productivity, and research workflows.",
   "author": {
     "name": "charSLee013"
@@ -25,6 +25,7 @@
     "./skills/productivity/grill-me",
     "./skills/productivity/grilling",
     "./skills/productivity/handoff",
+    "./skills/productivity/i-have-adhd",
     "./skills/productivity/prepare-goals",
     "./skills/productivity/teach",
     "./skills/productivity/writing-great-skills",

@@ -160,7 +160,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 ### Productivity
 
-生产力类 skill 面向非代码规划、访谈、学习、交接和 skill 写作。
+生产力类 skill 面向非代码规划、访谈、学习、交接、沟通模式和 skill 写作。
 
 #### 用户显式调用
 
@@ -168,6 +168,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 |---|---|
 | [grill-me](./skills/productivity/grill-me/SKILL.md) | 用少量主干问题明确计划或设计并回填可逆细节；用于通用单会话澄清，区别于写项目文档的 `grill-with-docs`；需一个可陈述目标，出口是可执行计划。 |
 | [handoff](./skills/productivity/handoff/SKILL.md) | 将当前对话压缩成交接文档；用于换 Agent 或新会话，区别于重新规划或实现；需当前状态、决策和未完成项，出口是下一会话可直接读取的文档。 |
+| [i-have-adhd](./skills/productivity/i-have-adhd/SKILL.md) | 将每次回复塑造成行动优先、低启动阻力的 ADHD 友好格式；用于用户手动开启的会话沟通模式，区别于任务工作流；无需参数，仅在用户说 `normal mode` 或 `stop adhd mode` 时退出。 |
 | [prepare-goals](./skills/productivity/prepare-goals/SKILL.md) | 将已批准的长期工作整理成边界清晰的 Codex Goal launcher；用于预计持续数小时或数天的执行，区别于普通任务和未决规划；需明确结果与验证路径，出口是不自动启动的 `/goal` 指令。 |
 | [writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md) | 提供编写和维护可预测 skill 的规范；用于 skill 设计或评审，区别于安装和业务实现；需目标 skill 或行为契约，出口是边界清晰的 skill 文本。 |
 
