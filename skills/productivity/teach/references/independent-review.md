@@ -8,7 +8,7 @@ Use a fresh reviewer for meaningful multi-page or evidence risk, user-requested 
 Review the supplied course as a learner-facing static publication.
 
 Enumerate the declared artifacts and verify that each HTML file carries its
-assigned content and ordinary navigation through the declared delivery target.
+assigned content and ordinary navigation through the declared publication target.
 
 Report findings, ordered by learner impact, for:
 
@@ -21,8 +21,8 @@ Report findings, ordered by learner impact, for:
    language, generic transitions, and unsupported claims;
 6. visual thesis, subject fit, hierarchy, scanability, information density,
    responsive behavior, and accessibility;
-7. the learning claim, state synchronization, controls, static equivalent,
-   and reduced-motion behavior of each enhanced mechanism;
+7. the learning claim, state synchronization, controls, and reduced-motion behavior
+   of each enhanced mechanism;
 8. pages whose polished shell hides thin explanation, evidence, practice,
    feedback, or diagnosis;
 9. concrete repairs with file and location evidence.

@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mechanism Animation — component pattern</title>
+<style>
+  :root {
+    --color-domain-primary: #2f6f8f;
+    --color-evidence: #6b5b95;
+    --color-practice: #1f7a5a;
+    --color-warning: #a8442a;
+    --color-ink: #1c2024;
+    --color-ink-muted: #5b646d;
+    --color-surface: #fbfaf8;
+    --color-surface-raised: #ffffff;
+    --color-rule: #d8d4cd;
+
+    --font-step-0: 0.875rem;
+    --font-step-1: 1rem;
+    --font-step-2: 1.25rem;
+    --font-step-3: 1.5rem;
+    --font-step-4: 2rem;
+
+    --measure: 34rem;
+
+    --trace-duration: 300ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2rem 1.25rem 3rem;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font: var(--font-step-1)/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  .wrap { max-width: 62rem; margin: 0 auto; }
+  h1 { font-size: var(--font-step-4); line-height: 1.15; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+  .lede { max-width: var(--measure); color: var(--color-ink-muted); margin: 0 0 2rem; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr minmax(13rem, 17rem);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .board {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-rule);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  svg { display: block; width: 100%; height: auto; }
+
+  .axis { stroke: var(--color-rule); stroke-width: 1; }
+  .axis-label { font-size: 11px; fill: var(--color-ink-muted); }
+
+  .curve {
+    fill: none;
+    stroke: var(--color-domain-primary);
+    stroke-width: 2.5;
+    transition: d var(--trace-duration) ease;
+  }
+
+  .curve[data-unstable="true"] { stroke: var(--color-warning); }
+
+  .marker { fill: var(--color-evidence); }
+  .marker-line { stroke: var(--color-evidence); stroke-width: 1; stroke-dasharray: 3 3; }
+
+  .band { fill: color-mix(in srgb, var(--color-warning) 8%, transparent); }
+
+  /* ---- controls ---- */
+  .panel {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-rule);
+    border-radius: 0.5rem;
+    padding: 1.1rem 1.15rem 1.25rem;
+  }
+
+  .panel h2 {
+    font-size: var(--font-step-0);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-ink-muted);
+    margin: 0 0 0.9rem;
+  }
+
+  .field { margin-bottom: 1.1rem; }
+
+  .field label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: var(--font-step-0);
+    margin-bottom: 0.3rem;
+  }
+
+  .field .value {
+    font-variant-numeric: tabular-nums;
+    font-weight: 650;
+    color: var(--color-domain-primary);
+  }
+
+  .field .value[data-unstable="true"] { color: var(--color-warning); }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-practice);
+  }
+
+  input[type="range"]:focus-visible { outline: 2px solid var(--color-practice); outline-offset: 3px; }
+
+  .buttons { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.25rem; }
+
+  button {
+    font: inherit;
+    font-size: var(--font-step-0);
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 0.3rem;
+    background: var(--color-surface-raised);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) { border-color: var(--color-domain-primary); color: var(--color-domain-primary); }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  button:focus-visible { outline: 2px solid var(--color-practice); outline-offset: 2px; }
+
+  /* ---- interpretation ---- */
+  .readout {
+    max-width: var(--measure);
+    border-left: 3px solid var(--color-domain-primary);
+    padding: 0.1rem 0 0.1rem 1rem;
+    margin: 1.25rem 0 0;
+  }
+
+  .readout[data-unstable="true"] { border-left-color: var(--color-warning); }
+
+  .readout dt {
+    font-size: var(--font-step-0);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.15rem;
+  }
+
+  .readout dd { margin: 0 0 0.9rem; }
+  .readout dd:first-of-type { font-size: var(--font-step-2); line-height: 1.35; }
+  .readout dd:last-of-type { margin-bottom: 0; }
+
+  .formula {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: var(--font-step-0);
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: 0.3rem;
+    padding: 0.6rem 0.8rem;
+    margin: 0 0 1rem;
+  }
+
+  @media (max-width: 44rem) {
+    .layout { grid-template-columns: 1fr; }
+    h1 { font-size: var(--font-step-3); }
+  }
+
+  /* Redraw in one discrete jump rather than tweening the curve. */
+  @media (prefers-reduced-motion: reduce) {
+    :root { --trace-duration: 0ms; }
+    .curve { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Mechanism animation</h1>
+  <p class="lede">
+    Use this pattern when the bottleneck is a <strong>relationship between quantities</strong>: the
+    learner can read the formula but cannot predict what happens when one term moves. Every control
+    updates the curve, the numbers, and the sentence together.
+  </p>
+
+  <p class="formula" id="formula"></p>
+
+  <div class="layout">
+    <div class="board">
+      <svg viewBox="0 0 560 300" role="img" aria-labelledby="plot-title">
+        <title id="plot-title">Queue wait time against utilization</title>
+        <rect class="band" id="band" x="0" y="0" width="0" height="0" />
+        <line class="axis" x1="48" y1="264" x2="536" y2="264" />
+        <line class="axis" x1="48" y1="24" x2="48" y2="264" />
+        <text class="axis-label" x="48" y="284">utilization &#961;</text>
+        <text class="axis-label" x="4" y="20">wait</text>
+        <path class="curve" id="curve" d="" />
+        <line class="marker-line" id="marker-line" x1="0" y1="264" x2="0" y2="264" />
+        <circle class="marker" id="marker" r="5" cx="0" cy="0" />
+      </svg>
+    </div>
+
+    <div class="panel">
+      <h2>Controls</h2>
+
+      <div class="field">
+        <label for="rho">
+          <span>Utilization &#961;</span>
+          <span class="value" id="rho-value"></span>
+        </label>
+        <input type="range" id="rho" min="0.05" max="0.97" step="0.01" value="0.5"
+               aria-describedby="r-body">
+      </div>
+
+      <div class="field">
+        <label for="service">
+          <span>Service time</span>
+          <span class="value" id="service-value"></span>
+        </label>
+        <input type="range" id="service" min="1" max="40" step="1" value="10"
+               aria-describedby="r-body">
+      </div>
+
+      <div class="buttons">
+        <button type="button" id="play" aria-label="Play a sweep of utilization from low to high">Play</button>
+        <button type="button" id="pause" aria-label="Pause the sweep">Pause</button>
+        <button type="button" id="step" aria-label="Increase utilization by one step">Step &#961;</button>
+        <button type="button" id="reset" aria-label="Reset both controls">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <dl class="readout" id="readout" aria-live="polite">
+    <dt>Predicted wait</dt>
+    <dd id="r-headline"></dd>
+    <dt>How to read it</dt>
+    <dd id="r-body"></dd>
+  </dl>
+</div>
+
+<script>
+  // Replace the model, the formula string, and the interpretation thresholds
+  // with the subject's own relationship.
+  const DEFAULTS = { rho: 0.5, service: 10 };
+  const UNSTABLE_RHO = 0.85;
+
+  const state = { ...DEFAULTS, playing: false, timer: null };
+
+  const PLOT = { x0: 48, x1: 536, y0: 24, y1: 264, rhoMax: 0.98, waitCap: 240 };
+
+  // Mean wait for an M/M/1 queue: W = S * rho / (1 - rho).
+  function wait(rho, service) {
+    return (service * rho) / (1 - rho);
+  }
+
+  function toX(rho) {
+    return PLOT.x0 + (rho / PLOT.rhoMax) * (PLOT.x1 - PLOT.x0);
+  }
+
+  function toY(w) {
+    const clamped = Math.min(w, PLOT.waitCap);
+    return PLOT.y1 - (clamped / PLOT.waitCap) * (PLOT.y1 - PLOT.y0);
+  }
+
+  function curvePath(service) {
+    const points = [];
+    for (let rho = 0.02; rho <= PLOT.rhoMax; rho += 0.01) {
+      points.push(`${toX(rho).toFixed(1)},${toY(wait(rho, service)).toFixed(1)}`);
+    }
+    return `M ${points.join(" L ")}`;
+  }
+
+  const els = {
+    formula: document.getElementById("formula"),
+    curve: document.getElementById("curve"),
+    marker: document.getElementById("marker"),
+    markerLine: document.getElementById("marker-line"),
+    band: document.getElementById("band"),
+    rho: document.getElementById("rho"),
+    service: document.getElementById("service"),
+    rhoValue: document.getElementById("rho-value"),
+    serviceValue: document.getElementById("service-value"),
+    headline: document.getElementById("r-headline"),
+    body: document.getElementById("r-body"),
+    readout: document.getElementById("readout"),
+    reset: document.getElementById("reset"),
+    step: document.getElementById("step"),
+    play: document.getElementById("play"),
+    pause: document.getElementById("pause")
+  };
+
+  // Single render path: curve, marker, both readouts, the formula line, and the
+  // interpretation sentence all derive from `state` in one place.
+  function render() {
+    const w = wait(state.rho, state.service);
+    const unstable = state.rho >= UNSTABLE_RHO;
+
+    els.formula.textContent =
+      `W = S · ρ / (1 − ρ)   with S = ${state.service} ms, ρ = ${state.rho.toFixed(2)}`;
+
+    els.curve.setAttribute("d", curvePath(state.service));
+    els.curve.dataset.unstable = String(unstable);
+
+    const mx = toX(state.rho);
+    const my = toY(w);
+    els.marker.setAttribute("cx", mx);
+    els.marker.setAttribute("cy", my);
+    els.markerLine.setAttribute("x1", mx);
+    els.markerLine.setAttribute("x2", mx);
+    els.markerLine.setAttribute("y1", my);
+    els.markerLine.setAttribute("y2", PLOT.y1);
+
+    const bandX = toX(UNSTABLE_RHO);
+    els.band.setAttribute("x", bandX);
+    els.band.setAttribute("y", PLOT.y0);
+    els.band.setAttribute("width", PLOT.x1 - bandX);
+    els.band.setAttribute("height", PLOT.y1 - PLOT.y0);
+
+    els.rhoValue.textContent = state.rho.toFixed(2);
+    els.rhoValue.dataset.unstable = String(unstable);
+    els.serviceValue.textContent = `${state.service} ms`;
+
+    els.rho.value = String(state.rho);
+    els.service.value = String(state.service);
+
+    const capped = w > PLOT.waitCap;
+    els.headline.textContent = capped
+      ? `${Math.round(w)} ms — beyond the plotted range`
+      : `${Math.round(w)} ms`;
+
+    els.body.textContent = unstable
+      ? `Past ρ ≈ ${UNSTABLE_RHO}, wait grows faster than utilization does: the shaded band is where a few percent more load multiplies latency. Adding capacity moves ρ left, which buys far more here than shortening service time.`
+      : `Wait rises with ρ but stays proportionate. At this load, cutting service time is the more direct lever — halving S halves the wait, while the same relative drop in ρ changes it less.`;
+
+    els.readout.dataset.unstable = String(unstable);
+
+    const atMax = state.rho >= Number(els.rho.max);
+    els.play.disabled = state.playing || atMax;
+    els.pause.disabled = !state.playing;
+    els.step.disabled = atMax;
+    els.reset.disabled = state.rho === DEFAULTS.rho && state.service === DEFAULTS.service && !state.playing;
+  }
+
+  function advance() {
+    if (state.rho < Number(els.rho.max)) {
+      state.rho = Math.min(Number((state.rho + 0.02).toFixed(2)), Number(els.rho.max));
+      render();
+    } else {
+      pause();
+    }
+  }
+
+  function play() {
+    if (state.playing || state.rho >= Number(els.rho.max)) return;
+    state.playing = true;
+    state.timer = setInterval(advance, 220);
+    render();
+  }
+
+  function pause() {
+    state.playing = false;
+    clearInterval(state.timer);
+    state.timer = null;
+    render();
+  }
+
+  els.rho.addEventListener("input", () => {
+    pause();
+    state.rho = Number(els.rho.value);
+    render();
+  });
+
+  els.service.addEventListener("input", () => {
+    pause();
+    state.service = Number(els.service.value);
+    render();
+  });
+
+  els.play.addEventListener("click", play);
+  els.pause.addEventListener("click", pause);
+
+  els.step.addEventListener("click", () => {
+    pause();
+    state.rho = Math.min(Number((state.rho + 0.1).toFixed(2)), Number(els.rho.max));
+    render();
+  });
+
+  els.reset.addEventListener("click", () => {
+    pause();
+    state.rho = DEFAULTS.rho;
+    state.service = DEFAULTS.service;
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

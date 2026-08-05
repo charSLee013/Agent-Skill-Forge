@@ -2,16 +2,25 @@
 
 Review the learner-facing publication through four ordered gates. Keep evidence in the session workspace unless the Course Contract declares a review artifact.
 
+## Opening the publication target
+
+Take the first path that is available:
+
+1. the project's existing browser automation path — Playwright, Puppeteer, or a chrome-devtools MCP server;
+2. a local server such as `python3 -m http.server` or `npx serve`, then drive the page by hand;
+3. `file://` opened directly, running each gate manually.
+
+When none is reachable, finish the static inspections, report the course as **browser-unverified**, and list the gate items that went unrun.
+
 ## 1. Publication
 
 1. Enumerate every learner-facing artifact in the Course Contract.
 2. Inspect generated HTML, not only source templates, for assigned primary content and ordinary links.
-3. Open the declared static target and traverse every local course link.
-4. Disable JavaScript and inspect explanations, formulas or process meaning, default examples, source links, and navigation.
-5. Verify base paths, page titles, assets, local 404 behavior, and applicable CDN or CSP behavior.
-6. Run `file://`, portability, connected-host, print, or offline checks when declared.
+3. Open the declared publication target and traverse every local course link.
+4. Verify base paths, page titles, assets, local 404 behavior, and applicable CDN or CSP behavior.
+5. Run `file://`, portability, connected-host, print, or offline checks when declared.
 
-Pass when the final files carry the complete course path through the delivery target.
+Pass when the final files carry the complete course path through the publication target.
 
 ## 2. Learning, Editorial, and Fidelity
 
@@ -36,6 +45,7 @@ Pass when a learner can reconstruct the argument and no editorial repair would c
 Inspect desktop, narrow mobile, keyboard, reduced-motion, and declared print states. Confirm:
 
 - the visual thesis is visibly derived from the subject's objects, evidence, and learner actions;
+- `assets/course.css` exists, every page links it, and its custom properties carry the declared visual thesis;
 - typography, spacing, and reading widths support long-form comprehension;
 - `font-size` declarations use stable type steps rather than viewport units;
 - navigation, evidence, warnings, practice, feedback, and status have stable roles;
@@ -56,13 +66,13 @@ Exercise every meaningful enhanced state:
 - calculators, charts, diagrams, canvas, and responsive redraw;
 - initial, transitional, result, empty, error, boundary, and recovery states;
 - keyboard operation, visible focus, and accessible names;
-- reduced-motion and no-JavaScript equivalents;
+- reduced-motion behavior;
 - console errors, warnings, network failures, and missing assets.
 
-For each animation, restate the learning claim and verify that the transition exposes it. For canvas or generated visuals, inspect meaningful pixels and labels. Pass when enhanced and static paths produce the same interpretation and every declared state behaves correctly.
+For each animation, restate the learning claim and verify that the transition exposes it. For canvas or generated visuals, inspect meaningful pixels and labels. Pass when every declared state behaves correctly and readouts, labels, and text explanation stay synchronized throughout.
 
 ## Review Scope
 
 Run all gates on the tracer. During final review, traverse every learner-facing page for publication and links, then inspect representative and high-risk pages deeply through the remaining gates.
 
-Browser rendering is required for completion. When the declared browser path is unavailable, finish static inspections and report the course as unverified rather than passing the browser gates.
+Browser rendering is required for completion: a course that never rendered is unverified, however clean its source reads.

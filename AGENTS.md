@@ -9,7 +9,7 @@ This file is the repository's only Agent instruction source. Do not create paral
 Skills are organized into three shipped buckets under `skills/`:
 
 - `engineering/` - code work, planning, local issue workflow, architecture, implementation, debugging, and testing.
-- `productivity/` - non-code planning, grilling, handoff, Teach v2, and skill-writing guidance.
+- `productivity/` - non-code planning, grilling, handoff, course building, and skill-writing guidance.
 - `research/` - research retrieval and document-building workflows.
 
 Every shipped skill must have:

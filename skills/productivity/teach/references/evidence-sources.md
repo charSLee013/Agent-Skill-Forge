@@ -18,26 +18,7 @@ Use the Course Contract to define the applicable evidence ecology before researc
 
 ## Source Note
 
-Create `sources/{slug}.md` with:
-
-```md
-# {Source title}
-
-## Source
-{URL, path, identifier, version, date, or repository reference.}
-
-## Role
-{source | derived | observed | context | explanation | transfer}
-
-## What It Supports
-{The precise claim, behavior, definition, formula, data point, or example.}
-
-## Teaching Use
-{The lesson, explanation, comparison, exercise, or capstone that uses it.}
-
-## Scope
-{The setting, audience, version, assumptions, and applicable conditions.}
-```
+Record each important source or evidence-producing observation as `sources/{slug}.md`, following the field structure in `../templates/source-notes.md`.
 
 ## Evidence Roles
 

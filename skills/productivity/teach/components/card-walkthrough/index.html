@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Card Walkthrough — component pattern</title>
+<style>
+  :root {
+    --color-domain-primary: #2f6f8f;
+    --color-evidence: #6b5b95;
+    --color-practice: #1f7a5a;
+    --color-warning: #a8442a;
+    --color-ink: #1c2024;
+    --color-ink-muted: #5b646d;
+    --color-surface: #fbfaf8;
+    --color-surface-raised: #ffffff;
+    --color-rule: #d8d4cd;
+
+    --font-step-0: 0.875rem;
+    --font-step-1: 1rem;
+    --font-step-2: 1.25rem;
+    --font-step-3: 1.5rem;
+    --font-step-4: 2rem;
+
+    --measure: 34rem;
+
+    --swap-duration: 240ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2rem 1.25rem 3rem;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font: var(--font-step-1)/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  .wrap { max-width: 62rem; margin: 0 auto; }
+  h1 { font-size: var(--font-step-4); line-height: 1.15; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+  .lede { max-width: var(--measure); color: var(--color-ink-muted); margin: 0 0 2rem; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(12rem, 17rem) 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  /* ---- narrative sidebar ---- */
+  .rail { margin: 0; padding: 0; list-style: none; border-left: 2px solid var(--color-rule); }
+
+  .rail li { position: relative; }
+
+  .rail button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    font-size: var(--font-step-0);
+    background: none;
+    border: 0;
+    border-left: 2px solid transparent;
+    margin-left: -2px;
+    padding: 0.65rem 0.75rem;
+    color: var(--color-ink-muted);
+    cursor: pointer;
+  }
+
+  .rail button:hover { color: var(--color-domain-primary); }
+  .rail button:focus-visible { outline: 2px solid var(--color-practice); outline-offset: -2px; }
+
+  .rail li[data-state="done"] button { color: var(--color-ink); }
+
+  .rail li[data-state="current"] button {
+    border-left-color: var(--color-domain-primary);
+    color: var(--color-domain-primary);
+    font-weight: 650;
+    background: color-mix(in srgb, var(--color-domain-primary) 6%, transparent);
+  }
+
+  .rail .idx {
+    font-variant-numeric: tabular-nums;
+    display: inline-block;
+    min-width: 1.4rem;
+    color: var(--color-ink-muted);
+  }
+
+  .rail li[data-state="current"] .idx { color: var(--color-domain-primary); }
+
+  /* ---- detail pane ---- */
+  .pane {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-rule);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    min-height: 19rem;
+  }
+
+  .pane[data-swapping="true"] { opacity: 0; }
+  .pane { transition: opacity var(--swap-duration) ease; }
+
+  .pane h2 { font-size: var(--font-step-3); margin: 0 0 0.75rem; line-height: 1.25; }
+  .pane p { max-width: var(--measure); margin: 0 0 1rem; }
+
+  .figure {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: var(--font-step-0);
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: 0.3rem;
+    padding: 0.85rem 1rem;
+    white-space: pre;
+    overflow-x: auto;
+    margin: 0 0 1rem;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: var(--font-step-0);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tag[data-kind="reconstruct"] { color: var(--color-domain-primary); background: color-mix(in srgb, var(--color-domain-primary) 12%, transparent); }
+  .tag[data-kind="evidence"] { color: var(--color-evidence); background: color-mix(in srgb, var(--color-evidence) 12%, transparent); }
+  .tag[data-kind="practice"] { color: var(--color-practice); background: color-mix(in srgb, var(--color-practice) 12%, transparent); }
+  .tag[data-kind="boundary"] { color: var(--color-warning); background: color-mix(in srgb, var(--color-warning) 12%, transparent); }
+
+  .takeaway {
+    border-left: 3px solid var(--color-domain-primary);
+    padding-left: 1rem;
+    max-width: var(--measure);
+    margin: 0;
+  }
+
+  .takeaway dt {
+    font-size: var(--font-step-0);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-muted);
+  }
+
+  .takeaway dd { margin: 0.15rem 0 0; }
+
+  /* ---- controls ---- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.25rem 0 0;
+  }
+
+  .controls button {
+    font: inherit;
+    font-size: var(--font-step-0);
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 0.3rem;
+    background: var(--color-surface-raised);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  .controls button:hover:not(:disabled) { border-color: var(--color-domain-primary); color: var(--color-domain-primary); }
+  .controls button:disabled { opacity: 0.45; cursor: not-allowed; }
+  .controls button:focus-visible { outline: 2px solid var(--color-practice); outline-offset: 2px; }
+
+  .count { font-size: var(--font-step-0); color: var(--color-ink-muted); font-variant-numeric: tabular-nums; margin-left: auto; }
+
+  @media (max-width: 42rem) {
+    .layout { grid-template-columns: 1fr; }
+    h1 { font-size: var(--font-step-3); }
+  }
+
+  /* Swap instantly rather than shortening the fade. */
+  @media (prefers-reduced-motion: reduce) {
+    :root { --swap-duration: 0ms; }
+    .pane { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Card walkthrough</h1>
+  <p class="lede">
+    Use this pattern when the bottleneck is <strong>reconstruction</strong>: the learner has to carry
+    intermediate state from one step to the next. The rail keeps the whole path visible while the pane
+    shows one step at a time, so no step has to be held in memory.
+  </p>
+
+  <div class="layout">
+    <ol class="rail" id="rail"></ol>
+
+    <section class="pane" id="pane" aria-live="polite">
+      <span class="tag" id="p-tag"></span>
+      <h2 id="p-title"></h2>
+      <p id="p-body"></p>
+      <pre class="figure" id="p-figure"></pre>
+      <dl class="takeaway">
+        <dt>Carry forward</dt>
+        <dd id="p-carry"></dd>
+      </dl>
+    </section>
+  </div>
+
+  <div class="controls">
+    <button type="button" id="prev" aria-label="Previous step">Previous</button>
+    <button type="button" id="step" aria-label="Next step">Next</button>
+    <button type="button" id="reset" aria-label="Return to the first step">Reset</button>
+    <span class="count" id="count" aria-hidden="true"></span>
+  </div>
+</div>
+
+<script>
+  // Replace STEPS with the subject's own reconstruction. `figure` holds the
+  // intermediate state the learner must carry into the following step.
+  const STEPS = [
+    {
+      tag: "reconstruct", label: "Start from the raw input",
+      title: "One unsorted list",
+      body: "Merge sort is easier to trust once you watch the split happen before any comparison does. Nothing is ordered yet.",
+      figure: "[ 38  27  43  3  9  82  10 ]",
+      carry: "Seven items, no ordering assumptions."
+    },
+    {
+      tag: "reconstruct", label: "Split until pairs",
+      title: "Divide before comparing",
+      body: "Each split is unconditional — the algorithm does not look at values yet. This is why the depth is log n regardless of input.",
+      figure: "[ 38  27  43  3 ]   [ 9  82  10 ]\n[ 38  27 ] [ 43  3 ]   [ 9  82 ] [ 10 ]",
+      carry: "Four groups, each small enough to order by one comparison."
+    },
+    {
+      tag: "evidence", label: "Merge one pair",
+      title: "The first ordered run",
+      body: "Merging two sorted runs needs only a comparison of their heads. That property is what the recursion is buying.",
+      figure: "[ 38 ] [ 27 ]  ->  [ 27  38 ]\n[ 43 ] [ 3  ]  ->  [ 3   43 ]",
+      carry: "Two sorted runs of length two."
+    },
+    {
+      tag: "reconstruct", label: "Merge upward",
+      title: "Runs combine without re-comparison",
+      body: "Each level walks both runs once. No element is compared against one it has already been ordered against.",
+      figure: "[ 27  38 ] [ 3  43 ]  ->  [ 3  27  38  43 ]",
+      carry: "One sorted run of four; the right half is still pending."
+    },
+    {
+      tag: "boundary", label: "Where it costs you",
+      title: "The merge needs somewhere to write",
+      body: "The classic implementation cannot merge in place, so it allocates. That is the trade this whole structure makes for its guaranteed n log n.",
+      figure: "extra space: O(n)\nworst case:  n log n comparisons",
+      carry: "Predictable time, at the price of a second buffer."
+    }
+  ];
+
+  const state = { index: 0 };
+
+  const railEl = document.getElementById("rail");
+  STEPS.forEach((step, i) => {
+    const li = document.createElement("li");
+    li.dataset.state = "pending";
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.innerHTML = '<span class="idx"></span><span class="txt"></span>';
+    btn.querySelector(".idx").textContent = String(i + 1).padStart(2, "0");
+    btn.querySelector(".txt").textContent = step.label;
+    btn.addEventListener("click", () => goTo(i));
+    li.append(btn);
+    railEl.append(li);
+  });
+
+  const railItems = [...railEl.querySelectorAll("li")];
+  const pane = document.getElementById("pane");
+
+  // Single render path: rail, pane, figure, carry-forward line, and buttons
+  // all derive from `state.index`, so the prose can never lag the visual.
+  function render() {
+    const step = STEPS[state.index];
+
+    railItems.forEach((li, i) => {
+      li.dataset.state = i < state.index ? "done" : i === state.index ? "current" : "pending";
+    });
+
+    document.getElementById("p-tag").textContent = step.tag;
+    document.getElementById("p-tag").dataset.kind = step.tag;
+    document.getElementById("p-title").textContent = step.title;
+    document.getElementById("p-body").textContent = step.body;
+    document.getElementById("p-figure").textContent = step.figure;
+    document.getElementById("p-carry").textContent = step.carry;
+    document.getElementById("count").textContent = `${state.index + 1} / ${STEPS.length}`;
+
+    document.getElementById("prev").disabled = state.index === 0;
+    document.getElementById("step").disabled = state.index === STEPS.length - 1;
+    document.getElementById("reset").disabled = state.index === 0;
+  }
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function goTo(index) {
+    const next = Math.min(Math.max(index, 0), STEPS.length - 1);
+    if (next === state.index) return;
+
+    // Under reduced motion, swap discretely with no fade at all.
+    if (reduceMotion.matches) {
+      state.index = next;
+      render();
+      return;
+    }
+
+    pane.dataset.swapping = "true";
+    setTimeout(() => {
+      state.index = next;
+      render();
+      pane.dataset.swapping = "false";
+    }, 120);
+  }
+
+  document.getElementById("prev").addEventListener("click", () => goTo(state.index - 1));
+  document.getElementById("step").addEventListener("click", () => goTo(state.index + 1));
+  document.getElementById("reset").addEventListener("click", () => goTo(0));
+
+  render();
+</script>
+</body>
+</html>

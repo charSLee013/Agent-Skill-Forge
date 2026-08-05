@@ -73,8 +73,6 @@ Use this planning surface when a subject has internal structure, multiple eviden
 
 - Delivery target:
 - Page topology:
-- Static baseline:
-- Enhancement policy:
 - Verification mode:
 
 ## Editorial Direction
@@ -92,4 +90,4 @@ Use this planning surface when a subject has internal structure, multiple eviden
 - Representation inventory:
 - Semantic visual roles:
 - Motion purposes:
-- Static and reduced-motion equivalents:
+- State models and reduced-motion behavior:

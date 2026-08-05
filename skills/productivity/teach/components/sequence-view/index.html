@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sequence View — component pattern</title>
+<style>
+  :root {
+    --color-domain-primary: #2f6f8f;
+    --color-evidence: #6b5b95;
+    --color-practice: #1f7a5a;
+    --color-warning: #a8442a;
+    --color-ink: #1c2024;
+    --color-ink-muted: #5b646d;
+    --color-surface: #fbfaf8;
+    --color-surface-raised: #ffffff;
+    --color-rule: #d8d4cd;
+    --color-rule-faint: #ebe8e3;
+
+    --font-step-0: 0.875rem;
+    --font-step-1: 1rem;
+    --font-step-2: 1.25rem;
+    --font-step-3: 1.5rem;
+    --font-step-4: 2rem;
+
+    --measure: 34rem;
+
+    --lane-gap: 2.5rem;
+    --step-duration: 420ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2rem 1.25rem 3rem;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font: var(--font-step-1)/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  .wrap { max-width: 62rem; margin: 0 auto; }
+
+  h1 { font-size: var(--font-step-4); line-height: 1.15; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+  .lede { max-width: var(--measure); color: var(--color-ink-muted); margin: 0 0 2rem; }
+
+  /* ---- diagram ---- */
+  .sequence {
+    position: relative;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-rule);
+    border-radius: 0.5rem;
+    padding: 1.5rem 1.25rem 1.75rem;
+    overflow-x: auto;
+  }
+
+  .lanes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(8rem, 1fr));
+    gap: var(--lane-gap);
+    min-width: 30rem;
+  }
+
+  .lane { text-align: center; position: relative; }
+
+  .lane-head {
+    font-size: var(--font-step-0);
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--color-rule);
+    background: var(--color-surface);
+    color: var(--color-ink-muted);
+  }
+
+  .lane[data-active="true"] .lane-head {
+    border-color: var(--color-domain-primary);
+    color: var(--color-domain-primary);
+    background: color-mix(in srgb, var(--color-domain-primary) 8%, var(--color-surface-raised));
+  }
+
+  .lane-line {
+    width: 2px;
+    height: 13rem;
+    margin: 0.5rem auto 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--color-rule) 0 6px,
+      transparent 6px 12px
+    );
+  }
+
+  /* message rows overlay the lane grid */
+  .messages {
+    position: relative;
+    margin-top: -13rem;
+    height: 13rem;
+    min-width: 30rem;
+  }
+
+  .msg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .msg-track {
+    flex: 1;
+    height: 2px;
+    background: var(--color-rule-faint);
+    position: relative;
+    transition: background var(--step-duration) ease;
+  }
+
+  .msg[data-state="done"] .msg-track,
+  .msg[data-state="current"] .msg-track { background: var(--color-domain-primary); }
+
+  .msg[data-kind="evidence"][data-state="current"] .msg-track { background: var(--color-evidence); }
+  .msg[data-kind="reject"][data-state="current"] .msg-track { background: var(--color-warning); }
+
+  .msg-track::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-top: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+    color: var(--color-rule-faint);
+    transition: color var(--step-duration) ease;
+  }
+
+  .msg[data-dir="right"] .msg-track::after {
+    right: 0;
+    transform: translateY(-50%) rotate(45deg);
+  }
+  .msg[data-dir="left"] .msg-track::after {
+    left: 0;
+    transform: translateY(-50%) rotate(-135deg);
+  }
+
+  .msg[data-state="done"] .msg-track::after,
+  .msg[data-state="current"] .msg-track::after { color: var(--color-domain-primary); }
+  .msg[data-kind="evidence"][data-state="current"] .msg-track::after { color: var(--color-evidence); }
+  .msg[data-kind="reject"][data-state="current"] .msg-track::after { color: var(--color-warning); }
+
+  .msg-label {
+    position: absolute;
+    top: -1.35rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: var(--font-step-0);
+    font-variant-numeric: tabular-nums;
+    background: var(--color-surface-raised);
+    padding: 0 0.4rem;
+    color: var(--color-rule-faint);
+    transition: color var(--step-duration) ease;
+  }
+
+  .msg[data-state="done"] .msg-label { color: var(--color-ink-muted); }
+  .msg[data-state="current"] .msg-label { color: var(--color-ink); font-weight: 600; }
+
+  /* ---- controls ---- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.25rem 0 1rem;
+  }
+
+  button {
+    font: inherit;
+    font-size: var(--font-step-0);
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 0.3rem;
+    background: var(--color-surface-raised);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) { border-color: var(--color-domain-primary); color: var(--color-domain-primary); }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--color-practice);
+    outline-offset: 2px;
+  }
+
+  .step-count {
+    font-size: var(--font-step-0);
+    color: var(--color-ink-muted);
+    font-variant-numeric: tabular-nums;
+    margin-left: auto;
+  }
+
+  /* ---- interpretation ---- */
+  .readout {
+    max-width: var(--measure);
+    border-left: 3px solid var(--color-domain-primary);
+    padding: 0.1rem 0 0.1rem 1rem;
+    margin: 0;
+  }
+
+  .readout dt {
+    font-size: var(--font-step-0);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.15rem;
+  }
+
+  .readout dd {
+    margin: 0 0 0.9rem;
+    font-size: var(--font-step-2);
+    line-height: 1.35;
+  }
+
+  .readout dd:last-of-type { font-size: var(--font-step-1); margin-bottom: 0; }
+
+  .readout[data-kind="evidence"] { border-left-color: var(--color-evidence); }
+  .readout[data-kind="reject"] { border-left-color: var(--color-warning); }
+
+  @media (max-width: 32rem) {
+    :root { --lane-gap: 1rem; }
+    h1 { font-size: var(--font-step-3); }
+  }
+
+  /* Discrete state changes instead of shortened motion. */
+  @media (prefers-reduced-motion: reduce) {
+    :root { --step-duration: 0ms; }
+    .msg-track,
+    .msg-label { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Sequence view</h1>
+  <p class="lede">
+    Use this pattern when the bottleneck is <strong>order</strong>: which participant acts, what it
+    hands to whom, and which step the outcome actually depends on. The demonstration below steps
+    through a three-party token exchange.
+  </p>
+
+  <div class="sequence">
+    <div class="lanes" id="lanes"></div>
+    <div class="messages" id="messages"></div>
+  </div>
+
+  <div class="controls">
+    <button type="button" id="play" aria-label="Play the sequence">Play</button>
+    <button type="button" id="pause" aria-label="Pause the sequence">Pause</button>
+    <button type="button" id="step" aria-label="Advance one step">Step</button>
+    <button type="button" id="reset" aria-label="Reset to the first step">Reset</button>
+    <span class="step-count" id="count" aria-hidden="true"></span>
+  </div>
+
+  <dl class="readout" id="readout" aria-live="polite">
+    <dt>Step</dt>
+    <dd id="r-title"></dd>
+    <dt>What it establishes</dt>
+    <dd id="r-body"></dd>
+  </dl>
+</div>
+
+<script>
+  // Replace these three arrays with the subject's own participants and messages.
+  const PARTICIPANTS = ["Client", "Auth server", "Resource"];
+
+  const STEPS = [
+    { from: 0, to: 1, label: "credentials", kind: "normal",
+      title: "Client presents credentials",
+      body: "Nothing is trusted yet. This step only proves the client can reach the auth server." },
+    { from: 1, to: 0, label: "short-lived token", kind: "evidence",
+      title: "Auth server issues a scoped token",
+      body: "The token is the evidence the resource will check. Its scope and lifetime are decided here, not later." },
+    { from: 0, to: 2, label: "request + token", kind: "normal",
+      title: "Client calls the resource",
+      body: "The resource never sees the credentials. This is the property the whole exchange exists to produce." },
+    { from: 2, to: 0, label: "expired — 401", kind: "reject",
+      title: "A stale token is refused",
+      body: "The failure path matters: the resource rejects on its own clock, so a leaked token stops working without the auth server being reachable." }
+  ];
+
+  const state = { index: 0, playing: false, timer: null };
+
+  const lanesEl = document.getElementById("lanes");
+  const msgsEl = document.getElementById("messages");
+
+  PARTICIPANTS.forEach((name) => {
+    const lane = document.createElement("div");
+    lane.className = "lane";
+    lane.dataset.active = "false";
+    lane.innerHTML = '<div class="lane-head"></div><div class="lane-line"></div>';
+    lane.querySelector(".lane-head").textContent = name;
+    lanesEl.append(lane);
+  });
+
+  const rowHeight = 13 / (STEPS.length + 1);
+  STEPS.forEach((step, i) => {
+    const row = document.createElement("div");
+    row.className = "msg";
+    row.style.top = `${rowHeight * (i + 0.6)}rem`;
+
+    const lo = Math.min(step.from, step.to);
+    const hi = Math.max(step.from, step.to);
+    const unit = 100 / PARTICIPANTS.length;
+    row.style.left = `calc(${unit * lo}% + ${unit / 2}%)`;
+    row.style.right = `calc(${unit * (PARTICIPANTS.length - 1 - hi)}% + ${unit / 2}%)`;
+
+    row.dataset.dir = step.to > step.from ? "right" : "left";
+    row.dataset.kind = step.kind;
+    row.dataset.state = "pending";
+    row.innerHTML = '<div class="msg-track"><span class="msg-label"></span></div>';
+    row.querySelector(".msg-label").textContent = step.label;
+    msgsEl.append(row);
+  });
+
+  const rows = [...msgsEl.querySelectorAll(".msg")];
+  const lanes = [...lanesEl.querySelectorAll(".lane")];
+
+  // Single render path: every control routes through here, so the diagram,
+  // the counter, and the prose can never disagree.
+  function render() {
+    const step = STEPS[state.index];
+
+    rows.forEach((row, i) => {
+      row.dataset.state = i < state.index ? "done" : i === state.index ? "current" : "pending";
+    });
+
+    lanes.forEach((lane, i) => {
+      lane.dataset.active = String(i === step.from || i === step.to);
+    });
+
+    document.getElementById("r-title").textContent = step.title;
+    document.getElementById("r-body").textContent = step.body;
+    document.getElementById("readout").dataset.kind = step.kind;
+    document.getElementById("count").textContent = `${state.index + 1} / ${STEPS.length}`;
+
+    document.getElementById("play").disabled = state.playing || state.index === STEPS.length - 1;
+    document.getElementById("pause").disabled = !state.playing;
+    document.getElementById("step").disabled = state.index === STEPS.length - 1;
+    document.getElementById("reset").disabled = state.index === 0 && !state.playing;
+  }
+
+  function advance() {
+    if (state.index < STEPS.length - 1) {
+      state.index += 1;
+      render();
+    } else {
+      pause();
+    }
+  }
+
+  function play() {
+    if (state.playing || state.index === STEPS.length - 1) return;
+    state.playing = true;
+    state.timer = setInterval(advance, 1600);
+    render();
+  }
+
+  function pause() {
+    state.playing = false;
+    clearInterval(state.timer);
+    state.timer = null;
+    render();
+  }
+
+  function reset() {
+    pause();
+    state.index = 0;
+    render();
+  }
+
+  document.getElementById("play").addEventListener("click", play);
+  document.getElementById("pause").addEventListener("click", pause);
+  document.getElementById("step").addEventListener("click", () => { pause(); advance(); });
+  document.getElementById("reset").addEventListener("click", reset);
+
+  render();
+</script>
+</body>
+</html>

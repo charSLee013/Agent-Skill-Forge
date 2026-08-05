@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SVG Architecture — component pattern</title>
+<style>
+  :root {
+    --color-domain-primary: #2f6f8f;
+    --color-evidence: #6b5b95;
+    --color-practice: #1f7a5a;
+    --color-warning: #a8442a;
+    --color-ink: #1c2024;
+    --color-ink-muted: #5b646d;
+    --color-surface: #fbfaf8;
+    --color-surface-raised: #ffffff;
+    --color-rule: #d8d4cd;
+
+    --font-step-0: 0.875rem;
+    --font-step-1: 1rem;
+    --font-step-2: 1.25rem;
+    --font-step-3: 1.5rem;
+    --font-step-4: 2rem;
+
+    --measure: 34rem;
+
+    --travel-duration: 1400ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2rem 1.25rem 3rem;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font: var(--font-step-1)/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  .wrap { max-width: 62rem; margin: 0 auto; }
+  h1 { font-size: var(--font-step-4); line-height: 1.15; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+  .lede { max-width: var(--measure); color: var(--color-ink-muted); margin: 0 0 2rem; }
+
+  .board {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-rule);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  svg { display: block; width: 100%; height: auto; }
+
+  .tier {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+
+  .tier-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    fill: var(--color-ink-muted);
+    /* Halo keeps the label legible where it crosses the tier's dashed edge. */
+    paint-order: stroke;
+    stroke: var(--color-surface-raised);
+    stroke-width: 4;
+    stroke-linejoin: round;
+  }
+
+  .box {
+    fill: var(--color-surface);
+    stroke: var(--color-rule);
+    stroke-width: 1.5;
+    rx: 4;
+  }
+
+  .box-label { font-size: 13px; fill: var(--color-ink); text-anchor: middle; dominant-baseline: middle; }
+  .box-sub { font-size: 10.5px; fill: var(--color-ink-muted); text-anchor: middle; dominant-baseline: middle; }
+
+  .hop {
+    fill: none;
+    stroke: var(--color-rule);
+    stroke-width: 1.5;
+  }
+
+  .hop[data-lit="true"] { stroke: var(--color-domain-primary); stroke-width: 2.5; }
+  .hop[data-lit="past"] { stroke: color-mix(in srgb, var(--color-domain-primary) 45%, var(--color-rule)); stroke-width: 2; }
+
+  .node-group[data-lit="true"] .box {
+    fill: color-mix(in srgb, var(--color-domain-primary) 12%, var(--color-surface-raised));
+    stroke: var(--color-domain-primary);
+    stroke-width: 2.5;
+  }
+
+  .node-group[data-lit="true"] .box-label { fill: var(--color-domain-primary); font-weight: 650; }
+
+  .node-group[data-fault="true"] .box {
+    fill: color-mix(in srgb, var(--color-warning) 12%, var(--color-surface-raised));
+    stroke: var(--color-warning);
+    stroke-width: 2.5;
+  }
+  .node-group[data-fault="true"] .box-label { fill: var(--color-warning); font-weight: 650; }
+
+  #traveller { fill: var(--color-domain-primary); }
+  #traveller[data-fault="true"] { fill: var(--color-warning); }
+  #traveller[data-hidden="true"] { opacity: 0; }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.25rem 0 1rem;
+  }
+
+  button {
+    font: inherit;
+    font-size: var(--font-step-0);
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 0.3rem;
+    background: var(--color-surface-raised);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) { border-color: var(--color-domain-primary); color: var(--color-domain-primary); }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  button:focus-visible { outline: 2px solid var(--color-practice); outline-offset: 2px; }
+
+  .count { font-size: var(--font-step-0); color: var(--color-ink-muted); font-variant-numeric: tabular-nums; margin-left: auto; }
+
+  .readout {
+    max-width: var(--measure);
+    border-left: 3px solid var(--color-domain-primary);
+    padding: 0.1rem 0 0.1rem 1rem;
+    margin: 0;
+  }
+
+  .readout[data-fault="true"] { border-left-color: var(--color-warning); }
+
+  .readout dt {
+    font-size: var(--font-step-0);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.15rem;
+  }
+
+  .readout dd { margin: 0 0 0.9rem; }
+  .readout dd:first-of-type { font-size: var(--font-step-2); line-height: 1.35; }
+  .readout dd:last-of-type { margin-bottom: 0; }
+
+  @media (max-width: 32rem) { h1 { font-size: var(--font-step-3); } }
+
+  /* The traveller jumps between hops instead of sliding along them. */
+  @media (prefers-reduced-motion: reduce) {
+    :root { --travel-duration: 0ms; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>SVG architecture</h1>
+  <p class="lede">
+    Use this pattern when the bottleneck is <strong>the whole path</strong>: a learner can name every
+    box but cannot say what a single request actually touches. The traveller walks one real route,
+    including the hop where it fails.
+  </p>
+
+  <div class="board">
+    <svg viewBox="0 0 660 320" role="img" aria-labelledby="arch-title">
+      <title id="arch-title">Request path across edge, application, and data tiers</title>
+
+      <g id="tiers"></g>
+      <g id="hops"></g>
+      <g id="boxes"></g>
+      <circle id="traveller" r="6" cx="0" cy="0" data-hidden="true" />
+    </svg>
+  </div>
+
+  <div class="controls">
+    <button type="button" id="play" aria-label="Play the request path">Play</button>
+    <button type="button" id="pause" aria-label="Pause the request path">Pause</button>
+    <button type="button" id="step" aria-label="Advance one hop">Step</button>
+    <button type="button" id="reset" aria-label="Reset to the first hop">Reset</button>
+    <span class="count" id="count" aria-hidden="true"></span>
+  </div>
+
+  <dl class="readout" id="readout" aria-live="polite">
+    <dt>Hop</dt>
+    <dd id="r-title"></dd>
+    <dt>What happens here</dt>
+    <dd id="r-body"></dd>
+  </dl>
+</div>
+
+<script>
+  // Replace TIERS, NODES, and HOPS with the subject's own topology and route.
+  const TIERS = [
+    { label: "Edge", y: 24, h: 74 },
+    { label: "Application", y: 118, h: 74 },
+    { label: "Data", y: 212, h: 74 }
+  ];
+
+  const NODES = [
+    { id: "cdn",   label: "CDN",         sub: "cache",        x: 110, y: 61 },
+    { id: "lb",    label: "Load bal.",   sub: "health checks", x: 330, y: 61 },
+    { id: "app",   label: "App server",  sub: "stateless",    x: 220, y: 155 },
+    { id: "cache", label: "Cache",       sub: "read-through", x: 440, y: 155 },
+    { id: "db",    label: "Primary DB",  sub: "single writer", x: 330, y: 249 }
+  ];
+
+  const HOPS = [
+    { from: "cdn", to: "lb", label: "cache miss",
+      title: "The CDN misses",
+      body: "Only uncached requests travel further. Everything downstream is sized for this fraction, not for total traffic.",
+      fault: false },
+    { from: "lb", to: "app", label: "route",
+      title: "The balancer picks a healthy server",
+      body: "Statelessness is what makes this choice free. Any app server can answer, so a failed one is removed rather than repaired in place.",
+      fault: false },
+    { from: "app", to: "cache", label: "read",
+      title: "The app reads through the cache",
+      body: "This is the hop that decides tail latency. A hit ends the path here; a miss pushes the cost down to the database.",
+      fault: false },
+    { from: "cache", to: "db", label: "miss -> query",
+      title: "A miss reaches the primary",
+      body: "One writer serves every miss. Concurrency limits here, not CPU on the app tier, are what saturate first under load.",
+      fault: true }
+  ];
+
+  const BOX_W = 118;
+  const BOX_H = 46;
+  const TRAVEL_GAP = 9;
+
+  // The traveller stops on the box perimeter rather than its centre, so it never
+  // covers the label it is meant to point at.
+  function edgePoint(node, toward, gap) {
+    const dx = toward.x - node.x;
+    const dy = toward.y - node.y;
+    if (dx === 0 && dy === 0) return { x: node.x, y: node.y };
+
+    const scaleX = dx === 0 ? Infinity : (BOX_W / 2) / Math.abs(dx);
+    const scaleY = dy === 0 ? Infinity : (BOX_H / 2) / Math.abs(dy);
+    const scale = Math.min(scaleX, scaleY);
+    const length = Math.hypot(dx, dy);
+
+    return {
+      x: node.x + dx * scale + (dx / length) * gap,
+      y: node.y + dy * scale + (dy / length) * gap
+    };
+  }
+
+  const state = { index: 0, playing: false, timer: null };
+  const byId = Object.fromEntries(NODES.map((n) => [n.id, n]));
+  const SVG_NS = "http://www.w3.org/2000/svg";
+
+  const tiersEl = document.getElementById("tiers");
+  TIERS.forEach((tier) => {
+    const rect = document.createElementNS(SVG_NS, "rect");
+    rect.setAttribute("class", "tier");
+    rect.setAttribute("x", 16);
+    rect.setAttribute("y", tier.y);
+    rect.setAttribute("width", 628);
+    rect.setAttribute("height", tier.h);
+    rect.setAttribute("rx", 4);
+
+    const label = document.createElementNS(SVG_NS, "text");
+    label.setAttribute("class", "tier-label");
+    label.setAttribute("x", 26);
+    label.setAttribute("y", tier.y + 15);
+    label.textContent = tier.label;
+
+    tiersEl.append(rect, label);
+  });
+
+  const hopsEl = document.getElementById("hops");
+  HOPS.forEach((hop) => {
+    const a = byId[hop.from];
+    const b = byId[hop.to];
+    const line = document.createElementNS(SVG_NS, "line");
+    line.setAttribute("class", "hop");
+    line.setAttribute("x1", a.x);
+    line.setAttribute("y1", a.y);
+    line.setAttribute("x2", b.x);
+    line.setAttribute("y2", b.y);
+    line.dataset.lit = "false";
+    hopsEl.append(line);
+  });
+
+  const boxesEl = document.getElementById("boxes");
+  NODES.forEach((node) => {
+    const g = document.createElementNS(SVG_NS, "g");
+    g.setAttribute("class", "node-group");
+    g.dataset.id = node.id;
+    g.dataset.lit = "false";
+    g.dataset.fault = "false";
+
+    const rect = document.createElementNS(SVG_NS, "rect");
+    rect.setAttribute("class", "box");
+    rect.setAttribute("x", node.x - BOX_W / 2);
+    rect.setAttribute("y", node.y - BOX_H / 2);
+    rect.setAttribute("width", BOX_W);
+    rect.setAttribute("height", BOX_H);
+
+    const label = document.createElementNS(SVG_NS, "text");
+    label.setAttribute("class", "box-label");
+    label.setAttribute("x", node.x);
+    label.setAttribute("y", node.y - 7);
+    label.textContent = node.label;
+
+    const sub = document.createElementNS(SVG_NS, "text");
+    sub.setAttribute("class", "box-sub");
+    sub.setAttribute("x", node.x);
+    sub.setAttribute("y", node.y + 10);
+    sub.textContent = node.sub;
+
+    g.append(rect, label, sub);
+    boxesEl.append(g);
+  });
+
+  const hopEls = [...hopsEl.querySelectorAll(".hop")];
+  const boxEls = [...boxesEl.querySelectorAll(".node-group")];
+  const traveller = document.getElementById("traveller");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Single render path: topology, traveller position, counter, and prose all
+  // come from `state.index` so no control can leave the explanation stale.
+  function render() {
+    const hop = HOPS[state.index];
+    const from = byId[hop.from];
+    const to = byId[hop.to];
+
+    hopEls.forEach((el, i) => {
+      el.dataset.lit = i === state.index ? "true" : i < state.index ? "past" : "false";
+    });
+
+    boxEls.forEach((el) => {
+      const active = el.dataset.id === hop.from || el.dataset.id === hop.to;
+      el.dataset.lit = String(active && !hop.fault);
+      el.dataset.fault = String(active && hop.fault && el.dataset.id === hop.to);
+    });
+
+    traveller.dataset.hidden = "false";
+    traveller.dataset.fault = String(hop.fault);
+
+    const startPt = edgePoint(from, to, TRAVEL_GAP);
+    const endPt = edgePoint(to, from, TRAVEL_GAP);
+
+    if (reduceMotion.matches) {
+      // Jump straight to the hop's endpoint: a discrete state, not a slide.
+      traveller.style.transition = "none";
+      traveller.setAttribute("cx", endPt.x);
+      traveller.setAttribute("cy", endPt.y);
+    } else {
+      traveller.style.transition = "none";
+      traveller.setAttribute("cx", startPt.x);
+      traveller.setAttribute("cy", startPt.y);
+      requestAnimationFrame(() => {
+        traveller.style.transition = `cx var(--travel-duration) ease-in-out, cy var(--travel-duration) ease-in-out`;
+        traveller.setAttribute("cx", endPt.x);
+        traveller.setAttribute("cy", endPt.y);
+      });
+    }
+
+    document.getElementById("r-title").textContent = `${from.label} -> ${to.label}: ${hop.label}`;
+    document.getElementById("r-body").textContent = hop.body;
+    document.getElementById("readout").dataset.fault = String(hop.fault);
+    document.getElementById("count").textContent = `${state.index + 1} / ${HOPS.length}`;
+
+    document.getElementById("play").disabled = state.playing || state.index === HOPS.length - 1;
+    document.getElementById("pause").disabled = !state.playing;
+    document.getElementById("step").disabled = state.index === HOPS.length - 1;
+    document.getElementById("reset").disabled = state.index === 0 && !state.playing;
+  }
+
+  function advance() {
+    if (state.index < HOPS.length - 1) {
+      state.index += 1;
+      render();
+    } else {
+      pause();
+    }
+  }
+
+  function play() {
+    if (state.playing || state.index === HOPS.length - 1) return;
+    state.playing = true;
+    state.timer = setInterval(advance, 1900);
+    render();
+  }
+
+  function pause() {
+    state.playing = false;
+    clearInterval(state.timer);
+    state.timer = null;
+    render();
+  }
+
+  document.getElementById("play").addEventListener("click", play);
+  document.getElementById("pause").addEventListener("click", pause);
+  document.getElementById("step").addEventListener("click", () => { pause(); advance(); });
+  document.getElementById("reset").addEventListener("click", () => { pause(); state.index = 0; render(); });
+
+  render();
+</script>
+</body>
+</html>

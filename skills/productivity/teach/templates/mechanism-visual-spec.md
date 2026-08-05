@@ -63,7 +63,6 @@
 - Default visual state:
 - Text interpretation:
 - Reduced-motion state changes:
-- No-JavaScript runtime notice:
 
 ## Review Evidence
 

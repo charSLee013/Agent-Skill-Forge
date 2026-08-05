@@ -4,7 +4,7 @@ Read this file after the user confirms Ultra. Ultra adds comprehensive domain co
 
 ## Shared Brief
 
-Create one brief from the Course Contract. Include learner and prerequisite gap, target capability, main trunk, scope, evidence expectations, editorial direction, visual thesis, representation inventory, static target, page topology, tracer, and four review gates.
+Create one brief from the Course Contract. Include learner and prerequisite gap, target capability, main trunk, scope, evidence expectations, editorial direction, visual thesis, representation inventory, publication target, page topology, tracer, and four review gates.
 
 Every specialist works from this brief. The primary Agent owns synthesis and final decisions.
 
@@ -23,6 +23,12 @@ ${TMPDIR:-/tmp}/teach-ultra-{unique-id}/
 
 Keep raw research, drafts, feedback, screenshots, browser profiles, logs, and fixtures there. Promote only declared publication artifacts. Clean the owned directory after final verification.
 
+## Phase 0: Architecture Sketch
+
+Before dispatching any specialist, fill the Course Contract and `../templates/structured-object-map.md` yourself and present them for one user calibration on the main trunk, scope, and evidence ecology.
+
+Specialist work is the expensive part of Ultra. Confirming direction first means a redirected trunk costs one exchange rather than a discarded round of parallel research.
+
 ## Phase 1: Discovery
 
 Dispatch roles according to the subject:
@@ -33,7 +39,7 @@ Dispatch roles according to the subject:
 - **Editorial Director**: voice, terminology, lesson arcs, paragraph coherence, and density;
 - **Mechanism Auditor**: formulas, processes, state changes, boundaries, and examples;
 - **Assessment Designer**: feedback, capstone, and rubric;
-- **Visual and Frontend Director**: visual thesis, representations, motion grammar, responsive behavior, and static equivalents.
+- **Visual and Frontend Director**: visual thesis, representations, motion grammar, responsive behavior, and state models and reduced-motion behavior.
 
 The primary Agent resolves contradictions and integrates one architecture. Complete discovery when every Course Contract field has evidence and every prerequisite gap has a bridge.
 
@@ -61,7 +67,7 @@ The primary Agent checks cross-page terminology, paragraph handoffs, prerequisit
 
 Use fresh reviewers for Publication; Learning, Editorial, and Fidelity; Visual System; and Interaction and Motion. Keep prior diagnoses and expected conclusions outside their prompts.
 
-Repair findings by learner impact, rerun affected checks, verify the declared static target, and clean the owned workspace.
+Repair findings by learner impact, rerun affected checks, verify the declared publication target, and clean the owned workspace.
 
 ## Runtime Adaptation
 

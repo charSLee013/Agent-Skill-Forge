@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagram — component pattern</title>
+<style>
+  :root {
+    --color-domain-primary: #2f6f8f;
+    --color-evidence: #6b5b95;
+    --color-practice: #1f7a5a;
+    --color-warning: #a8442a;
+    --color-ink: #1c2024;
+    --color-ink-muted: #5b646d;
+    --color-surface: #fbfaf8;
+    --color-surface-raised: #ffffff;
+    --color-rule: #d8d4cd;
+
+    --font-step-0: 0.875rem;
+    --font-step-1: 1rem;
+    --font-step-2: 1.25rem;
+    --font-step-3: 1.5rem;
+    --font-step-4: 2rem;
+
+    --measure: 34rem;
+
+    --node-radius: 0.4rem;
+    --fade-duration: 260ms;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 2rem 1.25rem 3rem;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font: var(--font-step-1)/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  .wrap { max-width: 62rem; margin: 0 auto; }
+  h1 { font-size: var(--font-step-4); line-height: 1.15; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+  .lede { max-width: var(--measure); color: var(--color-ink-muted); margin: 0 0 2rem; }
+
+  .board {
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-rule);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  svg { display: block; width: 100%; height: auto; }
+
+  .edge {
+    stroke: var(--color-rule);
+    stroke-width: 1.5;
+    fill: none;
+    transition: stroke var(--fade-duration) ease, stroke-width var(--fade-duration) ease;
+  }
+
+  .edge[data-lit="true"] { stroke: var(--color-domain-primary); stroke-width: 2.5; }
+
+  .node rect {
+    fill: var(--color-surface);
+    stroke: var(--color-rule);
+    stroke-width: 1.5;
+    rx: 4;
+    transition: fill var(--fade-duration) ease, stroke var(--fade-duration) ease;
+  }
+
+  .node text {
+    font-size: 13px;
+    fill: var(--color-ink-muted);
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+    transition: fill var(--fade-duration) ease;
+  }
+
+  .node { cursor: pointer; }
+  .node:focus-visible { outline: 2px solid var(--color-practice); outline-offset: 2px; }
+
+  .node[data-role="focus"] rect {
+    fill: color-mix(in srgb, var(--color-domain-primary) 12%, var(--color-surface-raised));
+    stroke: var(--color-domain-primary);
+    stroke-width: 2.5;
+  }
+  .node[data-role="focus"] text { fill: var(--color-domain-primary); font-weight: 650; }
+
+  .node[data-role="dependency"] rect {
+    fill: color-mix(in srgb, var(--color-evidence) 10%, var(--color-surface-raised));
+    stroke: var(--color-evidence);
+  }
+  .node[data-role="dependency"] text { fill: var(--color-evidence); }
+
+  .node[data-role="dimmed"] rect { opacity: 0.5; }
+  .node[data-role="dimmed"] text { opacity: 0.5; }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.25rem 0 1rem;
+  }
+
+  button {
+    font: inherit;
+    font-size: var(--font-step-0);
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 0.3rem;
+    background: var(--color-surface-raised);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+
+  button:hover:not(:disabled) { border-color: var(--color-domain-primary); color: var(--color-domain-primary); }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  button:focus-visible { outline: 2px solid var(--color-practice); outline-offset: 2px; }
+
+  .readout {
+    max-width: var(--measure);
+    border-left: 3px solid var(--color-domain-primary);
+    padding: 0.1rem 0 0.1rem 1rem;
+    margin: 0;
+  }
+
+  .readout dt {
+    font-size: var(--font-step-0);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.15rem;
+  }
+
+  .readout dd { margin: 0 0 0.9rem; }
+  .readout dd:first-of-type { font-size: var(--font-step-2); line-height: 1.35; }
+  .readout dd:last-of-type { margin-bottom: 0; }
+
+  .hint { font-size: var(--font-step-0); color: var(--color-ink-muted); margin: 0 0 1rem; }
+
+  @media (max-width: 32rem) {
+    h1 { font-size: var(--font-step-3); }
+  }
+
+  /* Discrete state changes instead of shortened motion. */
+  @media (prefers-reduced-motion: reduce) {
+    :root { --fade-duration: 0ms; }
+    .edge, .node rect, .node text { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Diagram</h1>
+  <p class="lede">
+    Use this pattern when the bottleneck is <strong>structure</strong>: what contains what, and what
+    breaks if one part changes. Focusing a node lights only its direct dependencies, so a learner can
+    read one node's obligations without holding the whole graph in mind.
+  </p>
+
+  <p class="hint">Click a node, or focus one with Tab and press Enter.</p>
+
+  <div class="board">
+    <!-- role="group", not "img": an img role makes the subtree presentational and hides the focusable nodes. -->
+    <svg viewBox="0 0 640 300" role="group" aria-labelledby="diagram-title">
+      <title id="diagram-title">Four-node dependency graph</title>
+      <g id="edges"></g>
+      <g id="nodes"></g>
+    </svg>
+  </div>
+
+  <div class="controls">
+    <button type="button" id="step" aria-label="Focus the next node">Step</button>
+    <button type="button" id="reset" aria-label="Clear the focus">Reset</button>
+  </div>
+
+  <dl class="readout" id="readout" aria-live="polite">
+    <dt>Focused</dt>
+    <dd id="r-title"></dd>
+    <dt>Depends on</dt>
+    <dd id="r-body"></dd>
+  </dl>
+</div>
+
+<script>
+  // Replace NODES and EDGES with the subject's own parts and dependencies.
+  const NODES = [
+    { id: "api",    label: "HTTP API",    x: 320, y: 40,  note: "Accepts requests. Owns no rules of its own." },
+    { id: "rules",  label: "Rule engine", x: 150, y: 150, note: "Holds the domain decisions the API exposes." },
+    { id: "store",  label: "Store",       x: 490, y: 150, note: "Persists results. Knows nothing about the rules." },
+    { id: "schema", label: "Schema",      x: 320, y: 258, note: "Shared shape. Changing it moves both callers at once." }
+  ];
+
+  const EDGES = [
+    ["api", "rules"],
+    ["api", "store"],
+    ["rules", "schema"],
+    ["store", "schema"]
+  ];
+
+  const NODE_W = 116;
+  const NODE_H = 42;
+
+  const state = { focus: null };
+
+  const byId = Object.fromEntries(NODES.map((n) => [n.id, n]));
+  const edgesEl = document.getElementById("edges");
+  const nodesEl = document.getElementById("nodes");
+
+  EDGES.forEach(([from, to]) => {
+    const a = byId[from];
+    const b = byId[to];
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("class", "edge");
+    line.setAttribute("x1", a.x);
+    line.setAttribute("y1", a.y);
+    line.setAttribute("x2", b.x);
+    line.setAttribute("y2", b.y);
+    line.dataset.from = from;
+    line.dataset.to = to;
+    line.dataset.lit = "false";
+    edgesEl.append(line);
+  });
+
+  NODES.forEach((node) => {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", "node");
+    g.setAttribute("tabindex", "0");
+    g.setAttribute("role", "button");
+    g.setAttribute("aria-label", `Focus ${node.label}`);
+    g.dataset.id = node.id;
+    g.dataset.role = "idle";
+
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", node.x - NODE_W / 2);
+    rect.setAttribute("y", node.y - NODE_H / 2);
+    rect.setAttribute("width", NODE_W);
+    rect.setAttribute("height", NODE_H);
+
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", node.x);
+    text.setAttribute("y", node.y);
+    text.textContent = node.label;
+
+    g.append(rect, text);
+    nodesEl.append(g);
+  });
+
+  const nodeEls = [...nodesEl.querySelectorAll(".node")];
+  const edgeEls = [...edgesEl.querySelectorAll(".edge")];
+
+  function dependenciesOf(id) {
+    return EDGES.filter(([from]) => from === id).map(([, to]) => to);
+  }
+
+  // Single render path: graph, buttons, and prose all update from `state` here.
+  function render() {
+    const focus = state.focus;
+    const deps = focus ? dependenciesOf(focus) : [];
+
+    nodeEls.forEach((el) => {
+      const id = el.dataset.id;
+      if (!focus) el.dataset.role = "idle";
+      else if (id === focus) el.dataset.role = "focus";
+      else if (deps.includes(id)) el.dataset.role = "dependency";
+      else el.dataset.role = "dimmed";
+    });
+
+    edgeEls.forEach((el) => {
+      el.dataset.lit = String(Boolean(focus) && el.dataset.from === focus);
+    });
+
+    if (!focus) {
+      document.getElementById("r-title").textContent = "Nothing focused";
+      document.getElementById("r-body").textContent =
+        "Pick a node to see what it depends on. Nodes with no outgoing edge are the ones a change cannot propagate out of.";
+    } else {
+      const node = byId[focus];
+      document.getElementById("r-title").textContent = node.label;
+      document.getElementById("r-body").textContent = deps.length
+        ? `${deps.map((d) => byId[d].label).join(", ")}. ${node.note}`
+        : `Nothing. ${node.note}`;
+    }
+
+    document.getElementById("reset").disabled = !focus;
+  }
+
+  function focusNode(id) {
+    state.focus = id;
+    render();
+  }
+
+  nodeEls.forEach((el) => {
+    el.addEventListener("click", () => focusNode(el.dataset.id));
+    el.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        focusNode(el.dataset.id);
+      }
+    });
+  });
+
+  document.getElementById("step").addEventListener("click", () => {
+    const order = NODES.map((n) => n.id);
+    const next = state.focus === null ? 0 : (order.indexOf(state.focus) + 1) % order.length;
+    focusNode(order[next]);
+  });
+
+  document.getElementById("reset").addEventListener("click", () => {
+    state.focus = null;
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

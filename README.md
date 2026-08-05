@@ -211,7 +211,9 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 Standard 与 Ultra 共享编辑、视觉、交互、可访问性和内容保真的专业底线。Ultra 面向顶级、全面、研究级或高知识密度课程，通过用户确认后增加多 Agent 阶段编排、完整知识图谱、领域原生 Capstone、Tracer 校准和独立审阅。
 
-课程路径覆盖先修补桥、机制重建、worked examples、故障诊断、领域原生练习、分级反馈、Capstone 和专家标准审阅。视觉系统从领域对象、证据类型和学习动作推导；动画只用于解释序列、因果、状态或同步关系，并保留静态与 reduced-motion 等价物。
+课程路径覆盖先修补桥、机制重建、worked examples、故障诊断、领域原生练习、分级反馈、Capstone 和专家标准审阅。视觉系统从领域对象、证据类型和学习动作推导：`assets/course.css` 用 custom properties 承载视觉论点，`components/` 提供五个按学习瓶颈分类的交互模式（时序、结构、逐步重建、系统全景、参数探索），每个模式都带 reduced-motion 路径、键盘可达控件和单一 state model。动画只用于解释序列、因果、状态或同步关系。
+
+Course Contract 设定课程深度底线：每页声明一个可观察的专家判断，每个机制配 worked example，Capstone 列出评估维度。所有 gate 针对同一个 `publication target` 执行。
 
 Teach 按 Publication、Learning, Editorial and Fidelity、Visual System、Interaction and Motion 的顺序审阅最终产物。Supporting Markdown 记录来源、证据角色、教学用途、公式或数据保真和适用范围。
 
