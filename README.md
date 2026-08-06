@@ -8,6 +8,7 @@
 
 - **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、跨层证据校验、真实路径验收、架构改进、领域建模和本地 triage。
 - **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs`、`handoff` 和 `prepare-goals`，适合多轮计划、跨会话协作、上下文压缩和长期 Goal 准备。
+- **最小正确实现**：通过手动启用的 `ponytail` 约束已批准代码任务，并用项目级 hooks 保持会话和子代理一致。
 - **学习系统能力**：把主题、资料和学习目标组合成 HTML 课程与 supporting Markdown。
 - **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
 - **精简项目结构**：正式 skill 分为 `engineering`、`productivity` 和 `research` 三类，入口、文档和插件清单保持一致。
@@ -30,6 +31,24 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 安装器把每个完整 skill 目录复制到 `~/.agents/skills`。安装后的文件由用户持有，不会自动更新；更新时重新运行安装器。
 
 重新安装会替换本仓库当前提供的同名 skill，其他 skill 目录保持不变。不要同时通过其他渠道安装同名 skill，避免同一入口被重复发现。
+
+### 项目级 Ponytail
+
+本仓库从 [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) 提炼一个目标明确的手动 skill：在需求、ADR、issue 和验收证据已经确定后，以最少代码完成正确实现。它不承担方案探索，不替代 `wayfinder`，也不改变 `implement` 的验证契约。适配代码按上游 MIT license 分发。
+
+Ponytail 初次只能由用户通过 `$ponytail` 或 `/ponytail` 手动启用。启用后会一直作用于该项目的后续任务、resume、clear、compact 和子代理；主题变化、会话结束或运行错误都不会关闭它，只有用户明确输入 `stop ponytail`、`normal mode` 或 `/ponytail off` 才会取消。持久启用标记写到被 `.gitignore` 排除的 `.codex/ponytail/`，不会写入用户级 Codex 配置。Codex 从项目根 [`.codex/hooks.json`](./.codex/hooks.json) 加载 hooks；`scripts/install.sh` 仍只复制 skill，不把 hooks 绑定到全局环境。
+
+命令：
+
+```text
+$ponytail
+/ponytail
+/ponytail off
+stop ponytail
+normal mode
+```
+
+上游授权见 [docs/ponytail/LICENSE](./docs/ponytail/LICENSE)。
 
 ### 可选 CTF 包
 
@@ -169,6 +188,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [grill-me](./skills/productivity/grill-me/SKILL.md) | 用少量主干问题明确计划或设计并回填可逆细节；用于通用单会话澄清，区别于写项目文档的 `grill-with-docs`；需一个可陈述目标，出口是可执行计划。 |
 | [handoff](./skills/productivity/handoff/SKILL.md) | 将当前对话压缩成交接文档；用于换 Agent 或新会话，区别于重新规划或实现；需当前状态、决策和未完成项，出口是下一会话可直接读取的文档。 |
 | [i-have-adhd](./skills/productivity/i-have-adhd/SKILL.md) | 将每次回复塑造成行动优先、低启动阻力的 ADHD 友好格式；用于用户手动开启的会话沟通模式，区别于任务工作流；无需参数，仅在用户说 `normal mode` 或 `stop adhd mode` 时退出。 |
+| [ponytail](./skills/productivity/ponytail/SKILL.md) | 在已批准范围内依次复用现有机制、stdlib、原生能力和既有依赖，再写最少新代码；用于用户手动开启的实现约束，区别于 `wayfinder` 的方案探索和 `implement` 的验收流程；无需参数，通过 `/ponytail off`、`stop ponytail` 或 `normal mode` 退出。 |
 | [prepare-goals](./skills/productivity/prepare-goals/SKILL.md) | 将已批准的长期工作整理成边界清晰的 Codex Goal launcher；用于预计持续数小时或数天的执行，区别于普通任务和未决规划；需明确结果与验证路径，出口是不自动启动的 `/goal` 指令。 |
 | [writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md) | 提供编写和维护可预测 skill 的规范；用于 skill 设计或评审，区别于安装和业务实现；需目标 skill 或行为契约，出口是边界清晰的 skill 文本。 |
 
@@ -224,8 +244,11 @@ Teach 按 Publication、Learning, Editorial and Fidelity、Visual System、Inter
 ```text
 .
 ├── .claude-plugin/          # Agent skill plugin manifest
+├── .codex/hooks.json        # Codex project-local hook registration
 ├── .out-of-scope/           # triage 拒绝项和边界记录
+├── commands/                # Ponytail command adapters
 ├── docs/                    # invocation 规则和 ADR
+├── hooks/                   # project-local Ponytail lifecycle hooks
 ├── scripts/                 # 安装、列表和验证脚本
 └── skills/
     ├── engineering/         # 工程类 skill

@@ -1,10 +1,15 @@
 {
   "name": "agent-skill-forge",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Composable agent skills for engineering, productivity, and research workflows.",
   "author": {
-    "name": "charSLee013"
+    "name": "charSLee013",
+    "url": "https://github.com/charSLee013"
   },
+  "homepage": "https://github.com/charSLee013/Agent-Skill-Forge",
+  "repository": "https://github.com/charSLee013/Agent-Skill-Forge",
+  "license": "MIT",
+  "hooks": "./hooks/claude-codex-hooks.json",
   "skills": [
     "./skills/engineering/diagnosing-bugs",
     "./skills/engineering/evidence-first",
@@ -26,6 +31,7 @@
     "./skills/productivity/grilling",
     "./skills/productivity/handoff",
     "./skills/productivity/i-have-adhd",
+    "./skills/productivity/ponytail",
     "./skills/productivity/prepare-goals",
     "./skills/productivity/teach",
     "./skills/productivity/writing-great-skills",

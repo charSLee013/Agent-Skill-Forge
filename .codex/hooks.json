@@ -1,0 +1,44 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PONYTAIL_HOST=codex node \"hooks/ponytail.js\" session",
+            "commandWindows": "$env:PONYTAIL_HOST='codex'; node \"hooks\\ponytail.js\" session",
+            "timeout": 5,
+            "statusMessage": "Loading project Ponytail..."
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PONYTAIL_HOST=codex node \"hooks/ponytail.js\" subagent",
+            "commandWindows": "$env:PONYTAIL_HOST='codex'; node \"hooks\\ponytail.js\" subagent",
+            "timeout": 5,
+            "statusMessage": "Loading project Ponytail..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PONYTAIL_HOST=codex node \"hooks/ponytail.js\" prompt",
+            "commandWindows": "$env:PONYTAIL_HOST='codex'; node \"hooks\\ponytail.js\" prompt",
+            "timeout": 5,
+            "statusMessage": "Tracking project Ponytail..."
+          }
+        ]
+      }
+    ]
+  }
+}

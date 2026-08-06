@@ -1,0 +1,26 @@
+{
+  "_comment": "Reference template — copy the hooks object into the project's .qoder/settings.json. Replace PONYTAIL_DIR with this project root.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node PONYTAIL_DIR/hooks/ponytail.js prompt"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "task|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node PONYTAIL_DIR/hooks/ponytail.js subagent"
+          }
+        ]
+      }
+    ]
+  }
+}

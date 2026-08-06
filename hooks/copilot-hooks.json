@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "node \"${PLUGIN_ROOT}/hooks/ponytail.js\" session",
+        "powershell": "node \"${PLUGIN_ROOT}\\hooks\\ponytail.js\" session",
+        "timeoutSec": 5
+      }
+    ],
+    "userPromptSubmitted": [
+      {
+        "type": "command",
+        "bash": "node \"${PLUGIN_ROOT}/hooks/ponytail.js\" prompt",
+        "powershell": "node \"${PLUGIN_ROOT}\\hooks\\ponytail.js\" prompt",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}

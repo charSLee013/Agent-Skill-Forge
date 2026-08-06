@@ -1,0 +1,6 @@
+interface:
+  display_name: "Ponytail"
+  short_description: "Build the smallest correct implementation"
+  default_prompt: "Use $ponytail to keep this approved coding task correct and minimal."
+policy:
+  allow_implicit_invocation: false
