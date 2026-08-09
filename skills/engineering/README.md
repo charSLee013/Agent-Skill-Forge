@@ -12,6 +12,7 @@ These skills change the task phase or create a durable artifact. Use them only w
 - [setup-agent-skills](./setup-agent-skills/SKILL.md) — configures `.codex/agents/`, triage labels, domain docs, and the root instruction shape; use it once before other engineering skills, not for feature work; it requires repository write access and exits with a ready local workspace.
 - [wayfinder](./wayfinder/SKILL.md) — maps large cross-session work whose material route decisions remain open; use it only for decision fog, not a clear PRD or bounded request; it requires the configured workspace and exits to `to-prd`, `to-issues`, or `implement`.
 - [to-issues](./to-issues/SKILL.md) — splits an approved plan into independently verifiable implementation issues; use it after the route is clear, not to resolve decisions; it requires a plan, spec, or PRD and exits to per-issue `implement` sessions.
+- [issues-to-execution-brief](./issues-to-execution-brief/SKILL.md) — compiles selected executable issues into one decision-complete cold-start brief; use it after slicing when one fresh expert needs the approved set, not to create, modify, close, or implement issues; it requires exact issue paths or one feature directory and exits with one copy-ready brief or blocking facts.
 - [to-prd](./to-prd/SKILL.md) — synthesizes a clear conversation into a PRD; use it for durable specification, not discovery or wayfinding; it requires bounded scope and acceptance evidence and exits to `to-issues` or `implement`.
 - [prototype](./prototype/SKILL.md) — builds a throwaway executable experiment for a state, logic, or UI decision; use it when discussion cannot settle a concrete question, not as production delivery; it requires a question and stop condition and exits through `handoff` to the main workflow.
 - [zoom-out](./zoom-out/SKILL.md) — maps unfamiliar modules and callers in domain language; use it to locate a change before implementation, not to redesign architecture; it requires readable code and exits with bounded implementation context.
@@ -36,6 +37,7 @@ These skills support a selected workflow. They must not create a new phase or ex
     multi-layer support claim    -> evidence-first -> selected workflow
     hard uncertain bug           -> diagnosing-bugs
     large cross-session fog      -> wayfinder (MAP + decisions/) -> to-prd/to-issues/implement
+    selected executable issues   -> issues-to-execution-brief -> fresh expert
     real-path evidence selected  -> implement -> real-path-verification
     explicit architecture work  -> improve-codebase-architecture
 

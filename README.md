@@ -94,6 +94,9 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
         |
         +-- 路线已清晰的长线改动 -> to-prd -> to-issues -> prepare-goals -> 每个 Goal 独立执行
 
+已切分且可执行的一组 implementation issues
+  issues-to-execution-brief -> 一份冷启动执行简报 -> fresh expert
+
 已有 bug / 性能问题
   diagnosing-bugs -> implement
 
@@ -119,6 +122,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | 不熟悉一片代码，需要先看它在系统里的位置 | `zoom-out` | 让 agent 上升一层抽象，按领域语言梳理相关模块和调用方。 |
 | 已经讨论清楚，需要沉淀成规格 | `to-prd` | 生成带内联验收证据的 PRD 后用 `to-issues` 拆成可独立执行的 issue。 |
 | PRD 或计划已经清楚，需要拆给 agent 执行 | `to-issues` | 每个 issue 开新会话，继承 PRD 的验收条件和证据；未决策问题先回到 `wayfinder`。 |
+| 已有一组 `ready-for-agent` implementation issues，需要交给一个 fresh expert | `issues-to-execution-brief` | 按依赖顺序编译成一份 cold-start brief；不创建、修改、关闭或实现 issue。 |
 | 已批准的工作预计持续数小时或数天 | `prepare-goals` | 将现有 PRD、ADR 和 issue 整理成可直接启动的 `/goal`；普通小任务仍直接执行。 |
 | 已经有明确 issue 或 PRD，要开始做 | `implement` | 只执行已批准范围和内联证据；明确要求真实路径时联动 `real-path-verification`。 |
 | 一个行为声明跨配置、prompt、tool、权限或 runtime | `evidence-first` | 先冻结最小契约并逐层确认因果链，再把结论交还当前工程流程；单层明确检查直接执行。 |
@@ -135,6 +139,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 |---|---|---|
 | 快速小改 | `implement` | 需求、范围和验收已经清晰，不需要额外访谈。 |
 | 标准功能交付 | `setup-agent-skills` -> `to-prd` -> `to-issues` -> `implement` | 路线清晰、多步骤功能、需要可追踪规格和可拆 issue；只有主干仍不清时才先 `grill-with-docs`。 |
+| 专家冷启动执行 | `to-issues` -> `issues-to-execution-brief` -> fresh expert | 已批准且可执行的多个 issue 需要由同一个新专家按依赖顺序落地；brief 只编译契约，不重新规划。 |
 | 长期 Goal 执行 | `to-prd` / `to-issues` -> `prepare-goals` -> `/goal` | 范围和验收已批准，但执行预计持续数小时或数天；每个 Goal 保持单一结果和停止条件。 |
 | 超大且决策未定的工作 | `setup-agent-skills` -> `wayfinder` -> `to-prd` / `to-issues` / `implement` | 预计跨多个会话，先解决会改变范围、架构、风险或验收的决策，再选择最小交付流程。 |
 | 原型驱动决策 | `grill-with-docs` -> `handoff` -> `prototype` -> `handoff` -> `to-prd` 或 `implement` | 讨论无法替代运行验证，例如复杂交互、状态机、算法取舍。 |
@@ -161,6 +166,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 初始化 `.codex/agents/`、triage 标签和领域文档配置；用于仓库首次接入，区别于功能工作；需仓库写权限，出口是其他工程 skill 可用的本地 workspace。 |
 | [wayfinder](./skills/engineering/wayfinder/SKILL.md) | 为跨会话且存在决策迷雾的工作建立本地决策地图；区别于一次会话澄清或已清晰的交付计划；需已配置 workspace，出口是路线清晰后的 `to-prd`、`to-issues` 或 `implement`。 |
 | [to-issues](./skills/engineering/to-issues/SKILL.md) | 将已批准计划拆成可独立验证的实现 issue；用于路线已清晰时，不负责解决未决策问题；需 PRD、计划或明确规格，出口是逐个 `implement`。 |
+| [issues-to-execution-brief](./skills/engineering/issues-to-execution-brief/SKILL.md) | 将选定的可执行 implementation issues 按依赖编译为一份 decision-complete 冷启动简报；用于切片完成后交给一个 fresh expert，区别于创建 issue 的 `to-issues` 和执行代码的 `implement`；需精确 issue 路径或单一 feature 目录，出口是一份 copy-ready brief 或阻塞事实。 |
 | [to-prd](./skills/engineering/to-prd/SKILL.md) | 将已讨论清楚的当前对话整理成 PRD；用于规格沉淀，区别于需求访谈和决策探索；需可确认的范围与验收证据，出口是 `to-issues` 或直接 `implement`。 |
 | [prototype](./skills/engineering/prototype/SKILL.md) | 用一次性可运行原型回答状态、逻辑或 UI 决策；用于讨论不足以验证的具体问题，区别于生产实现；需明确问题和停止条件，出口是 `handoff` 后回到主线。 |
 | [zoom-out](./skills/engineering/zoom-out/SKILL.md) | 按领域语言梳理陌生模块及调用方；用于实现前定位系统位置，区别于架构重设计；需可读代码库，出口是边界清晰的计划或实现上下文。 |

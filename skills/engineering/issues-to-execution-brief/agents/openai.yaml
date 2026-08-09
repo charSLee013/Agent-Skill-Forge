@@ -1,0 +1,6 @@
+interface:
+  display_name: "Issues to Execution Brief"
+  short_description: "Compile issues into an execution brief"
+  default_prompt: "Use $issues-to-execution-brief to compile these implementation issues into one expert execution brief."
+policy:
+  allow_implicit_invocation: false

@@ -1,6 +1,6 @@
 {
   "name": "agent-skill-forge",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Composable agent skills for engineering, productivity, and research workflows.",
   "author": {
     "name": "charSLee013",
@@ -19,6 +19,7 @@
     "./skills/engineering/setup-agent-skills",
     "./skills/engineering/wayfinder",
     "./skills/engineering/to-issues",
+    "./skills/engineering/issues-to-execution-brief",
     "./skills/engineering/to-prd",
     "./skills/engineering/prototype",
     "./skills/engineering/domain-modeling",
