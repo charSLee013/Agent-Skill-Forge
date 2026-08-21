@@ -8,6 +8,7 @@
 
 - **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、跨层证据校验、真实路径验收、架构改进、领域建模和本地 triage。
 - **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs`、`handoff` 和 `prepare-goals`，适合多轮计划、跨会话协作、上下文压缩和长期 Goal 准备。
+- **文本保真重写**：通过 `humanizer` 清理具体的 AI 写作模式，同时保留原文事实、引用、语气和来源边界。
 - **最小正确实现**：通过手动启用的 `ponytail` 约束已批准代码任务，并用项目级 hooks 保持会话和子代理一致。
 - **学习系统能力**：把主题、资料和学习目标组合成 HTML 课程与 supporting Markdown。
 - **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
@@ -49,6 +50,12 @@ normal mode
 ```
 
 上游授权见 [docs/ponytail/LICENSE](./docs/ponytail/LICENSE)。
+
+### Humanizer
+
+本仓库从 [blader/humanizer](https://github.com/blader/humanizer) 引入 `humanizer` 2.11.2，源文件固定于提交 [`e2e92e7`](https://github.com/blader/humanizer/commit/e2e92e7b4b8229253ed5c8e81dc65463fdeddda5)。它只重写已有 prose，移除具体的 AI 写作模式并保持事实、引用和来源强度；它不负责事实核查、补充内容或持续改变会话格式。
+
+Skill 保留上游原文和版本元数据，只新增本仓库要求的 OpenAI sidecar 与注册信息。上游授权见 [skills/productivity/humanizer/LICENSE](./skills/productivity/humanizer/LICENSE)。
 
 ### 可选 CTF 包
 
@@ -203,6 +210,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | Skill | 定义性约束与使用路径 |
 |---|---|
 | [grilling](./skills/productivity/grilling/SKILL.md) | 为调用方运行高杠杆访谈循环并回填可逆默认；用于存在关键决策时，区别于用户显式工作流入口；需调用方提供目标与边界，出口是确定的决策主干。 |
+| [humanizer](./skills/productivity/humanizer/SKILL.md) | 在不改变事实、引用和来源边界的前提下重写已有 prose，移除具体 AI 写作模式；用于文本编辑或审阅，区别于事实核查、内容生成和持续会话风格；需源文本，出口由 pasted、file 或 embedded mode 决定。 |
 | [teach](./skills/productivity/teach/SKILL.md) | 构建编辑完整、领域原生视觉驱动的静态 HTML 课程与 supporting Markdown；用于完整学习交付，区别于普通摘要或文档页；需学习目标、读者起点和来源，出口是 Standard 或 Ultra 课程。 |
 
 ### Research

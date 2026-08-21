@@ -1,0 +1,4 @@
+interface:
+  display_name: "Humanizer"
+  short_description: "Rewrite AI-sounding prose without changing claims"
+  default_prompt: "Use $humanizer to rewrite this prose naturally while preserving every claim and source."

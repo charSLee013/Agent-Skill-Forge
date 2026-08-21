@@ -18,4 +18,5 @@ Reachable only when you type them (`disable-model-invocation: true`).
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
 - **[grilling](./grilling/SKILL.md)** — resolves high-leverage decisions and backfills reversible details for a calling workflow; use it when key ambiguity exists, not as a user phase; it requires a goal and boundary and returns a decision trunk to its caller.
+- **[humanizer](./humanizer/SKILL.md)** — rewrites existing prose to remove specific AI-writing patterns while preserving every claim, citation, and source boundary; use it for prose editing or review, not fact-checking, new content generation, or persistent conversation styling; it requires source text and exits with the rewrite shape appropriate to pasted, file, or embedded mode.
 - **[teach](./teach/SKILL.md)** — builds editorially designed static HTML courses with subject-native visuals and supporting Markdown; use it for complete learning delivery, not a general summary or documentation page; it requires a learning goal, audience, and sources and exits with a Standard or Ultra course.
