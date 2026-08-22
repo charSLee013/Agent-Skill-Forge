@@ -103,7 +103,9 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
         |
         +-- 清晰 bounded request -> implement
         |
-        +-- 一次会话仍需厘清 -> grill-with-docs -> implement 或 to-prd/to-issues
+        +-- 一次会话仍需厘清 -> grill-with-docs -> implement / to-prd / to-issues
+        |                              |
+        |                              +-- 仍有跨会话决策迷雾 -> wayfinder
         |
         +-- 需要运行信号 -> prototype -> handoff -> 回到主线
         |
@@ -182,7 +184,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 | Skill | 定义性约束与使用路径 |
 |---|---|
-| [grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md) | 在一次会话内澄清计划主干并记录领域语言和决策；用于目标、范围或验收仍不清时，区别于跨会话决策地图；需可读的仓库上下文，出口是 `implement`、`to-prd` 或 `to-issues`。 |
+| [grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md) | 在一次会话内澄清计划主干，仅记录已确定的领域术语或满足三项门槛的 ADR；用于目标、范围或验收仍不清时，区别于跨会话决策地图和 instruction 文件维护；需可读的仓库上下文，出口是 `implement`、`to-prd`、`to-issues` 或 `wayfinder`。 |
 | [triage](./skills/engineering/triage/SKILL.md) | 推进本地 issue 池的 triage 状态机；用于筛选待办集合，区别于直接实现单个已批准 issue；需先完成本地 workspace 配置，出口是 `ready-for-agent` 或其他终态。 |
 | [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md) | 扫描架构深化机会并生成 HTML 报告；用于显式代码库治理，区别于直接重构；需仓库和领域上下文，出口是选定机会后的 `grill-with-docs` 或 `implement`。 |
 | [find-simplifications](./skills/engineering/find-simplifications/SKILL.md) | 只读寻找有证据支持的删除、合并、降级或依赖替换候选；用于简化审查，区别于架构深化、逻辑 review 和直接实现；需仓库区域或简化问题，出口是最多五个候选和一个后续 workflow，不写代码或 durable 记录。 |

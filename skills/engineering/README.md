@@ -6,7 +6,7 @@ Engineering skills for bounded work in an existing repository.
 
 These skills change the task phase or create a durable artifact. Use them only when the user chooses the phase.
 
-- [grill-with-docs](./grill-with-docs/SKILL.md) — clarifies an unclear plan in one session while recording domain language and decisions; use it before delivery when scope or acceptance is unresolved, not for cross-session mapping; it reads repository context and exits to `implement`, `to-prd`, or `to-issues`.
+- [grill-with-docs](./grill-with-docs/SKILL.md) — clarifies an unclear plan in one session and records only established glossary terms or qualifying ADRs; use it before delivery when scope or acceptance is unresolved, not for cross-session mapping or instruction-file updates; it exits to `implement`, `to-prd`, `to-issues`, or `wayfinder`.
 - [triage](./triage/SKILL.md) — moves an incoming issue pool through local triage; use it to select work, not to implement an approved item; it requires the configured workspace and exits through `ready-for-agent` or another terminal role.
 - [improve-codebase-architecture](./improve-codebase-architecture/SKILL.md) — finds architecture deepening opportunities and presents an HTML report; use it for explicit maintenance, not direct refactoring; it requires repository context and exits to a selected `grill-with-docs` or `implement` path.
 - [find-simplifications](./find-simplifications/SKILL.md) — finds evidence-backed opportunities to remove, fold, demote, or replace unnecessary complexity; use it as a read-only simplification audit, not direct refactoring or architecture decision-making; it requires a repository area or question and exits with up to five candidates and one recommended next workflow.

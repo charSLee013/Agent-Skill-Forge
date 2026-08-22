@@ -51,17 +51,17 @@ Choose reasonable defaults for the remaining details. Present a compact decision
 
 Ask the user to identify only the defaults that do not fit. Apply those corrections, resolve any resulting trunk conflict with one question, and finish with a decision-ready summary.
 
-## Strong negative feedback
+## Correct a mismatch
 
-When forceful user feedback indicates that the current answer or process missed their intent, pause the interview and repair it immediately:
+When user feedback indicates that the current answer or process missed their intent, pause the interview and repair it immediately:
 
 1. Name the specific mistake, its behavioral cause, and the immediate correction in a compact response.
 2. Apply the correction to the current work.
-3. Distill one short, positive, observable rule that would prevent the same mistake.
-4. Offer the exact rule and target path for persistence in the active project's `AGENTS.md`.
+3. When the mismatch remains uncertain after reviewing the exchange, ask one concise calibration question before continuing.
 
-Ground the diagnosis in the preceding exchange. When the mismatch remains uncertain after reviewing it, state the most likely mismatch and ask one concise calibration question.
-
-Persist a lesson only when it is reusable across later project work, useful to other agents, free of private or emotional details, and consistent with existing instructions. Check for duplication and conflicts first. Locate the nearest applicable `AGENTS.md`; when none exists, propose creating one at the project root. Write or create the file only after the user explicitly approves the exact rule and path.
-
-When no active project exists, keep the lesson in the conversation and continue with the corrected behavior.
+Ground the diagnosis in the preceding exchange and keep the correction in the
+current session. Do not turn feedback, product behavior, feature scope, or a
+task-specific lesson into a repository instruction or propose changing an agent
+instruction file. Durable domain terms and qualifying architecture decisions
+remain the responsibility of an explicitly active domain workflow and its
+existing document owners.
