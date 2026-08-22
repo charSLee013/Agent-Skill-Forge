@@ -1,0 +1,6 @@
+interface:
+  display_name: "Trim CoT Leakage"
+  short_description: "Remove authoring-session residue from prose"
+  default_prompt: "Use $trim-cot-leakage to check this prose scope for session, PR, review, or draft residue."
+policy:
+  allow_implicit_invocation: false

@@ -8,7 +8,7 @@
 
 - **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、跨层证据校验、真实路径验收、架构改进、领域建模和本地 triage。
 - **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs`、`handoff` 和 `prepare-goals`，适合多轮计划、跨会话协作、上下文压缩和长期 Goal 准备。
-- **文本保真重写**：通过 `humanizer` 清理具体的 AI 写作模式，同时保留原文事实、引用、语气和来源边界。
+- **文本质量与可维护性**：通过 `humanizer` 清理具体 AI 写作模式，通过手动的 `prose-standard` 与 `trim-cot-leakage` 分别审查契约覆盖和会话残留，同时保留原文事实、引用、语气和来源边界。
 - **最小正确实现**：通过手动启用的 `ponytail` 约束已批准代码任务，并用项目级 hooks 保持会话和子代理一致。
 - **学习系统能力**：把主题、资料和学习目标组合成 HTML 课程与 supporting Markdown。
 - **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
@@ -60,6 +60,12 @@ normal mode
 本仓库从 [blader/humanizer](https://github.com/blader/humanizer) 引入 `humanizer` 2.11.2，源文件固定于提交 [`e2e92e7`](https://github.com/blader/humanizer/commit/e2e92e7b4b8229253ed5c8e81dc65463fdeddda5)。它只重写已有 prose，移除具体的 AI 写作模式并保持事实、引用和来源强度；它不负责事实核查、补充内容或持续改变会话格式。
 
 Skill 保留上游原文和版本元数据，只新增本仓库要求的 OpenAI sidecar 与注册信息。上游授权见 [skills/productivity/humanizer/LICENSE](./skills/productivity/humanizer/LICENSE)。
+
+### Prose Standard And Chain-Of-Thought Leakage
+
+本仓库从 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 提取 `prose-standard` 与 `trim-cot-leakage`，固定于提交 [`b150a551`](https://github.com/deepseek-ai/deepseek-harness/commit/b150a551b8d465e31e418e1b2eaf5e79bbb7d28e)。二者都只能手动调用：`prose-standard` 判断技术 prose 是否保留完整契约并在正确位置覆盖必要信息；`trim-cot-leakage` 清理只能由设计会话、PR、review 或草稿理解的叙事残留。它们不替代 `humanizer` 的自然表达重写，也不会自动串联、修改根 `AGENTS.md` 或创建平行记录系统。
+
+两个 skill 保留上游的完整命题规则、泄漏 taxonomy、保留项、反过度删改案例和 recall batteries，仅把 DeepSeek 专属路径与 gate 替换为本仓库的 `AGENTS.md`、ADR、`CONTEXT.md`、README 与 `.codex/agents/` workspace。上游授权见 [prose-standard LICENSE](./skills/productivity/prose-standard/LICENSE) 和 [trim-cot-leakage LICENSE](./skills/productivity/trim-cot-leakage/LICENSE)。
 
 ### 可选 CTF 包
 
@@ -213,6 +219,8 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [i-have-adhd](./skills/productivity/i-have-adhd/SKILL.md) | 将每次回复塑造成行动优先、低启动阻力的 ADHD 友好格式；用于用户手动开启的会话沟通模式，区别于任务工作流；无需参数，仅在用户说 `normal mode` 或 `stop adhd mode` 时退出。 |
 | [ponytail](./skills/productivity/ponytail/SKILL.md) | 在已批准范围内依次复用现有机制、stdlib、原生能力和既有依赖，再写最少新代码；用于用户手动开启的实现约束，区别于 `wayfinder` 的方案探索和 `implement` 的验收流程；无需参数，通过 `/ponytail off`、`stop ponytail` 或 `normal mode` 退出。 |
 | [prepare-goals](./skills/productivity/prepare-goals/SKILL.md) | 将已批准的长期工作整理成边界清晰的 Codex Goal launcher；用于预计持续数小时或数天的执行，区别于普通任务和未决规划；需明确结果与验证路径，出口是不自动启动的 `/goal` 指令。 |
+| [prose-standard](./skills/productivity/prose-standard/SKILL.md) | 审查、写作、恢复或裁剪技术 prose，同时保留完整的行为、时序、所有权和失败契约；用于明确范围内的文档、注释、prompt、diagnostic 或可见字符串工作，区别于自然表达改写；需 prose scope，出口是经验证的编辑或审计报告。 |
+| [trim-cot-leakage](./skills/productivity/trim-cot-leakage/SKILL.md) | 清理只能由设计会话、PR、review、草稿或推理过程理解的文本残留，同时保留可验证事实；用于明确的作者视角审查，区别于一般压缩和 `humanizer`；需 prose scope，出口是经语义判断的编辑或审计报告。 |
 | [writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md) | 提供编写和维护可预测 skill 的规范；用于 skill 设计或评审，区别于安装和业务实现；需目标 skill 或行为契约，出口是边界清晰的 skill 文本。 |
 
 #### 模型可自动调用

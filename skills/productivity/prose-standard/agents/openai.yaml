@@ -1,0 +1,6 @@
+interface:
+  display_name: "Prose Standard"
+  short_description: "Preserve complete contracts in technical prose"
+  default_prompt: "Use $prose-standard to review this prose scope for complete, durable technical contracts."
+policy:
+  allow_implicit_invocation: false
