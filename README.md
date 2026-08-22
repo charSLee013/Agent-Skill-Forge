@@ -94,8 +94,9 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 工程类 skill 不是并列菜单，而是一条从“想法”到“可交付改动”的工作流。用户通常只需要显式调用用户类 skill；模型类 skill 会在实现、调试、测试、设计时作为支撑纪律被调用。
 
 ```text
-第一次接入仓库
-  setup-agent-skills
+工程工作流（按需配置本地 workspace）
+  仅当 hard-dependency workspace 缺失时
+    setup-agent-skills
         |
         v
 新想法 / 新功能 / 重构方向
@@ -137,7 +138,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | 你现在的情况 | 首选 skill | 后续组合 |
 |---|---|---|
 | 需求主干不清 | `grill-with-docs` | 只在目标、范围或验收真的不清楚时澄清。 |
-| 第一次在一个仓库使用工程类 skill | `setup-agent-skills` | 建立 `.codex/agents/`、triage 标签和领域文档配置。 |
+| hard-dependency skill 缺少本地 workspace | `setup-agent-skills` | 为 `wayfinder`、`to-prd`、`to-issues` 或 `triage` 建立 `.codex/agents/`、triage 标签和领域文档配置。 |
 | 有一个模糊想法、产品需求或重构方向 | `grill-with-docs` | 一次会话能厘清就直接进入后续流程；跨会话且仍有决策迷雾才进入 `wayfinder`。 |
 | 规模很大、预计跨多个会话且路线不清 | `wayfinder` | 建立本地决策地图，逐个解决 decision issue；路线清晰后选择 `to-prd`、`to-issues` 或 `implement`。 |
 | 需要先验证状态机、业务逻辑或 UI 方案 | `prototype` | 原型结论用 `handoff` 带回主线，再进入 `to-prd` 或 `implement`。 |
@@ -161,10 +162,10 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | 工作流 | 使用顺序 | 适合场景 |
 |---|---|---|
 | 快速小改 | `implement` | 需求、范围和验收已经清晰，不需要额外访谈。 |
-| 标准功能交付 | `setup-agent-skills` -> `to-prd` -> `to-issues` -> `implement` | 路线清晰、多步骤功能、需要可追踪规格和可拆 issue；只有主干仍不清时才先 `grill-with-docs`。 |
+| 标准功能交付 | `to-prd` -> `to-issues` -> `implement`（需要本地 workspace 时先 `setup-agent-skills`） | 路线清晰、多步骤功能、需要可追踪规格和可拆 issue；只有主干仍不清时才先 `grill-with-docs`。 |
 | 专家冷启动执行 | `to-issues` -> `issues-to-execution-brief` -> fresh expert | 已批准且可执行的多个 issue 需要由同一个新专家按依赖顺序落地；brief 只编译契约，不重新规划。 |
 | 长期 Goal 执行 | `to-prd` / `to-issues` -> `prepare-goals` -> `/goal` | 范围和验收已批准，但执行预计持续数小时或数天；每个 Goal 保持单一结果和停止条件。 |
-| 超大且决策未定的工作 | `setup-agent-skills` -> `wayfinder` -> `to-prd` / `to-issues` / `implement` | 预计跨多个会话，先解决会改变范围、架构、风险或验收的决策，再选择最小交付流程。 |
+| 超大且决策未定的工作 | `wayfinder` -> `to-prd` / `to-issues` / `implement`（缺少 workspace 时先 `setup-agent-skills`） | 预计跨多个会话，先解决会改变范围、架构、风险或验收的决策，再选择最小交付流程。 |
 | 原型驱动决策 | `grill-with-docs` -> `handoff` -> `prototype` -> `handoff` -> `to-prd` 或 `implement` | 讨论无法替代运行验证，例如复杂交互、状态机、算法取舍。 |
 | Bug 修复 | `diagnosing-bugs` -> `implement` | 先定位根因；真实路径验收只在已批准验收证据要求时运行。 |
 | 请求池治理 | `triage` -> `grill-with-docs` -> `ready-for-agent` -> `implement` | 从原始 issue、反馈、需求池中筛出可执行任务。 |
@@ -188,7 +189,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [triage](./skills/engineering/triage/SKILL.md) | 推进本地 issue 池的 triage 状态机；用于筛选待办集合，区别于直接实现单个已批准 issue；需先完成本地 workspace 配置，出口是 `ready-for-agent` 或其他终态。 |
 | [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md) | 扫描架构深化机会并生成 HTML 报告；用于显式代码库治理，区别于直接重构；需仓库和领域上下文，出口是选定机会后的 `grill-with-docs` 或 `implement`。 |
 | [find-simplifications](./skills/engineering/find-simplifications/SKILL.md) | 只读寻找有证据支持的删除、合并、降级或依赖替换候选；用于简化审查，区别于架构深化、逻辑 review 和直接实现；需仓库区域或简化问题，出口是最多五个候选和一个后续 workflow，不写代码或 durable 记录。 |
-| [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 初始化 `.codex/agents/`、triage 标签和领域文档配置；用于仓库首次接入，区别于功能工作；需仓库写权限，出口是其他工程 skill 可用的本地 workspace。 |
+| [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 初始化 `.codex/agents/`、triage 标签和领域文档配置；用于 `wayfinder`、`to-prd`、`to-issues` 或 `triage` 缺少本地 workspace 时，区别于功能工作；需仓库写权限，出口是这些 hard-dependency skill 可用的本地 workspace。 |
 | [wayfinder](./skills/engineering/wayfinder/SKILL.md) | 为跨会话且存在决策迷雾的工作建立本地决策地图；区别于一次会话澄清或已清晰的交付计划；需已配置 workspace，出口是路线清晰后的 `to-prd`、`to-issues` 或 `implement`。 |
 | [to-issues](./skills/engineering/to-issues/SKILL.md) | 将已批准计划拆成可独立验证的实现 issue；用于路线已清晰时，不负责解决未决策问题；需 PRD、计划或明确规格，出口是逐个 `implement`。 |
 | [issues-to-execution-brief](./skills/engineering/issues-to-execution-brief/SKILL.md) | 将选定的可执行 implementation issues 按依赖编译为一份 decision-complete 冷启动简报；用于切片完成后交给一个 fresh expert，区别于创建 issue 的 `to-issues` 和执行代码的 `implement`；需精确 issue 路径或单一 feature 目录，出口是一份 copy-ready brief 或阻塞事实。 |
@@ -302,7 +303,7 @@ Teach 按 Publication、Learning, Editorial and Fidelity、Visual System、Inter
 ./scripts/list-skills.sh
 ```
 
-并运行注册表校验，确认 plugin manifest、README、Codex sidecar 与实际 `SKILL.md` 文件一致。
+并运行注册表校验，确认 plugin manifest、README 链接、Codex sidecar、invocation policy 集合与实际 `SKILL.md` 文件一致；该检查不判定描述、路线、语言文案或 `argument-hint` 的语义一致性。
 
 ## 验证
 

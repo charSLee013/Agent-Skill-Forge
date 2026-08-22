@@ -27,7 +27,7 @@ Do not use uncommitted worktree changes to infer hotness. This choice sets explo
 
 Read the project's domain glossary (`CONTEXT.md`) and any ADRs in the selected area first.
 
-Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't follow rigid heuristics — explore organically and note where you experience friction:
+Walk the selected codebase area and its direct calling relationships with the repository-reading and search tools available in the current host. Don't follow rigid heuristics — explore organically and note where you experience friction:
 
 - Where does understanding one concept require bouncing between many small modules?
 - Where are modules **shallow** — interface nearly as complex as the implementation?
