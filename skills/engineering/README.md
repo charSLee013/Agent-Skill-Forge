@@ -9,6 +9,7 @@ These skills change the task phase or create a durable artifact. Use them only w
 - [grill-with-docs](./grill-with-docs/SKILL.md) — clarifies an unclear plan in one session while recording domain language and decisions; use it before delivery when scope or acceptance is unresolved, not for cross-session mapping; it reads repository context and exits to `implement`, `to-prd`, or `to-issues`.
 - [triage](./triage/SKILL.md) — moves an incoming issue pool through local triage; use it to select work, not to implement an approved item; it requires the configured workspace and exits through `ready-for-agent` or another terminal role.
 - [improve-codebase-architecture](./improve-codebase-architecture/SKILL.md) — finds architecture deepening opportunities and presents an HTML report; use it for explicit maintenance, not direct refactoring; it requires repository context and exits to a selected `grill-with-docs` or `implement` path.
+- [find-simplifications](./find-simplifications/SKILL.md) — finds evidence-backed opportunities to remove, fold, demote, or replace unnecessary complexity; use it as a read-only simplification audit, not direct refactoring or architecture decision-making; it requires a repository area or question and exits with up to five candidates and one recommended next workflow.
 - [setup-agent-skills](./setup-agent-skills/SKILL.md) — configures `.codex/agents/`, triage labels, domain docs, and the root instruction shape; use it once before other engineering skills, not for feature work; it requires repository write access and exits with a ready local workspace.
 - [wayfinder](./wayfinder/SKILL.md) — maps large cross-session work whose material route decisions remain open; use it only for decision fog, not a clear PRD or bounded request; it requires the configured workspace and exits to `to-prd`, `to-issues`, or `implement`.
 - [to-issues](./to-issues/SKILL.md) — splits an approved plan into independently verifiable implementation issues; use it after the route is clear, not to resolve decisions; it requires a plan, spec, or PRD and exits to per-issue `implement` sessions.
@@ -36,6 +37,7 @@ These skills support a selected workflow. They must not create a new phase or ex
     incoming issue pool          -> triage
     multi-layer support claim    -> evidence-first -> selected workflow
     hard uncertain bug           -> diagnosing-bugs
+    simplification audit          -> find-simplifications -> selected workflow
     large cross-session fog      -> wayfinder (MAP + decisions/) -> to-prd/to-issues/implement
     selected executable issues   -> issues-to-execution-brief -> fresh expert
     real-path evidence selected  -> implement -> real-path-verification

@@ -1,6 +1,6 @@
 {
   "name": "agent-skill-forge",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Composable agent skills for engineering, productivity, and research workflows.",
   "author": {
     "name": "charSLee013",
@@ -16,6 +16,7 @@
     "./skills/engineering/grill-with-docs",
     "./skills/engineering/triage",
     "./skills/engineering/improve-codebase-architecture",
+    "./skills/engineering/find-simplifications",
     "./skills/engineering/setup-agent-skills",
     "./skills/engineering/wayfinder",
     "./skills/engineering/to-issues",

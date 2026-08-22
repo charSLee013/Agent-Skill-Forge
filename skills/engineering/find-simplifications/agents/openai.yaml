@@ -1,0 +1,6 @@
+interface:
+  display_name: "Find Simplifications"
+  short_description: "Find evidence-backed code simplifications"
+  default_prompt: "Use $find-simplifications to audit this codebase for evidence-backed simplification candidates without implementing changes."
+policy:
+  allow_implicit_invocation: false

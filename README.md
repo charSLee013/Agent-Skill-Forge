@@ -51,6 +51,10 @@ normal mode
 
 上游授权见 [docs/ponytail/LICENSE](./docs/ponytail/LICENSE)。
 
+### Find simplifications
+
+本仓库从 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 提取 `find-simplifications` 的证据驱动简化审查内核，固定于提交 [`b150a551`](https://github.com/deepseek-ai/deepseek-harness/commit/b150a551b8d465e31e418e1b2eaf5e79bbb7d28e)。保留候选筛选、消费者分类、trust/lifecycle ownership 审计、手写实现与依赖替换证明、反例降级和冷启动复核；只把 DeepSeek 专属 Agent Notes、归档和项目路径替换为本仓库的 ADR、`CONTEXT.md`、`.codex/agents/` 与既有交付 workflow。上游授权见 [skills/engineering/find-simplifications/LICENSE](./skills/engineering/find-simplifications/LICENSE)。
+
 ### Humanizer
 
 本仓库从 [blader/humanizer](https://github.com/blader/humanizer) 引入 `humanizer` 2.11.2，源文件固定于提交 [`e2e92e7`](https://github.com/blader/humanizer/commit/e2e92e7b4b8229253ed5c8e81dc65463fdeddda5)。它只重写已有 prose，移除具体的 AI 写作模式并保持事实、引用和来源强度；它不负责事实核查、补充内容或持续改变会话格式。
@@ -110,6 +114,9 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 跨配置 / prompt / tool / permission / runtime 的行为声明
   evidence-first -> 回到当前 task-specific workflow
 
+代码库简化审查
+  find-simplifications -> 用户选择候选 -> improve-codebase-architecture / grill-with-docs / to-issues / implement
+
 已有外部请求或待办堆积
   triage -> ready-for-agent -> implement
 
@@ -138,6 +145,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | 术语混乱、领域概念不清、需要 ADR | `domain-modeling` | 通常由 `grill-with-docs` 或架构类流程带起，沉淀 `CONTEXT.md` 和 ADR。 |
 | issue、需求、bug 报告堆积，需要筛选 | `triage` | 输出 `ready-for-agent` 后交给 `implement`。 |
 | 想主动改善代码库结构 | `improve-codebase-architecture` | 先生成 HTML 架构报告，再选择一个机会进入 `grill-with-docs` 或 `implement`。 |
+| 想寻找可以删除、合并、降级或替换的复杂度 | `find-simplifications` | 只读审查生产/非生产/动态消费者，输出最多 3–5 个有证据候选；不修改代码、issue、ADR 或 README。 |
 | merge/rebase 冲突 | `resolving-merge-conflicts` | 专注保留两边意图，解决后跑相关验证。 |
 
 #### 推荐工作流
@@ -153,6 +161,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | Bug 修复 | `diagnosing-bugs` -> `implement` | 先定位根因；真实路径验收只在已批准验收证据要求时运行。 |
 | 请求池治理 | `triage` -> `grill-with-docs` -> `ready-for-agent` -> `implement` | 从原始 issue、反馈、需求池中筛出可执行任务。 |
 | 架构治理 | `improve-codebase-architecture` -> `grill-with-docs` -> `to-prd/to-issues` 或 `implement` | 主动降低耦合、补测试边界、改善 Agent 可维护性。 |
+| 简化治理 | `find-simplifications` -> 用户选择候选 -> `improve-codebase-architecture` / `grill-with-docs` / `to-issues` -> `implement` | 先证明现有复杂度的真实消费者和净删除量，再进入既有架构或交付流程。 |
 
 #### 用户类和模型类的区别
 
@@ -170,6 +179,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md) | 在一次会话内澄清计划主干并记录领域语言和决策；用于目标、范围或验收仍不清时，区别于跨会话决策地图；需可读的仓库上下文，出口是 `implement`、`to-prd` 或 `to-issues`。 |
 | [triage](./skills/engineering/triage/SKILL.md) | 推进本地 issue 池的 triage 状态机；用于筛选待办集合，区别于直接实现单个已批准 issue；需先完成本地 workspace 配置，出口是 `ready-for-agent` 或其他终态。 |
 | [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md) | 扫描架构深化机会并生成 HTML 报告；用于显式代码库治理，区别于直接重构；需仓库和领域上下文，出口是选定机会后的 `grill-with-docs` 或 `implement`。 |
+| [find-simplifications](./skills/engineering/find-simplifications/SKILL.md) | 只读寻找有证据支持的删除、合并、降级或依赖替换候选；用于简化审查，区别于架构深化、逻辑 review 和直接实现；需仓库区域或简化问题，出口是最多五个候选和一个后续 workflow，不写代码或 durable 记录。 |
 | [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 初始化 `.codex/agents/`、triage 标签和领域文档配置；用于仓库首次接入，区别于功能工作；需仓库写权限，出口是其他工程 skill 可用的本地 workspace。 |
 | [wayfinder](./skills/engineering/wayfinder/SKILL.md) | 为跨会话且存在决策迷雾的工作建立本地决策地图；区别于一次会话澄清或已清晰的交付计划；需已配置 workspace，出口是路线清晰后的 `to-prd`、`to-issues` 或 `implement`。 |
 | [to-issues](./skills/engineering/to-issues/SKILL.md) | 将已批准计划拆成可独立验证的实现 issue；用于路线已清晰时，不负责解决未决策问题；需 PRD、计划或明确规格，出口是逐个 `implement`。 |
