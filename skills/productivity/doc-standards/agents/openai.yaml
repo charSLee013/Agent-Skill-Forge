@@ -1,0 +1,6 @@
+interface:
+  display_name: "Documentation Standards"
+  short_description: "Audit documentation against current repository reality"
+  default_prompt: "Use $doc-standards to audit this documentation scope against current repository behavior."
+policy:
+  allow_implicit_invocation: false

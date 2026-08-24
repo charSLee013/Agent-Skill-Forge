@@ -8,7 +8,7 @@
 
 - **工程工作流完整**：覆盖需求澄清、PRD、issue 拆分、实现、调试、跨层证据校验、真实路径验收、架构改进、领域建模和本地 triage。
 - **规划与交接能力**：提供 `grill-me`、`grilling`、`grill-with-docs`、`handoff` 和 `prepare-goals`，适合多轮计划、跨会话协作、上下文压缩和长期 Goal 准备。
-- **文本质量与可维护性**：通过 `humanizer` 清理具体 AI 写作模式，通过手动的 `prose-standard` 与 `trim-cot-leakage` 分别审查契约覆盖和会话残留，同时保留原文事实、引用、语气和来源边界。
+- **文本质量与可维护性**：通过 `humanizer` 清理具体 AI 写作模式，通过手动的 `prose-standard`、`trim-cot-leakage` 和 `doc-standards` 分别审查契约覆盖、会话残留以及文档与仓库现实的一致性，同时保留原文事实、引用、语气和来源边界。
 - **最小正确实现**：通过手动启用的 `ponytail` 约束已批准代码任务，并用项目级 hooks 保持会话和子代理一致。
 - **学习系统能力**：把主题、资料和学习目标组合成 HTML 课程与 supporting Markdown。
 - **科研摄取能力**：提供 arXiv 查询、论文 source/PDF 获取和 Markdown reference doc 生成工具。
@@ -66,6 +66,12 @@ Skill 保留上游原文和版本元数据，只新增本仓库要求的 OpenAI 
 本仓库从 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 提取 `prose-standard` 与 `trim-cot-leakage`，固定于提交 [`b150a551`](https://github.com/deepseek-ai/deepseek-harness/commit/b150a551b8d465e31e418e1b2eaf5e79bbb7d28e)。二者都只能手动调用：`prose-standard` 判断技术 prose 是否保留完整契约并在正确位置覆盖必要信息；`trim-cot-leakage` 清理只能由设计会话、PR、review 或草稿理解的叙事残留。它们不替代 `humanizer` 的自然表达重写，也不会自动串联、修改根 `AGENTS.md` 或创建平行记录系统。
 
 两个 skill 保留上游的完整命题规则、泄漏 taxonomy、保留项、反过度删改案例和 recall batteries，仅把 DeepSeek 专属路径与 gate 替换为本仓库的 `AGENTS.md`、ADR、`CONTEXT.md`、README 与 `.codex/agents/` workspace。上游授权见 [prose-standard LICENSE](./skills/productivity/prose-standard/LICENSE) 和 [trim-cot-leakage LICENSE](./skills/productivity/trim-cot-leakage/LICENSE)。
+
+### Documentation Standards
+
+本仓库从 [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) 提取 `dsh-doc-standards` 的文档现实审计内核，固定于提交 [`b150a551`](https://github.com/deepseek-ai/deepseek-harness/commit/b150a551b8d465e31e418e1b2eaf5e79bbb7d28e)。本地 `doc-standards` 只能手动调用，要求明确文档范围，默认只读检查文档 owner、层级、source of truth、重复机制、链接和当前代码行为；它不自动改写，不创建平行记录系统，也不承担 `prose-standard`、`trim-cot-leakage` 或网站发布同步的职责。
+
+它保留上游的文档分类、现实证据、生成产物 owner-first、重复审计和验证内核，仅将 DeepSeek 专属的 `docs/AGENTS.md`、Agent Notes、双语文档、VitePress 和文档预算替换为本仓库的 `AGENTS.md`、ADR、`CONTEXT.md`、README、现有校验命令和 `.codex/agents/` workspace。上游授权见 [doc-standards LICENSE](./skills/productivity/doc-standards/LICENSE)。
 
 ### 可选 CTF 包
 
@@ -224,6 +230,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [prepare-goals](./skills/productivity/prepare-goals/SKILL.md) | 将已批准的长期工作整理成边界清晰的 Codex Goal launcher；用于预计持续数小时或数天的执行，区别于普通任务和未决规划；需明确结果与验证路径，出口是不自动启动的 `/goal` 指令。 |
 | [prose-standard](./skills/productivity/prose-standard/SKILL.md) | 审查、写作、恢复或裁剪技术 prose，同时保留完整的行为、时序、所有权和失败契约；用于明确范围内的文档、注释、prompt、diagnostic 或可见字符串工作，区别于自然表达改写；需 prose scope，出口是经验证的编辑或审计报告。 |
 | [trim-cot-leakage](./skills/productivity/trim-cot-leakage/SKILL.md) | 清理只能由设计会话、PR、review、草稿或推理过程理解的文本残留，同时保留可验证事实；用于明确的作者视角审查，区别于一般压缩和 `humanizer`；需 prose scope，出口是经语义判断的编辑或审计报告。 |
+| [doc-standards](./skills/productivity/doc-standards/SKILL.md) | 审计文档 owner、层级、source of truth、重复机制和当前仓库行为的一致性；用于明确的文档系统审查，区别于 prose 契约审查、会话残留清理和自动改写；需 documentation scope，出口是现实证据、漂移候选和最小后续 workflow。 |
 | [writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md) | 提供编写和维护可预测 skill 的规范；用于 skill 设计或评审，区别于安装和业务实现；需目标 skill 或行为契约，出口是边界清晰的 skill 文本。 |
 
 #### 模型可自动调用
