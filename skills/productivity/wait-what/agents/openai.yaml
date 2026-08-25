@@ -1,0 +1,6 @@
+interface:
+  display_name: "Wait What"
+  short_description: "Re-pitch the previous response with missing context"
+  default_prompt: "Use $wait-what to rewrite the previous response in simpler language with the context I need."
+policy:
+  allow_implicit_invocation: false

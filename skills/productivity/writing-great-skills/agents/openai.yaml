@@ -1,5 +1,6 @@
 interface:
   display_name: "Writing Great Skills"
-  short_description: "Write predictable and bounded skills"
+  short_description: "Write predictable agent-consumed documents"
+  default_prompt: "Use $writing-great-skills to write or review this agent-consumed document without expanding its authority."
 policy:
   allow_implicit_invocation: false

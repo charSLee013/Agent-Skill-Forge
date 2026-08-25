@@ -1,0 +1,6 @@
+interface:
+  display_name: "To Questionnaire"
+  short_description: "Turn a knowledge gap into an answerable questionnaire"
+  default_prompt: "Use $to-questionnaire to prepare a questionnaire for the person who holds the missing knowledge."
+policy:
+  allow_implicit_invocation: false
