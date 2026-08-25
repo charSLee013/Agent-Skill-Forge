@@ -34,7 +34,7 @@ Never put product behavior, feature scope or non-goals, acceptance criteria or e
 
 Look at the current repo to understand its starting state. Read whatever exists; don't assume:
 
-- Root `AGENTS.md` and its existing `## Agent skills` section. Outside that managed section, identify only lines that clearly name a feature or work item and prescribe product behavior, scope, acceptance, or progress. Treat uncertain cases as valid user content, not contamination.
+- Root `AGENTS.md` and its existing `## Agent skills` and `## Agent operating principles` sections. Outside those managed sections, identify only lines that clearly name a feature or work item and prescribe product behavior, scope, acceptance, or progress. Treat uncertain cases as valid user content, not contamination.
 - Root `CLAUDE.md`, plus every nested `AGENTS.md`, `AGENTS.override.md`, and `CLAUDE.md` that the write phase will remove
 - `CONTEXT.md` and `CONTEXT-MAP.md` at the repo root
 - `docs/adr/` and any `src/*/docs/adr/` directories
@@ -46,7 +46,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 
 Summarise what's present and what's missing. Derive reversible defaults from the repository before asking. Ask about a section only when the evidence shows a conflict, an existing custom triage vocabulary, or a real multi-context structure. If both sections are unambiguous, proceed to the complete setup draft without a preliminary question.
 
-If root `AGENTS.md` contains clear work-item content outside the managed section, report each candidate with its exact line and correct owning artifact. Do not edit, delete, relocate, or ask to migrate it during setup.
+If root `AGENTS.md` contains clear work-item content outside the managed sections, report each candidate with its exact line and correct owning artifact. Do not edit, delete, relocate, or ask to migrate it during setup.
 
 When a question is required, ask one section at a time. Start with a short explainer: what it is, why these skills need it, and what changes if they choose differently. Do not ask the user to confirm a reversible default that the final draft will already expose for calibration.
 
@@ -82,13 +82,14 @@ If the existing workspace contains legacy Wayfinder decision files under `work/*
 Always show the user a complete draft for final calibration, including defaults that did not require a preliminary question:
 
 - The complete `## Agent skills` block to add to or update in root `AGENTS.md`
+- The complete `## Agent operating principles` block to add to or update in root `AGENTS.md`
 - The complete replacement of root `CLAUDE.md` with the one-line `@AGENTS.md` adapter
 - Every parallel or nested Agent instruction file that will be removed; their contents are not migrated or merged
 - The contents of `.codex/agents/issue-tracker.md`, `.codex/agents/triage-labels.md`, `.codex/agents/domain.md`
 - Any legacy decision files that will be moved from `issues/` to `decisions/`, including exact path-reference updates and any conflicts that will leave a feature unchanged
 - The `.git/info/exclude` entry that keeps `.codex/` out of git
 
-The `AGENTS.md` portion of the draft is exactly the managed `## Agent skills` block. Do not propose, append, or ask approval for product requirements, feature constraints, or current-task decisions in root `AGENTS.md`.
+The `AGENTS.md` portion of the draft is exactly the two managed blocks. Do not propose, append, or ask approval for product requirements, feature constraints, or current-task decisions in root `AGENTS.md`.
 
 Include an automatic legacy migration dry-run summary in the setup draft. The summary is part of the normal draft approval, not a separate decision.
 
@@ -96,15 +97,24 @@ Let them edit before writing.
 
 ### 4. Write
 
-**Use one instruction source. The write phase always produces this shape:**
+**Use one instruction source. The write phase supports both creation and update:**
 
-- Edit or create root `AGENTS.md` as the only repository Agent instruction body. When the file exists, change only its managed `## Agent skills` block; when it does not exist, create it with only that block.
+- Edit or create root `AGENTS.md` as the only repository Agent instruction body. When the file does not exist, create it with the two managed blocks below and no invented product content. When the file exists, replace only its managed `## Agent skills` and `## Agent operating principles` blocks; preserve every other line and its order.
 - Replace root `CLAUDE.md` completely so its only line is `@AGENTS.md`.
 - Remove every nested `AGENTS.md`, `AGENTS.override.md`, and `CLAUDE.md` in the repository. Do not read their content into root `AGENTS.md`, preserve it elsewhere, or offer a compatibility path.
 - Do not create fallback instruction filenames or make root `AGENTS.md` import `CLAUDE.md`.
 - Write root `AGENTS.md` before root `CLAUDE.md`, then remove the parallel instruction files shown in the approved draft.
 
-Update an existing `## Agent skills` block in root `AGENTS.md` in place rather than appending a duplicate. Preserve user edits outside that managed block, including any reported work-item content. Never append current feature constraints elsewhere in the file. Re-running setup with the same choices must produce no changes.
+Update each existing managed block in root `AGENTS.md` in place rather than appending a duplicate. If either block is absent, add it once at the end of the root file. Preserve user edits outside those managed blocks, including any reported work-item content. Never append current feature constraints elsewhere in the file. Re-running setup with the same choices must produce no changes.
+
+When appending a missing block, preserve the existing file content and newline
+style, add the required separator if the file has no trailing newline, and end
+the generated Markdown with one newline.
+
+The managed-block boundaries are the heading through the line before the next
+heading of the same level. If either managed heading occurs more than once, is
+nested under another heading, or cannot be given an unambiguous boundary, stop
+the root-file write and report the conflict instead of guessing how to merge it.
 
 The block:
 
@@ -123,6 +133,45 @@ Local decision maps, decision issues, PRDs, implementation issues, and triage no
 
 [one-line summary of layout — "single-context" or "multi-context"]. See `.codex/agents/domain.md`.
 ```
+
+The second managed block is:
+
+```markdown
+## Agent operating principles
+
+### Scope and Decisions
+
+- Treat reviews, audits, explanations, and reports as read-only; plans and proposals do not authorize implementation. Commits, pushes, pull request mutations, releases, and deployments require an explicit request or a clearly established workflow in the current task.
+- Ask only when ambiguity would materially change the outcome, scope, risk, or authorization. Otherwise state the assumption and proceed. When viable paths have meaningful tradeoffs, recommend one.
+- For maintenance work, prefer targeted changes and established conventions. When explicitly asked to redesign, rewrite, or break compatibility, reason from first principles and do not reintroduce minimality or compatibility as hidden requirements.
+- Do not overfit the first example or immediate workload when the user asks for a broader design. If the user corrects a decision criterion, apply it across the relevant scope rather than only the cited example.
+
+### Evidence, Review, and Design
+
+- Base repository-specific claims on inspected code, tests, configuration, current state, and useful history; cite exact evidence when it matters. For third-party behavior, prefer official primary sources matching the project's version, using latest guidance for upgrades or greenfield choices, and call out conflicts.
+- Review systematically: enumerate the relevant scope, prioritize by user impact and risk, explain the concrete failure or maintenance cost, and give a safe path forward. Omit generic or cosmetic findings that tools already cover.
+- Make unexplained complexity justify itself. Ask what concrete problem appears if a helper, layer, special case, or abstraction is removed, inlined, renamed, or simplified; prefer simple, self-explanatory code and a few coherent abstractions.
+- Evaluate public APIs from the caller's perspective, including discoverability, misuse resistance, error semantics, configuration, and evolution. Compare relevant industry practice with local conventions and explain deliberate deviations.
+
+### Execution and Git
+
+- For long tasks, maintain the global plan and end goal. Report only material progress. Final handoffs should state the result, validation, remaining risks or work, and any required user input.
+- Never force-push unless explicitly asked to rewrite the published history of the specific branch. If a normal push is rejected as non-fast-forward, report it instead of forcing.
+- Never merge a pull request or enable auto-merge unless explicitly asked to merge that specific pull request. Green CI, approval, or a request to continue is not merge authorization.
+- When commits are requested, keep each commit coherent and reviewable, exclude unrelated changes, and report the commit hash and validation performed.
+
+### Tests and Documentation
+
+- Add tests for realistic observable regressions, non-trivial invariants or boundaries, and concrete bugs. Code changing or coverage increasing is not sufficient justification by itself.
+- Prefer existing coverage at the behavior boundary. Avoid tests that mirror literals, mappings, obvious control flow, implementation details, or removed features unless absence is itself a contract. For concurrency, prefer deterministic coordination or controlled scheduling over sleeps when practical.
+- Comments should explain non-obvious rationale, invariants, safety constraints, or external quirks rather than restating code. Public API documentation should describe observable contracts, not incidental implementation details.
+```
+
+This block is a repository-level operating contract, not a product record. Do
+not add TDD, test-first, fixed-evaluation, mandatory-subagent, mandatory-review,
+universal-test-command, or new shell-contract requirements to it. Validation
+remains proportional to the task's acceptance criteria and risk, using checks
+that already exist at the relevant behavior boundary.
 
 Then write the three docs files under `.codex/agents/` using the seed templates in this skill folder as a starting point:
 
