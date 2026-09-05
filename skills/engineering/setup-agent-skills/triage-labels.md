@@ -1,6 +1,9 @@
 # Triage Labels
 
-The skills speak in terms of five canonical triage roles. This file maps those roles to the label strings written into this repo's local `.codex/agents/` issue files.
+These are the default labels when no local mapping exists. Read an existing
+`.codex/agents/triage-labels.md` first and preserve its explicit mapping. Missing
+configuration alone does not require initialization. Existing custom values
+without an unambiguous mapping require a focused question before assigning labels.
 
 | Canonical skill role       | Label in our tracker | Meaning                                  |
 | -------------------------- | -------------------- | ---------------------------------------- |

@@ -7,6 +7,11 @@ description: Diagnosis loop for hard bugs and performance regressions. Use when 
 
 A discipline for hard bugs. Use only the phases that resolve the current uncertainty, and record why any phase was skipped.
 
+When verifying a behavior claim, read `implement`'s `references/evidence.md`.
+Locate it through host-discovered skill paths or the repository plugin manifest.
+Reading it does not authorize implementation; a diagnosis-only request stays
+read-only. Use the fix phase only when the user requested a fix.
+
 Do not enter this workflow for a routine failed command, an obvious one-line fix, or a documentation/configuration edit with an existing verification signal. Use the existing signal first. A new test or harness is justified only when it is the smallest correct oracle for the reported bug.
 
 When exploring the codebase, read `CONTEXT.md` (if it exists) to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
@@ -50,7 +55,12 @@ When the symptom is non-deterministic, increase the reproduction rate only as mu
 
 ### When you genuinely cannot build a loop
 
-Stop and say so explicitly. List what you tried. Ask the user for: (a) access to whatever environment reproduces it, (b) a captured artifact (HAR file, log dump, core dump, screen recording with timestamps), or (c) permission to add temporary production instrumentation. Do **not** proceed to hypothesise without a loop.
+Report what could and could not be established. Source inspection and existing
+artifacts can still support a provisional explanation; label it as inference,
+state the missing observation, and do not call it a reproduced cause or verified
+fix. Ask for access, a captured artifact, or instrumentation permission only
+when that evidence is needed to answer the request. A diagnosis-only task can
+finish with this bounded finding without creating a harness or changing code.
 
 ### Completion criterion — a tight loop that goes red
 
@@ -61,7 +71,10 @@ Phase 1 is done when the loop is **tight** and **red-capable**: you can name **o
 - [ ] **Fast** — seconds, not minutes.
 - [ ] **Agent-runnable** — you can run it unattended; a human in the loop only via `scripts/hitl-loop.template.sh`.
 
-If you catch yourself reading code to build a theory before this command exists, **stop — jumping straight to a hypothesis is the exact failure this skill prevents.** No red-capable command, no Phase 2.
+Use source inspection to find the relevant path and form testable hypotheses.
+An executed reproduction is required to claim reproduction, not to read code
+or report a clearly qualified hypothesis. Without it, do not claim Phase 2 or a
+verified fix is complete.
 
 ## Phase 2 — Reproduce + minimise
 
@@ -129,7 +142,8 @@ If no new regression test is justified, fix the code and re-run the existing Pha
 
 ## Phase 6 — Cleanup + post-mortem
 
-Required before declaring done:
+For an authorized fix, check these before declaring it verified. A diagnosis-only
+request instead reports the evidence, best-supported cause, and remaining gaps:
 
 - [ ] Original repro no longer reproduces (re-run the Phase 1 loop)
 - [ ] The existing verification loop passes, and any added regression test passes (or the absence of a correct seam is documented)

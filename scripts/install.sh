@@ -79,4 +79,17 @@ for i in "${!skill_names[@]}"; do
   echo "  installed $name"
 done
 
+# Remove only the retired entrypoints after all replacements are verified.
+for name in grill-me grill-with-docs evidence-first ponytail; do
+  dest="$dest_root/$name"
+  if [[ -e "$dest" || -L "$dest" ]]; then
+    rm -rf -- "$dest"
+    if [[ -e "$dest" || -L "$dest" ]]; then
+      echo "error: failed to remove retired skill: $dest" >&2
+      exit 1
+    fi
+    echo "  removed retired skill $name (no backup)"
+  fi
+done
+
 echo "Done."

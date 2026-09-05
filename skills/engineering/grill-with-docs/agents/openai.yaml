@@ -1,6 +1,0 @@
-interface:
-  display_name: "Grill with Docs"
-  short_description: "Clarify a plan and record only durable domain facts"
-  default_prompt: "Use $grill-with-docs to clarify this plan in one session and record only qualifying domain decisions."
-policy:
-  allow_implicit_invocation: false

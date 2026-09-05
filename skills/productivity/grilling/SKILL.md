@@ -1,67 +1,57 @@
 ---
 name: grilling
-description: Find the decision trunk of a plan or design through a small number of high-leverage questions, then fill reversible details with explicit defaults. Use when the user wants to stress-test an idea before building or asks for a grill session.
+description: Clarify a plan or design when unresolved goals, choices, or constraints could change the outcome. Use for a focused interview or to resolve important uncertainty within an already requested task.
 ---
 
 # Grilling
 
-Build enough shared understanding to continue planning, designing, or implementing with minimal user effort.
+Help the user make the decisions needed to move forward. Read
+[references/communication.md](references/communication.md) for user-facing replies.
 
-Think in four moves:
+## Understand the request
 
-- **Trunk**: identify the few decisions that shape the whole plan.
-- **Prune**: investigate discoverable facts and set aside low-impact branches.
-- **Backfill**: choose explicit defaults for reversible details.
-- **Calibrate**: let the user correct the defaults in one pass.
+Start from the conversation and available evidence. For code work, inspect the
+relevant code, project instructions, existing specifications, and domain records.
+For other work, use the supplied material; a repository is not a prerequisite.
 
-## 1. Find the trunk
+Identify the outcome, important constraints, and unresolved choices. If they
+are already clear, continue the requested task without manufacturing an interview.
 
-Read the conversation, codebase, and available documents before asking for information. Derive the goal, success criteria, necessary preconditions, major constraints, and irreversible risks from first principles.
+## Resolve important choices
 
-When the trunk is unclear, present two to four materially different scenarios. Put the recommended scenario first and explain the recommendation briefly. Ask the user to choose the closest fit. When the user has already supplied a clear scenario, adopt it and continue.
+Investigate facts the available sources can answer. Ask when the answer could
+change the goal, scope, architecture, acceptance, or an irreversible decision.
+Explain the tradeoff and recommend a choice when evidence supports one.
 
-Complete this step when one working trunk is established.
+Keep questions easy to answer. Ask one at a time when answers depend on each
+other; related independent questions may be grouped. Choose reasonable defaults
+for reversible details and mention only assumptions that matter to the result.
 
-## 2. Ask for leverage
+When the user corrects an interpretation, apply the correction to all affected
+work. Ask a repair question only if the intended meaning remains uncertain.
 
-Classify every candidate question before asking it:
+Finish clarification when the remaining unknowns can be investigated, changed
+cheaply, or explicitly deferred without undermining the requested outcome.
+Explain the resulting decision and any consequential assumptions in ordinary
+language. Confirmation is needed only for a remaining material choice or when
+the user asked to review the proposal before further work.
 
-| Candidate | Action |
-|---|---|
-| Its answer can change the goal, scope, architecture, major risk, irreversible trade-off, or acceptance criteria | Ask the user |
-| The answer is available from code, documents, or prior context | Investigate |
-| The choice is low-impact and easy to reverse | Backfill a reasonable default |
-| The decision belongs to a later phase | Defer it explicitly |
-| It conflicts with an established decision | Ask one repair question |
-| Its answer would not materially change the plan | Prune it |
+## Documents and continuation
 
-Ask exactly one highest-leverage question at a time. Include a recommended answer and a brief reason. Wait for the answer before continuing.
+Ordinary discussion stays in the conversation. Record established domain terms
+or qualifying architectural decisions only when the task authorizes that work
+or applicable project rules require it; use the existing domain workflow and
+document locations. Reading a glossary does not authorize editing it. Do not
+turn a task decision or user correction into a repository instruction.
 
-After each answer, quietly recompute what is established, what remains assumed, whether a conflict exists, and which unknown has the most decision leverage. Show the resulting recommendation or next question rather than the private reasoning process.
+Continue according to the user's original request:
 
-Complete this step when the goal, success criteria, trunk, core scope, major constraints, meaningful trade-offs, and irreversible risks are clear, and every remaining unknown can be investigated, backfilled, deferred, or changed cheaply. Use this completion criterion instead of a fixed question count.
+- A request to think through an idea ends with the clarified recommendation.
+- A request to clarify and build continues into `implement` once important
+  choices are resolved.
+- Use `to-prd` for a requested specification, `to-issues` for requested task
+  decomposition, and `wayfinder` for authorized cross-session decision work.
 
-## 3. Backfill and calibrate
-
-Choose reasonable defaults for the remaining details. Present a compact decision summary under these headings:
-
-- **Established trunk**
-- **Backfilled defaults**
-- **Deferred decisions**
-
-Ask the user to identify only the defaults that do not fit. Apply those corrections, resolve any resulting trunk conflict with one question, and finish with a decision-ready summary.
-
-## Correct a mismatch
-
-When user feedback indicates that the current answer or process missed their intent, pause the interview and repair it immediately:
-
-1. Name the specific mistake, its behavioral cause, and the immediate correction in a compact response.
-2. Apply the correction to the current work.
-3. When the mismatch remains uncertain after reviewing the exchange, ask one concise calibration question before continuing.
-
-Ground the diagnosis in the preceding exchange and keep the correction in the
-current session. Do not turn feedback, product behavior, feature scope, or a
-task-specific lesson into a repository instruction or propose changing an agent
-instruction file. Durable domain terms and qualifying architecture decisions
-remain the responsibility of an explicitly active domain workflow and its
-existing document owners.
+Selecting another skill does not add authorization. Continue work already
+requested without requiring the user to name the next skill; stop at an actual
+decision, permission boundary, or the requested deliverable.

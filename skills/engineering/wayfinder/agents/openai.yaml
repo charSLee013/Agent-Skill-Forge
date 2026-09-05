@@ -1,5 +1,3 @@
 interface:
   display_name: "Wayfinder"
-  short_description: "Map large work as decision issues"
-policy:
-  allow_implicit_invocation: false
+  short_description: "Resume cross-session decisions and findings"

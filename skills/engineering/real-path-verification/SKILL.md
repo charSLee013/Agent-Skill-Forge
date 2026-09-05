@@ -7,6 +7,10 @@ description: Verify an approved behavior through an existing real runtime path o
 
 Verify the requested behavior at the runtime path that the acceptance criterion actually describes. This is an implement support phase, not a replacement for diagnosis, planning, or ordinary checks.
 
+Read `implement`'s `references/evidence.md` when evaluating a behavior claim.
+Locate the owner through host-discovered skill paths or the repository plugin
+manifest. Reading the reference does not start an implementation task.
+
 ## Entry contract
 
 Run only when a parent acceptance criterion has `real-path` evidence, or when a `target` criterion names an approved real runtime path as its measurement source.

@@ -1,15 +1,22 @@
 ---
 name: wayfinder
-description: Plan work that spans multiple agent sessions while material decisions remain unresolved. Use only when a destination can be named but the route is still unclear and direct planning or implementation would require guessing.
+description: Maintain a decision map when authorized planning spans sessions and important choices remain unresolved, or resume an existing map. Use for cross-session decision work, not a clear task that merely takes a long time.
 argument-hint: "What destination should be mapped?"
-disable-model-invocation: true
 ---
 
 # Wayfinder
 
-Use this skill as a user-invoked decision-map phase for genuinely large work. It creates a low-resolution map and sharp decision issues in the local `.codex/agents/` workspace, then resolves one decision issue at a time until the route is clear.
+Use a local decision map to preserve unresolved questions and established
+decisions across sessions. Work on one decision issue at a time, continuing
+through authorized questions while their dependencies permit it.
 
-Wayfinder plans by default. It does not implement the destination, create an implementation PRD, or split implementation slices until its map is clear.
+Read `grilling`'s `references/communication.md` for replies and
+`setup-agent-skills`'s `issue-tracker-local.md` for workspace defaults. Locate
+these skills through host-discovered paths, or the repository plugin manifest
+when working from source. Reading references does not invoke their workflows.
+
+Wayfinder plans by default. Once the relevant decisions are resolved, continue
+into delivery only when that work is included in the user's request.
 
 ## Locate or create a map
 
@@ -30,11 +37,15 @@ Create a new map only when all of these are true:
 - an unresolved decision or investigation could change scope, architecture, major risk, or acceptance;
 - entering `to-prd` or `implement` now would force a material guess.
 
-Bypass Wayfinder for a clear bounded request, a small documentation or metadata change, an already approved PRD or issue, a known bug path, or work that merely looks long but has no decision fog. Use `grill-with-docs`, `to-prd`, `to-issues`, or `implement` directly.
+Bypass Wayfinder for a clear request, an already approved PRD or issue, a known
+bug path, or work that merely takes a long time. Use `grilling`, `to-prd`,
+`to-issues`, or `implement` only as the requested outcome needs them.
 
 Before writing anything, read the relevant `CONTEXT.md`, ADRs, existing local artifacts, and any existing map.
 
-The local issue workspace should have been provided to you in `.codex/agents/`. If missing, recommend that the user explicitly run `/setup-agent-skills`, then stop this skill.
+Read existing local workspace configuration when present. Otherwise use the
+shipped defaults and create only the authorized map, decision files, and their
+directories. Missing setup does not block planning.
 
 ## Local artifacts
 
@@ -76,10 +87,10 @@ If an existing map still uses the legacy decision path `issues/`, keep that map 
 
 1. Establish the destination from the user's goal, acceptance boundary, non-goals, and known constraints.
 2. Explore breadth-first. Find decisions that can change the destination, scope, architecture, major risk, or acceptance. Do not solve every branch before creating the map.
-3. If the route is already clear, stop without creating a map and recommend the smallest next workflow.
+3. If the route is already clear, create no map and continue the smallest workflow already authorized by the request, or deliver the requested planning conclusion.
 4. Keep only questions sharp enough to state now as decision issues. Put foreseeable but unclear questions in `Not yet specified`; do not pre-slice the fog.
-5. Show the proposed destination, first decision issues, dependencies, risk, and expected evidence. Write `MAP.md` and decision issues only after the user approves that scope.
-6. Create only the issues currently sharp. Record blockers with feature-root-relative `decisions/` or `issues/` paths and stop charting. A decision target requires `Wayfinder status: resolved`; an implementation target requires `Completion: done`. A legacy decision still under `issues/` uses its Wayfinder status until setup migration succeeds. Do not resolve issues, implement the destination, or dispatch a batch of research work during charting.
+5. Establish the destination, initial questions, dependencies, risks, and useful evidence from the request. Ask when a material scope choice remains or the user requested review first. Otherwise create the authorized map without a separate approval round.
+6. Create only the issues currently sharp. Record feature-root-relative blockers. A decision requires `Wayfinder status: resolved`; an implementation requires `Completion: done`. Legacy decisions still use Wayfinder status. If the request includes resolving questions, proceed into the work loop; a request only to produce a map ends with that map.
 
 ## Work through the map
 
@@ -98,14 +109,19 @@ If an existing map still uses the legacy decision path `issues/`, keep that map 
    - `grilling`, `domain-modeling`, `codebase-design`, or `diagnosing-bugs` for a decision that fits;
    - an approved research capability only when its frontmatter permits model invocation.
 
-   Recommend these user-invoked workflows to the user and stop this decision session: `grill-with-docs`, `prototype`, `zoom-out`, `to-prd`, `to-issues`, or `implement`. Do not trigger them from Wayfinder.
-6. Keep the work limited to the question. Use existing commands and artifacts first. Put temporary experiments and research artifacts under the system temporary directory, or an isolated copy/worktree inside it, not in the repository. A prototype's co-location rule applies inside that isolated copy. Modifying the current worktree requires explicit user approval with risk, cleanup, and stop conditions.
+   Use `to-prd`, `to-issues`, or `implement` only when the relevant decisions
+   are resolved and their deliverable is already authorized. `prototype` and
+   `zoom-out` remain manual skills; recommend them when the user has not chosen
+   them. Release a claim to `open` before a planned handoff or user wait.
+6. Keep the work limited to the question. Use existing commands and artifacts first. Put temporary experiments and research artifacts under the system temporary directory, or an isolated copy/worktree inside it, not in the repository. A prototype's co-location rule applies inside that isolated copy. Experiments that modify project code or runtime state require explicit user approval with risk, cleanup, and stop conditions. This does not require another approval for the map and decision updates already requested.
 7. Record the answer, relevant non-sensitive evidence, unresolved uncertainty, and any newly sharp question. Set the issue to `resolved` or `out-of-scope`, then update `Decisions so far` or `Out of scope` in the map.
 8. A decision marked `out-of-scope` does not automatically unblock a dependent issue. Re-scope the dependent, rewrite its blocker, or close it through its own terminal state and record the required `Dependency resolution` section.
 9. Before every write, re-read the issue and stop if its owner or status changed. On a planned handoff, return a claimed issue to `open` and record the progress in the handoff.
-10. Stop after one decision issue in the session. Show any next frontier issue as its title plus feature-root-relative path, then recommend that issue or the next workflow; do not automatically chain user-invoked skills, migrate files, or dispatch parallel subagents.
+10. Continue to the next unblocked, unclaimed question when the request authorizes it. Stop when the requested questions are answered, a material user decision or permission is needed, or the user asked to handle only one issue. Preserve the next frontier for a later session. Do not migrate files or dispatch parallel work merely because a map exists.
 
-Research work requires an explicit user-approved question and scope. Use an existing specialized research capability only when it matches the subject. Keep one research issue in progress at a time and return its evidence before creating another.
+Research stays within the questions and scope authorized by the request. Use an
+existing specialized research capability only when it matches the subject. Keep
+one research issue in progress at a time and record its evidence before proceeding.
 
 ## Exit to delivery
 
@@ -117,14 +133,15 @@ The map is clear only when:
 - the map contains decisions and pointers, not implementation detail;
 - the next delivery workflow is explicit.
 
-Recommend exactly one handoff:
+Select the needed delivery step from the existing authorization:
 
 - `to-prd` when a formal specification still needs to be synthesized;
 - `to-issues` when the approved plan needs independently verifiable implementation slices;
 - `implement` when the destination is already bounded and approved;
 - `real-path-verification` only later, when implementation acceptance requires real or production-equivalent execution.
 
-Wayfinder may identify the next skill, but it does not invoke the next phase automatically.
+Continue an already authorized delivery step without requiring another command.
+Otherwise deliver the planning result with the useful next recommendation.
 
 ## Boundaries
 

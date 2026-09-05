@@ -5,7 +5,10 @@ description: Build and sharpen a project's domain model. Use when the user wants
 
 # Domain Modeling
 
-Actively build and sharpen the project's domain model as you design. This is the *active* discipline — challenging terms, inventing edge-case scenarios, and writing the glossary and decisions down the moment they crystallise. (Merely *reading* `CONTEXT.md` for vocabulary is not this skill — that's a one-line habit any skill can do. This skill is for when you're changing the model, not just consuming it.)
+Build and sharpen the project's domain model when that work is requested or
+required by project rules. Test terminology against concrete scenarios and
+record established terms and qualifying decisions within that authorization.
+Reading `CONTEXT.md` for vocabulary is passive consumption, not this workflow.
 
 ## File structure
 
@@ -37,13 +40,20 @@ If a `CONTEXT-MAP.md` exists at the root, the repo has multiple contexts. The ma
 │       └── docs/adr/
 ```
 
-Create files lazily — only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
+Within authorized document maintenance, create files only when there is something
+to record: `CONTEXT.md` for an established term, or `docs/adr/` for a qualifying
+decision. A conversation that resolves a term does not by itself require a file.
 
 ## During the session
 
-### Follow the grilling question gate
+### Coordinate clarification
 
-When running alongside `/grilling`, let that skill own every user question. Route terminology ambiguity through its decision-leverage gate. Propose a canonical default for low-impact language and include it in the final calibration. Ask immediately when the distinction changes the trunk, a domain boundary, a major risk, or an irreversible decision.
+When working with `grilling`, coordinate questions so the user is not asked the
+same thing twice. Investigate existing vocabulary and choose reversible wording
+defaults. Ask when a distinction changes the outcome or an important boundary.
+Record terms or decisions only when that work is authorized or project rules
+require it; ordinary clarification and passive glossary reading do not start
+document maintenance.
 
 ### Challenge against the glossary
 
@@ -63,7 +73,9 @@ When the user states how something works, check whether the code agrees. If you 
 
 ### Update CONTEXT.md inline
 
-When a term is resolved, update `CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
+When glossary maintenance is authorized, record resolved terms in `CONTEXT.md`
+using [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md). Otherwise keep the clarification
+in the conversation.
 
 `CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
 

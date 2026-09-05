@@ -53,6 +53,10 @@ consumer needs it at the point of use.
 
 ### 2. Compare documentation with shipped reality
 
+For behavior claims, read `implement`'s `references/evidence.md`, resolving the
+skill through host-discovered paths or the repository plugin manifest. This
+reference supports the audit and does not authorize code changes.
+
 For every material claim, inspect the narrowest evidence that can prove it:
 
 - production callers and entry paths;
@@ -95,17 +99,18 @@ Classify each finding as `keep`, `add`, `trim`, `restore`, `restructure`, or
 only through the repository's existing command. If the claim changes product
 behavior, stop the documentation pass and return it to the owning workflow.
 
-Use the existing skills by recommendation, never by silently starting another
-user-invoked phase:
+Keep an audit read-only. When the user also requests corrections, continue
+bounded authorized work through the appropriate model-invoked skill. Manual
+skills remain recommendations unless the user chooses them:
 
 - missing or misplaced technical contract -> recommend `$prose-standard`;
 - authoring-session, PR, review, or draft residue -> recommend
   `$trim-cot-leakage`;
 - repeated mechanism with uncertain net deletion -> recommend
   `$find-simplifications`;
-- unresolved documentation ownership or product scope -> recommend
-  `$grill-with-docs`;
-- approved bounded correction -> recommend `implement`.
+- unresolved documentation ownership or product scope -> use `grilling` when
+  clarification is needed for the current task;
+- approved bounded correction -> continue with `implement` when requested.
 
 ## Report shape
 

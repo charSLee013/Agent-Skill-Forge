@@ -60,15 +60,17 @@ End the report with a **Top recommendation** section: which candidate you'd tack
 
 See [HTML-REPORT.md](HTML-REPORT.md) for the full HTML scaffold, diagram patterns, and styling guidance.
 
-Do NOT propose interfaces yet. After the file is written, ask the user: "Which of these would you like to explore?"
+After delivering the report, ask which candidate to explore only when the
+request has not already selected an area or authorized a clear next step.
 
 ### 3. Grilling loop
 
-Once the user picks a candidate, run the `/grilling` skill to establish its main trunk: the load-bearing constraints, dependencies, module boundary, interface responsibility, and tests that must survive. Let `/grilling` backfill reversible details.
+Use `grilling` when a selected candidate still has important unresolved choices.
+Established requirements do not need another interview. Use `domain-modeling`
+to record terms or qualifying ADRs only when authorized or required by project
+rules. Use `codebase-design` for an actual interface decision.
 
-Side effects happen inline as decisions crystallize — run the `/domain-modeling` skill to keep the domain model current as you go:
-
-- **Naming a deepened module after a concept not in `CONTEXT.md`?** Add the term to `CONTEXT.md`. Create the file lazily if it doesn't exist.
-- **Sharpening a fuzzy term during the conversation?** Update `CONTEXT.md` right there.
-- **User rejects the candidate with a load-bearing reason?** Offer an ADR, framed as: _"Want me to record this as an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would actually be needed by a future explorer to avoid re-suggesting the same thing — skip ephemeral reasons ("not worth it right now") and self-evident ones.
-- **Want to explore alternative interfaces for the deepened module?** Run the `/codebase-design` skill and use its design-it-twice parallel sub-agent pattern.
+Continue into `implement` or `to-issues` when the user's request includes that
+work and the scope is clear. Otherwise deliver the architecture findings and
+recommend the next action; choosing a candidate for discussion alone does not
+authorize refactoring.

@@ -21,6 +21,17 @@ compare_sets() {
 
 command -v jq >/dev/null || fail "jq is required"
 
+for skill_dir in skills/productivity/grill-me skills/engineering/grill-with-docs \
+  skills/engineering/evidence-first skills/productivity/ponytail; do
+  [[ ! -e "$skill_dir" && ! -L "$skill_dir" ]] || fail "retired skill remains: $skill_dir"
+done
+for retired_file in .codex/hooks.json commands/ponytail.toml hooks/ponytail.js \
+  hooks/claude-codex-hooks.json hooks/copilot-hooks.json hooks/qoder-hooks.json \
+  tests/ponytail-hooks.test.js; do
+  [[ ! -e "$retired_file" && ! -L "$retired_file" ]] || fail "retired hook remains: $retired_file"
+done
+jq -e 'has("hooks") | not' .claude-plugin/plugin.json >/dev/null || fail "retired hook registration remains"
+
 tmp_dir="$(mktemp -d)"
 trap 'rm -rf "$tmp_dir"' EXIT
 

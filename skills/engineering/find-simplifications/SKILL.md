@@ -225,7 +225,7 @@ Risks
 <behavior, public-surface, migration, dependency, or reintroduction risks>
 
 Confidence: <Strong | Worth exploring | Speculative>
-Recommended next workflow: <implement | to-issues | improve-codebase-architecture | grill-with-docs | domain-modeling>
+Recommended next workflow: <implement | to-issues | improve-codebase-architecture | grilling | domain-modeling>
 ```
 
 Do not present a candidate as approved work. Do not write implementation instructions
@@ -233,12 +233,14 @@ that silently choose product intent. The report is a decision input for the user
 
 ## Route the selected candidate
 
-After the user selects a candidate, recommend exactly one next workflow and stop this
-skill:
+After the user selects a candidate, check whether they requested exploration,
+planning, or implementation. Selection alone does not authorize a code change.
+For already authorized follow-up work, continue the appropriate model-invoked
+workflow; otherwise recommend the useful next action:
 
 - deletion, folding, demotion, or dependency replacement: `to-issues` or `implement`;
 - a changed module, interface, seam, adapter, or architecture shape:
-  `improve-codebase-architecture` or `grill-with-docs`;
+  `improve-codebase-architecture` or `grilling`;
 - a hard-to-reverse, surprising trade-off: `domain-modeling` to decide whether an
   ADR is warranted;
 - old documentation or decision-record cleanup: the existing documentation workflow.
@@ -261,4 +263,5 @@ Before returning the report, run a cold-start audit of each candidate:
   architecture decision?
 
 If any answer is no, downgrade or remove the candidate. Return the report only after
-this audit. This skill never mutates the repository.
+this audit. The audit itself stays read-only; separately authorized follow-up
+work belongs to its selected workflow.

@@ -40,7 +40,11 @@ Five **state** roles:
 
 Every triaged issue should carry exactly one category role and one state role. If state roles conflict, flag it and ask the maintainer before doing anything else.
 
-These are canonical role names — the local status strings may differ. The mapping should have been provided to you in `.codex/agents/triage-labels.md`. If missing, recommend that the user explicitly run `/setup-agent-skills`, then stop this skill.
+Read `.codex/agents/triage-labels.md` when present. Otherwise read
+`setup-agent-skills`'s `issue-tracker-local.md` and `triage-labels.md` for
+on-demand defaults. Locate the skill through host-discovered paths or the
+repository plugin manifest. Missing configuration does not block triage; an
+ambiguous existing custom mapping needs clarification before assigning labels.
 
 State transitions: an unlabeled issue normally goes to `needs-triage` first; from there it moves to `needs-info`, `ready-for-agent`, `ready-for-human`, or `wontfix`. `needs-info` returns to `needs-triage` once the reporter replies. The maintainer can override at any time — flag transitions that look unusual and ask before proceeding.
 
@@ -71,7 +75,7 @@ Show counts and a one-line summary per item. Let the maintainer pick. Do not mig
 
 3. **Verify the claim.** Before any grilling, check that the claim holds up. For a bug, reproduce it from the reporter's steps. Report what happened: confirmed (with code path), failed, or insufficient detail (a strong `needs-info` signal). A confirmed verification makes a much stronger agent brief.
 
-4. **Grill (if needed).** If a high-leverage decision is still missing, run the `/grilling` and `/domain-modeling` skills together. Let `/grilling` find the request's main trunk and let `/domain-modeling` record established terms and durable decisions as they land.
+4. **Clarify when needed.** Use `grilling` for an unresolved choice that changes the requested outcome. Use `domain-modeling` only when recording established terms or qualifying decisions is authorized or required by project rules. Resolving an issue does not automatically require domain document edits.
 
 5. **Apply the outcome:**
    - `ready-for-agent` — add an agent brief note ([AGENT-BRIEF.md](AGENT-BRIEF.md)).

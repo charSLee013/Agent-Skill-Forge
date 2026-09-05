@@ -2,6 +2,37 @@
 
 Decision maps, decision issues, PRDs, implementation issues, and triage notes for this repo live as local markdown files under `.codex/agents/`.
 
+## On-demand use
+
+Read relevant local `issue-tracker.md`, `triage-labels.md`, and `domain.md` files
+when present. Missing files do not require setup. Use the conventions below,
+the defaults in [triage-labels.md](triage-labels.md), and the optional domain
+lookup in [domain.md](domain.md). Preserve explicit local configuration. If
+existing custom status values cannot be mapped unambiguously, ask about those
+values before assigning labels; do not overwrite them with defaults.
+
+Only a task that authorizes a planning artifact creates its file and required
+parent directories. Do not create empty configuration, a placeholder map, or a
+PRD just to start another task. Derive a short feature slug from the requested
+outcome unless its existing directory is already identified. Preserve existing
+files and resolve an ambiguous feature or output collision before overwriting.
+
+Before first writing private workspace files in a Git repository, inspect the
+exclude file returned by `git rev-parse --git-path info/exclude`. Add
+`.codex/agents/` once if the workspace is not already ignored; create the exclude
+file's parent if needed. Do not edit `.gitignore`, project Agent instructions,
+or Git's index as part of on-demand use. An already tracked workspace needs an
+explicit decision about privacy because exclude rules cannot untrack it. In a
+non-Git directory, create the authorized artifacts without inventing Git setup.
+
+The host may protect `.git` and `.codex` even inside a writable project. If the
+required path is not writable, report the exact permission needed and use the
+host's normal approval mechanism when available. Do not bypass the restriction,
+run setup as a workaround, or report an unpublished artifact as saved.
+
+`setup-agent-skills` is optional for explicit configuration and legacy layout
+migration. Reading these conventions does not invoke it.
+
 ## Conventions
 
 - One feature per directory: `.codex/agents/work/<feature-slug>/`
@@ -12,7 +43,7 @@ Decision maps, decision issues, PRDs, implementation issues, and triage notes fo
 - Triage state is recorded as a `Status:` line near the top of implementation issues (see `triage-labels.md` for the role strings)
 - Implementation completion is recorded separately as `Completion: open` or `Completion: done`
 - Comments and conversation history append to the bottom of the file under a `## Comments` heading
-- `.codex/` is private local agent state. Keep it out of git with `.git/info/exclude`.
+- `.codex/agents/` is private local agent state. Keep it out of Git through the repository's local exclude file.
 
 ## Publishing and fetching
 
@@ -22,7 +53,10 @@ When a skill says "fetch the relevant issue", read the exact local path supplied
 
 ## Wayfinding operations
 
-Wayfinding is a user-invoked decision-map phase for work that spans sessions and still has material decisions open. It uses the same local workspace; it does not add another tracker.
+Wayfinding maintains a decision map for authorized work that spans sessions and
+still has material decisions open. The model may select it from the user's
+intent. It uses the same local workspace and can continue through already
+authorized questions and delivery steps.
 
 ### Modern layout
 

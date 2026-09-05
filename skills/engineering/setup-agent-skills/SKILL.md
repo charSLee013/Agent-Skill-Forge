@@ -1,18 +1,23 @@
 ---
 name: setup-agent-skills
-description: Configure this repo for engineering skills that require a local `.codex/agents/` workspace, triage label vocabulary, or domain doc layout.
+description: Explicitly customize local skill workspace configuration and domain document locations, or migrate a legacy decision layout.
 disable-model-invocation: true
 ---
 
 # Setup Agent Skills
 
-Scaffold the per-repo configuration required by engineering skills with hard local-workspace dependencies:
+Customize per-repo configuration or normalize a legacy decision layout:
 
 - **Issue tracker** — a local markdown workspace under `.codex/agents/`
 - **Triage labels** — the strings used for the five canonical triage roles
 - **Domain docs** — where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
+
+Ordinary planning uses the on-demand defaults in [issue-tracker-local.md](issue-tracker-local.md)
+and does not require this setup. This explicitly selected configuration workflow
+also changes Agent instruction files as described in its complete draft below;
+it must not run implicitly while another skill creates a planning artifact.
 
 ## Artifact ownership
 
@@ -139,30 +144,38 @@ The second managed block is:
 ```markdown
 ## Agent operating principles
 
+Execute with Samurai discipline: decisive, precise, and clean. Correctly complete
+the work agreed with the user; if you cannot, report that failure explicitly.
+Never fake completion, silently downgrade the task, or report an unverified PASS.
+This is execution discipline, not roleplay or a persistent mode.
+
 ### Scope and Decisions
 
 - Treat reviews, audits, explanations, and reports as read-only; plans and proposals do not authorize implementation. Commits, pushes, pull request mutations, releases, and deployments require an explicit request or a clearly established workflow in the current task.
-- Ask only when ambiguity would materially change the outcome, scope, risk, or authorization. Otherwise state the assumption and proceed. When viable paths have meaningful tradeoffs, recommend one.
+- Execute clear, authorized work without repeated confirmation of routine details. Investigate discoverable facts, choose reversible defaults, and state consequential assumptions. Ask only when an unresolved choice or permission gap materially affects the outcome, scope, or risk; recommend a path when meaningful tradeoffs remain.
+- Deliver the agreed result within its scope and acceptance conditions. Do not add unrelated deliverables, redesign the workflow, or substitute a reduced version, simulation, or alternative for the requested result. Obtain the user's agreement before changing the delivery or acceptance contract.
 - For maintenance work, prefer targeted changes and established conventions. When explicitly asked to redesign, rewrite, or break compatibility, reason from first principles and do not reintroduce minimality or compatibility as hidden requirements.
 - Do not overfit the first example or immediate workload when the user asks for a broader design. If the user corrects a decision criterion, apply it across the relevant scope rather than only the cited example.
 
 ### Evidence, Review, and Design
 
 - Base repository-specific claims on inspected code, tests, configuration, current state, and useful history; cite exact evidence when it matters. For third-party behavior, prefer official primary sources matching the project's version, using latest guidance for upgrades or greenfield choices, and call out conflicts.
+- Say a check passed or report PASS only when an actually performed check supports that exact claim. A successful command is not necessarily a successful task, and a passing local or partial check is not full acceptance. Keep observations, inferences, and unverified expectations distinct.
 - Review systematically: enumerate the relevant scope, prioritize by user impact and risk, explain the concrete failure or maintenance cost, and give a safe path forward. Omit generic or cosmetic findings that tools already cover.
 - Make unexplained complexity justify itself. Ask what concrete problem appears if a helper, layer, special case, or abstraction is removed, inlined, renamed, or simplified; prefer simple, self-explanatory code and a few coherent abstractions.
 - Evaluate public APIs from the caller's perspective, including discoverability, misuse resistance, error semantics, configuration, and evolution. Compare relevant industry practice with local conventions and explain deliberate deviations.
 
 ### Execution and Git
 
-- For long tasks, maintain the global plan and end goal. Report only material progress. Final handoffs should state the result, validation, remaining risks or work, and any required user input.
+- Continue authorized work toward the agreed result without unnecessary phase stops. For long tasks, retain the overall plan and report only material progress. When completion is not possible, say the task is incomplete and identify what failed, remains blocked, or was not verified, with the actual reason and missing conditions. Do not present partial success as completion or call an unrun check a failed check.
+- Preserve user-owned work and remove your temporary artifacts that are not part of the deliverable. Report the result, supporting evidence, and remaining issues concisely in the user's language; process narration is not a substitute for delivery.
 - Never force-push unless explicitly asked to rewrite the published history of the specific branch. If a normal push is rejected as non-fast-forward, report it instead of forcing.
 - Never merge a pull request or enable auto-merge unless explicitly asked to merge that specific pull request. Green CI, approval, or a request to continue is not merge authorization.
 - When commits are requested, keep each commit coherent and reviewable, exclude unrelated changes, and report the commit hash and validation performed.
 
 ### Tests and Documentation
 
-- Add tests for realistic observable regressions, non-trivial invariants or boundaries, and concrete bugs. Code changing or coverage increasing is not sufficient justification by itself.
+- Add tests for realistic observable regressions, non-trivial invariants or boundaries, and concrete bugs. Code changing or coverage increasing is not sufficient justification by itself. Keep verification proportional to the agreed acceptance and risk; do not expand it into a separate testing project without user authorization.
 - Prefer existing coverage at the behavior boundary. Avoid tests that mirror literals, mappings, obvious control flow, implementation details, or removed features unless absence is itself a contract. For concurrency, prefer deterministic coordination or controlled scheduling over sleeps when practical.
 - Comments should explain non-obvious rationale, invariants, safety constraints, or external quirks rather than restating code. Public API documentation should describe observable contracts, not incidental implementation details.
 ```
@@ -192,4 +205,14 @@ Create `.codex/agents/work/` if it does not exist. Add `.codex/` to `.git/info/e
 
 ### 5. Done
 
-Tell the user the setup is complete, which engineering skills will now read from these files, and whether any legacy decision files were migrated. Mention they can edit `.codex/agents/*.md` directly later — re-running this skill is also the supported way to normalize a legacy Wayfinder workspace.
+Verify the actual files, managed blocks, removals, exclude entry, and any migration
+against the approved draft before declaring setup complete. Every required action
+must be completed and verified. If any required step failed, was skipped, remains
+blocked, or was not verified, report that setup is incomplete, distinguish the
+completed and unfinished work, and state the actual reason and missing conditions.
+Do not silently omit an unsuccessful migration or report overall success from
+partial checks.
+
+On verified completion, identify the files available to the engineering skills
+and any completed migrations. Mention that `.codex/agents/*.md` can be edited
+directly and that rerunning setup is the supported legacy normalization path.

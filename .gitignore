@@ -1,5 +1,4 @@
 node_modules/
 .codex/*
-!.codex/hooks.json
 artifacts/
 .spec-workflow/

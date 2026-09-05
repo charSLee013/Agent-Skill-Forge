@@ -77,6 +77,10 @@ common_path="$tmp_dir/fake-bin:$PATH"
 home="$tmp_dir/home"
 mkdir -p "$home/.agents/skills/unrelated"
 printf '%s\n' 'keep' >"$home/.agents/skills/unrelated/marker"
+for retired in grill-me grill-with-docs evidence-first ponytail; do
+  mkdir -p "$home/.agents/skills/$retired"
+  printf '%s\n' 'old skill' >"$home/.agents/skills/$retired/SKILL.md"
+done
 
 PATH="$common_path" FAKE_CTF_ARCHIVE="$tmp_dir/ctf.tar.gz" FAKE_FORGE_ARCHIVE="$tmp_dir/forge.tar.gz" \
   CTF_TOOL_MARKER="$tmp_dir/tool-ran" HOME="$home" bash scripts/install-with-ctf.sh >"$tmp_dir/install.out"
@@ -86,6 +90,9 @@ assert_file "$home/.agents/skills/unrelated/marker"
 assert_file "$home/.agents/skills/ctf-web/references/example.md"
 assert_file "$home/.agents/skill-sources/agent-skill-forge/ctf-skills.json"
 assert_absent "$tmp_dir/tool-ran"
+for retired in grill-me grill-with-docs evidence-first ponytail; do
+  assert_absent "$home/.agents/skills/$retired"
+done
 if compgen -G "$home/.agents/skills/.ctf-skills-stage.*" >/dev/null; then
   fail "installer left a staging directory"
 fi

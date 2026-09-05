@@ -1,19 +1,25 @@
 ---
 name: to-issues
-description: Break a plan, spec, or PRD into independently-grabbable issues in the local `.codex/agents/` workspace using tracer-bullet vertical slices.
+description: Split a clear plan or specification into independently verifiable implementation issues when the user requests task decomposition or authorizes a workflow that includes it. A PRD is optional.
 argument-hint: "What should be split into implementation issues?"
-disable-model-invocation: true
 ---
 
 # To Issues
 
 Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
 
+Read `grilling`'s `references/communication.md` for replies and
+`setup-agent-skills`'s `issue-tracker-local.md` for workspace defaults. Locate
+these skills through host-discovered paths, or the repository plugin manifest
+when working from source. Reading references does not invoke their workflows.
+
 Resolve an optional local map before slicing. If an explicit `MAP.md` path was supplied but does not exist, stop and report the missing path. Without an explicit map path, use `MAP.md` from an explicit PRD or issue's feature directory when present; otherwise search by exact feature slug or Destination under `.codex/agents/work/`. If multiple maps match, stop and ask for the exact `MAP.md` path. If no matching map exists and no explicit `MAP.md` path was supplied, continue when the source material is clear enough for this skill; a map is optional.
 
-When a map exists, read it before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If the map uses the legacy decision path under `issues/`, read it in place and do not migrate or mix layouts; `setup-agent-skills` is the migration entry point. If material decision fog remains, stop and report the next frontier issue instead of turning a decision into an implementation slice.
+When a map exists, read it before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If the map uses the legacy decision path under `issues/`, read it in place and do not migrate or mix layouts; `setup-agent-skills` is the migration entry point. If material decisions remain, resolve them through `wayfinder` when that work is already authorized; otherwise report the next frontier issue. Do not turn an unresolved decision into an implementation slice.
 
-The local issue workspace and triage label vocabulary should have been provided to you in `.codex/agents/`. If missing, recommend that the user explicitly run `/setup-agent-skills`, then stop this skill.
+Read existing local workspace configuration when present. Otherwise use the
+shipped workspace conventions and default labels, creating only the requested
+issues and their directories. Missing setup or a PRD does not block a clear plan.
 
 ## Process
 
@@ -39,7 +45,7 @@ Break the plan into independently verifiable issues. Use a thin vertical slice w
 
 </vertical-slice-rules>
 
-For every source acceptance criterion covered by a slice, copy its behavior and inline `Evidence` facts into the issue. If the source lacks material acceptance evidence, including a `target` without a falsifiable predicate, ask for it during the breakdown; do not leave that choice to `implement`. An issue has one effective evidence requirement. When its criteria differ, use the strongest evidence: `target` > `real-path` > `static` only when it satisfies every retained criterion's original oracle. Otherwise split the slice before publishing. Do not choose, weaken, or substitute evidence during issue slicing.
+For every source acceptance criterion covered by a slice, copy its behavior and inline `Evidence` facts into the issue. When a natural-language plan lacks formal evidence, establish it from the requested behavior and existing checks. Ask only when a material acceptance choice cannot be settled from those sources, including a `target` without a falsifiable predicate; resolve it before publication. An issue has one effective evidence requirement. When its criteria differ, use the strongest evidence: `target` > `real-path` > `static` only when it satisfies every retained criterion's original oracle. Otherwise split the slice before publishing. Never weaken or substitute an existing agreed evidence requirement during slicing.
 
 ### 3a. Wide mechanical migration
 
@@ -53,7 +59,7 @@ When the exception applies, publish these phases in dependency order:
 
 Keep every migrate batch green when possible. When a batch cannot remain green independently, record that constraint before publishing and make the batches block a named final-integration issue. Do not present them as independently verifiable slices.
 
-### 4. Quiz the user
+### 4. Resolve the breakdown
 
 Present the proposed breakdown as a numbered list. For each slice, show:
 
@@ -62,13 +68,10 @@ Present the proposed breakdown as a numbered list. For each slice, show:
 - **Capabilities or user stories covered**: which source behavior this addresses
 - **Acceptance evidence**: the inherited evidence and its required facts
 
-Ask the user:
-
-- Does the granularity feel right? (too coarse / too fine)
-- Are the dependency relationships correct?
-- Should any slices be merged or split further?
-
-Iterate until the user approves the breakdown.
+Choose granularity and dependencies from the approved behavior and existing
+code. Ask only when a material choice remains or the user requested review
+before publication. Otherwise publish the requested breakdown without a second
+approval round. Use `grilling` for an unresolved decision and resume afterward.
 
 ### 5. Publish the issues to the local issue workspace
 
@@ -119,4 +122,7 @@ Or "None - can start immediately" if no blockers.
 
 </issue-template>
 
-Do NOT close or modify any parent issue.
+Issue decomposition does not close or modify a parent issue. If the user asked
+only for the breakdown, deliver it and finish. If the user also requested
+implementation, continue through the unblocked issues using `implement`; keep
+their dependencies and individual acceptance criteria authoritative.
