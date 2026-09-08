@@ -1,0 +1,3 @@
+interface:
+  display_name: "Course Correction"
+  short_description: "Stop scope drift and repair agent-owned work"

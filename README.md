@@ -1,6 +1,6 @@
 # Agent Skill Forge
 
-用于需求澄清、代码交付、任务规划、写作、交接和论文学习的 30 个 Agent 技能。
+用于需求澄清、代码交付、任务规划、写作、交接和论文学习的 31 个 Agent 技能。
 
 日常工作主要使用 `grilling` 和 `implement`。模型根据请求选择适用技能；需要规格、任务拆分或跨会话决策记录时，再使用对应工具。技能切换沿用当前授权，单纯的审查或讨论不会自行变成代码修改。
 
@@ -61,6 +61,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [to-issues](./skills/engineering/to-issues/SKILL.md) | 按意图选用 | 将清楚的计划拆成可独立验证的任务；不要求先有 PRD。 |
 | [wayfinder](./skills/engineering/wayfinder/SKILL.md) | 按意图选用 | 保存跨会话尚未解决的决策及调查结果；耗时长本身不触发。 |
 | [diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md) | 按意图选用 | 调查困难或不确定的故障；只诊断的请求保持只读。 |
+| [course-correction](./skills/engineering/course-correction/SKILL.md) | 按意图选用 | 发现范围漂移或代理失控时立即止损、清理代理产物并如实报告。 |
 | [real-path-verification](./skills/engineering/real-path-verification/SKILL.md) | 按意图选用 | 通过已授权的实际运行路径核实明确的验收条件。 |
 | [domain-modeling](./skills/engineering/domain-modeling/SKILL.md) | 按意图选用 | 处理实际的领域术语或架构决策，按授权维护已有记录。 |
 | [codebase-design](./skills/engineering/codebase-design/SKILL.md) | 按意图选用 | 为明确的接口或架构设计提供模块设计方法。 |
@@ -105,7 +106,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 ## 可选 CTF 包
 
-CTF 包面向授权竞赛、安全研究和教育，不计入本仓库的 30 个技能：
+CTF 包面向授权竞赛、安全研究和教育，不计入本仓库的 31 个技能：
 
 ```bash
 bash scripts/install-with-ctf.sh

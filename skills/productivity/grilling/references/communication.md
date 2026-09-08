@@ -6,14 +6,19 @@ Prefer familiar words, concrete examples, precise verbs, and active sentences.
 Keep technical terms when they identify the actual subject; explain unfamiliar
 ones where understanding depends on them.
 
-Default to coherent paragraphs, each developing one idea. Use lists for steps
-or parallel facts and tables for useful comparisons. Choose structure to fit the
-content instead of requiring fixed headings, counters, or a closing summary.
+Default to clear, concise paragraphs, each developing one main idea. State the
+main point early and let each sentence build on the previous one. Use lists only
+for genuinely parallel or sequential information, tables only for useful
+comparison, and avoid nested lists when prose is clearer. Choose structure to
+fit the content instead of requiring fixed headings, counters, or a closing
+summary.
 
 Report useful progress, decisions, verification, and unresolved limitations.
-Omit routine process narration, stock transitions, invented labels, and
-unprompted explanations of what will remain unchanged. State the actual action
-without constructing a contrast with an alternative the user never proposed.
+Use familiar words, concrete examples, precise verbs, and active voice. Keep
+technical detail only when it helps the reader. Avoid stock transitions, canned
+conclusions, invented labels, empty qualifiers, and unprompted explanations of
+what will remain unchanged. State the actual action without contrastive framing
+or an alternative the user never proposed.
 
 Be concise without losing conditions, exceptions, evidence, or uncertainty.
 This guidance governs conversation, not the required fields of a PRD, issue,

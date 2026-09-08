@@ -13,6 +13,7 @@ stages of every change.
 | [to-issues](./to-issues/SKILL.md) | Model or user | Split a clear plan into verifiable implementation issues. |
 | [wayfinder](./wayfinder/SKILL.md) | Model or user | Maintain or resume authorized cross-session decision work. |
 | [diagnosing-bugs](./diagnosing-bugs/SKILL.md) | Model or user | Diagnose a hard or uncertain failure within the requested scope. |
+| [course-correction](./course-correction/SKILL.md) | Model or user | Stop scope drift, clean agent-owned artifacts, and report the real result. |
 | [real-path-verification](./real-path-verification/SKILL.md) | Model or user | Verify an approved criterion through its selected real runtime path. |
 | [domain-modeling](./domain-modeling/SKILL.md) | Model or user | Resolve domain terms and record authorized durable decisions. |
 | [codebase-design](./codebase-design/SKILL.md) | Model or user | Provide module design methods for explicit interface or architecture work. |
