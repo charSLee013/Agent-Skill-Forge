@@ -1,6 +1,6 @@
 # Agent Skill Forge
 
-用于需求澄清、代码交付、任务规划、写作、交接和论文学习的 31 个 Agent 技能。
+用于需求澄清、代码交付、任务规划、写作、交接和论文学习的 32 个 Agent 技能。
 
 日常工作主要使用 `grilling` 和 `implement`。模型根据请求选择适用技能；需要规格、任务拆分或跨会话决策记录时，再使用对应工具。技能切换沿用当前授权，单纯的审查或讨论不会自行变成代码修改。
 
@@ -97,6 +97,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 |---|---|---|
 | [arxiv-lookup](./skills/research/arxiv-lookup/SKILL.md) | 按意图选用 | 查询 arXiv 论文身份、元数据和期刊 DOI。 |
 | [arxiv-doc-builder](./skills/research/arxiv-doc-builder/SKILL.md) | 按意图选用 | 获取论文 source/PDF 并转成供阅读使用的 Markdown。 |
+| [research-loop](./skills/research/research-loop/SKILL.md) | 手动 | 为明确的改进目标设计并运行可审计的研究循环；包含裁判、变异面、账本与退化诊断。 |
 
 ## 课程与论文工具
 

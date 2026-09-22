@@ -1,0 +1,6 @@
+interface:
+  display_name: "Research Loop"
+  short_description: "Run an explicit research-improvement loop"
+  default_prompt: "Use $research-loop to design and run an auditable improvement research loop for this goal."
+policy:
+  allow_implicit_invocation: false
