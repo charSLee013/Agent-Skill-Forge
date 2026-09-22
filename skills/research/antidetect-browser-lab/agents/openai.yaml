@@ -1,0 +1,6 @@
+interface:
+  display_name: "Antidetect Browser Lab"
+  short_description: "Operate a user-owned Donut browser profile"
+  default_prompt: "Use $antidetect-browser-lab to install or operate my user-owned Donut browser profile."
+policy:
+  allow_implicit_invocation: false

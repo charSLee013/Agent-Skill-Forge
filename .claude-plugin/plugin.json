@@ -41,6 +41,7 @@
     "./skills/productivity/writing-great-skills",
     "./skills/research/arxiv-doc-builder",
     "./skills/research/arxiv-lookup",
-    "./skills/research/research-loop"
+    "./skills/research/research-loop",
+    "./skills/research/antidetect-browser-lab"
   ]
 }
