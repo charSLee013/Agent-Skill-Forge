@@ -25,6 +25,9 @@ Before deleting, preserve every surviving actor/action, condition or ordering,
 modality, exception, ownership, failure, and consequence. For a broader review
 of required prose coverage and placement, recommend `$prose-standard`; do not
 invoke another user-invoked skill automatically.
+When the underlying problem is an obsolete or superseded decision record rather
+than leaked wording, recommend `$doc-standards` for its scoped record-governance
+review. Do not delete that record as part of a prose edit.
 
 ## The one test
 
@@ -98,7 +101,9 @@ and keeping dead ones. Apply these keep rules as written; the
 
 1. Require an explicit scope. Exclude `vendor/`, `node_modules/`, and generated
    or recorded fixtures and snapshots from edits. Respect any explicitly frozen
-   history in the requested scope.
+   history in the requested scope. ADRs and feature decision files may be
+   historical owners; check their successor and purpose before restating them
+   as current-state documentation.
 2. Audit read-only first: run the [recall batteries](references/recall-batteries.md)
    with `--hidden` when the scope may include `.codex/`, then judge every hit
    semantically. Batteries are probes, not the definition. Also read dense prose

@@ -51,5 +51,6 @@ Run these checks after changing a skill, installer, or repository contract:
 ./scripts/list-skills.sh
 bash scripts/test-skill-registry.sh
 bash scripts/test-install-shape.sh
+bash scripts/test-ctf-bundle-install.sh
 git diff --check
 ```

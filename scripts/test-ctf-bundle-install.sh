@@ -77,7 +77,7 @@ common_path="$tmp_dir/fake-bin:$PATH"
 home="$tmp_dir/home"
 mkdir -p "$home/.agents/skills/unrelated"
 printf '%s\n' 'keep' >"$home/.agents/skills/unrelated/marker"
-for retired in grill-me grill-with-docs evidence-first ponytail; do
+for retired in grill-me grill-with-docs evidence-first ponytail resolving-merge-conflicts; do
   mkdir -p "$home/.agents/skills/$retired"
   printf '%s\n' 'old skill' >"$home/.agents/skills/$retired/SKILL.md"
 done
@@ -90,7 +90,7 @@ assert_file "$home/.agents/skills/unrelated/marker"
 assert_file "$home/.agents/skills/ctf-web/references/example.md"
 assert_file "$home/.agents/skill-sources/agent-skill-forge/ctf-skills.json"
 assert_absent "$tmp_dir/tool-ran"
-for retired in grill-me grill-with-docs evidence-first ponytail; do
+for retired in grill-me grill-with-docs evidence-first ponytail resolving-merge-conflicts; do
   assert_absent "$home/.agents/skills/$retired"
 done
 if compgen -G "$home/.agents/skills/.ctf-skills-stage.*" >/dev/null; then

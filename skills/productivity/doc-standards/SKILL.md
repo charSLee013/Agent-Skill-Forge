@@ -33,6 +33,12 @@ and `.codex/agents/` workspace. It is guidance, not a script.
   proof of a defect. Trace the claim to a real consumer, owner, or current
   execution path first.
 
+For a requested record-retention audit, adapt the future-value judgment of
+DeepSeek Harness's `dsh-archive-agent-notes` at
+`deepseek-ai/deepseek-harness@22ddee3792402c3e70ec5f86a63c3e3e895a2f60`.
+Use this project's ADRs and local decision files; do not introduce an Agent
+Notes tree, bilingual sidecars, archived-note manifests, or hash seals.
+
 ## Audit the document system
 
 ### 1. Establish the document's job
@@ -70,6 +76,9 @@ Classify the result as current behavior, observed fact, derived explanation,
 historical record, planned work, or unresolved claim. Do not call a document
 stale merely because it differs from another document; determine which source
 has authority and whether the difference is intentional.
+For a user-visible breaking interface change, check the consuming project's
+existing upgrade guidance or owning README for the necessary migration facts.
+Do not create a versioned documentation tree solely to imitate another repo.
 
 ### 3. Find drift and duplication
 
@@ -92,7 +101,30 @@ duplicate surface, the user-visible consequence, and the smallest correction.
 Separate a real contradiction from an intentional translation, audience, or
 historical-record difference.
 
-### 4. Choose the smallest next action
+### 4. Govern existing decision records when requested
+
+Only when the user names a record scope or requests its maintenance, inspect
+the full ADRs, Wayfinder decisions, and related records in that scope. For each
+one, identify its original decision, current code or rule owner, any successor,
+incoming links and dependents, and whether its rationale still helps a future
+decision. Classify it as active; superseded but useful history; redundant and
+fully absorbed elsewhere; or unresolved. Age and length are not retention
+criteria. A rejected alternative remains useful when it prevents a plausible
+repeat mistake; a proposed decision is not archived merely because it is old.
+
+In audit mode, report candidates without changing files. When record cleanup
+is expressly authorized, keep a useful historical reason and link it to its
+actual successor. Use the existing ADR `superseded by ADR-NNNN` status only
+when that successor exists; do not rewrite history as if the new decision were
+the old one. Consolidate or delete only after preserving every unique fact and
+repairing inbound links and feature-local `Blocked by` paths. Do not remove a
+private local decision file whose history cannot be recovered merely to tidy
+the workspace. Move to an archive only when the consuming repository already
+has a clear archive convention and the user authorized that move; otherwise
+retain the record in place. A missing or ambiguous successor or dependent
+prevents the destructive change, not the rest of the authorized audit.
+
+### 5. Choose the smallest next action
 
 Classify each finding as `keep`, `add`, `trim`, `restore`, `restructure`, or
 `defer`. If a generated surface is wrong, fix its owner first and regenerate
@@ -106,6 +138,8 @@ skills remain recommendations unless the user chooses them:
 - missing or misplaced technical contract -> recommend `$prose-standard`;
 - authoring-session, PR, review, or draft residue -> recommend
   `$trim-cot-leakage`;
+- established domain terms or a new qualifying decision -> use
+  `domain-modeling` only when this maintenance is already authorized;
 - repeated mechanism with uncertain net deletion -> recommend
   `$find-simplifications`;
 - unresolved documentation ownership or product scope -> use `grilling` when

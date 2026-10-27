@@ -33,7 +33,15 @@ Try these existing paths in roughly this order:
 5. **Existing captured trace or replay** — use the real request, payload, or event log already available.
 6. **Existing differential or versioned path** — compare the affected version/configuration with a known-good one when that is how the symptom is defined.
 
-Only when no existing signal can expose the reported symptom may you propose an additional oracle. Add a regression test only when the task needs durable regression evidence and a correct seam exists. A temporary diagnostic probe or harness requires a concrete reason and user/task authorization; keep its artifacts under the system temporary directory, not in the repository. Do not create a standalone Python test merely because the existing command is inconvenient.
+Only when no existing signal can expose the reported symptom may you propose an
+additional oracle. Add a regression test only when the task needs durable
+regression evidence and a correct seam exists. A temporary diagnostic probe
+or harness requires a concrete reason and user/task authorization; keep its
+artifacts under the system temporary directory, not in the repository. Do not
+create a standalone Python test merely because the existing command is
+inconvenient. If a support tool fails but an existing path still exposes the
+original bug and its result, continue the fix instead of turning the support
+tool into the goal.
 
 Property/fuzz loops, bisection, stress runs, and human-in-the-loop scripts are specialized options for symptoms that require them, not default escalation steps. Choose them only when the symptom and expected evidence justify their cost.
 
@@ -76,7 +84,7 @@ An executed reproduction is required to claim reproduction, not to read code
 or report a clearly qualified hypothesis. Without it, do not claim Phase 2 or a
 verified fix is complete.
 
-## Phase 2 — Reproduce + minimise
+## Phase 2 — Reproduce + narrow
 
 Run the loop. Watch it go red — the bug appears.
 
@@ -86,15 +94,16 @@ Confirm:
 - [ ] The failure is reproducible across multiple runs (or, for non-deterministic bugs, reproducible at a high enough rate to debug against).
 - [ ] You have captured the exact symptom (error message, wrong output, slow timing) so later phases can verify the fix actually addresses it.
 
-### Minimise
+### Narrow when useful
 
-Once it's red, shrink the repro to the **smallest scenario that still goes red**. Cut inputs, callers, config, data, and steps **one at a time**, re-running the loop after each cut — keep only what's load-bearing for the failure.
+When the current scenario leaves competing causes plausible, narrow it until
+the evidence distinguishes them. Cut inputs, callers, config, data, or steps
+only when that reduction answers a real diagnostic question.
 
 Why bother: a minimal repro shrinks the hypothesis space in Phase 3 (fewer moving parts left to suspect) and can become a regression test in Phase 5 when the task needs durable evidence and the seam is correct.
 
-Done when **every remaining element is load-bearing** — removing any one of them makes the loop go green.
-
-Do not proceed until you have reproduced **and** minimised.
+Do not postpone a supported fix merely to prove every remaining fixture
+element is necessary. Preserve the original scenario for final verification.
 
 ## Phase 3 — Hypothesise
 
@@ -130,17 +139,16 @@ A correct seam is one where the test exercises the **real bug pattern** as it oc
 
 **If no correct seam exists, that itself is the finding.** Note it. The codebase architecture is preventing the bug from being locked down. Flag this for the next phase.
 
-If a correct seam exists and a regression test is justified:
-
-1. Turn the minimised repro into a failing test at that seam.
-2. Watch it fail.
-3. Apply the fix.
-4. Watch it pass.
-5. Re-run the Phase 1 feedback loop against the original (un-minimised) scenario.
+If a correct seam exists and a regression test is justified, add it when it
+best supports this diagnosis; it need not precede the fix. When practical,
+observe that it catches the original failure, then check that it passes with
+the fix. Re-run the Phase 1 feedback loop against the original scenario either
+way. For flaky or resource-owning tests, read `test-reliability` for the actual
+execution topology.
 
 If no new regression test is justified, fix the code and re-run the existing Phase 1 loop plus the checks required by the task. Record which existing oracle was used and why it is sufficient.
 
-## Phase 6 — Cleanup + post-mortem
+## Phase 6 — Cleanup
 
 For an authorized fix, check these before declaring it verified. A diagnosis-only
 request instead reports the evidence, best-supported cause, and remaining gaps:
@@ -148,7 +156,10 @@ request instead reports the evidence, best-supported cause, and remaining gaps:
 - [ ] Original repro no longer reproduces (re-run the Phase 1 loop)
 - [ ] The existing verification loop passes, and any added regression test passes (or the absence of a correct seam is documented)
 - [ ] All `[DEBUG-...]` instrumentation removed (`grep` the prefix)
-- [ ] Throwaway prototypes deleted (or moved to a clearly-marked debug location)
+- [ ] Agent-created throwaway prototypes removed unless the user requested them as deliverables
 - [ ] The hypothesis that turned out correct is stated in the final report or handoff; commit/PR updates happen only when explicitly requested
 
-**Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling), record it as a follow-up recommendation. Run the architecture-review skill only when the user explicitly chooses that follow-up; do not expand the current bug fix automatically.
+If the diagnosis exposed a recurring architectural cause, give one concrete
+follow-up recommendation after delivering the fix. A retrospective or
+architecture review is separate, explicitly selected work, not a completion
+condition for this bug.

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Test Reliability"
+  short_description: "Verify isolation, synchronization, and teardown"

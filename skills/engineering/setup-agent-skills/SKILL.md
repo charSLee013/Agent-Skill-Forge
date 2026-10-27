@@ -197,6 +197,10 @@ universal-test-command, or new shell-contract requirements to it. Validation
 remains proportional to the task's acceptance criteria and risk, using checks
 that already exist at the relevant behavior boundary.
 
+No skill should require or default to TDD/test-first sequencing. Runtime
+acceptance requires the specified observed behavior, not a checksum of an
+artifact; asset integrity checks remain valid for their own purpose.
+
 Then write the three docs files under `.codex/agents/` using the seed templates in this skill folder as a starting point:
 
 - [issue-tracker-local.md](./issue-tracker-local.md) — local Codex workspace

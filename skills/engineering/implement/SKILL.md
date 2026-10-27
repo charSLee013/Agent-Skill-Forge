@@ -23,6 +23,12 @@ can be checked. Investigate discoverable facts and choose routine reversible
 details; use `grilling` only when an important unresolved choice affects the
 outcome. Existing authorization carries across these steps.
 
+Keep the user's unfinished outcome ahead of supporting work. A broken optional
+diagnostic, test helper, or documentation path is not a blocker when an existing
+path can still deliver and verify the requested behavior. Repair a support path
+only when it is necessary for that outcome; report an unavailable required
+oracle instead of replacing delivery with tool-building.
+
 Capture the initial tracked, staged, and non-ignored untracked changes as working
 evidence. Preserve pre-existing work and distinguish it from your own changes.
 Keep this baseline in the task context, not a new repository report.
@@ -59,6 +65,14 @@ invariant when needed. Documentation, copy, and metadata do not require new
 tests merely because they changed. Broaden or repeat passing checks only after
 a new change, failure, or unresolved concern.
 
+Do not require or default to test-driven development, test-first sequencing,
+or a red-green ritual. A regression test may be useful before or after a fix;
+choose its timing from the actual diagnosis and acceptance need. When a test
+owns asynchronous work or shared resources, read `test-reliability` for the
+affected boundary. For failures whose recovery or partial effects matter, read
+`error-handling`. Locate supporting skills through host discovery or the source
+plugin manifest; reading them does not expand the task or authorize new work.
+
 When a formal work item records acceptance evidence, preserve its meaning:
 
 - `static`: run the named relevant checks.
@@ -66,6 +80,10 @@ When a formal work item records acceptance evidence, preserve its meaning:
 - `target`: measure the recorded metric or definition against its comparison,
   threshold or baseline, unit, source, and observation window. Use
   `real-path-verification` when that source is an approved real runtime path.
+
+A checksum or byte-identical artifact can establish integrity, not that the
+requested runtime behavior worked. Do not replace the recorded behavioral
+oracle with a hash, passing process exit, or completion report.
 
 Missing formal labels do not block an ordinary request. Missing facts that make
 a required result unverifiable must be resolved or reported; never silently
@@ -80,6 +98,12 @@ temporary artifacts and debug content. If this review changes behavior, rerun
 the affected acceptance checks. Claim independent review only when it actually
 returned evidence.
 
+If a push was explicitly requested, inspect the outgoing diff and select the
+smallest checks that cover its changed behavior before pushing. Do not re-run
+passing checks merely because commit or push follows; a new change or observed
+failure can justify another run. Report pending remote CI as pending, not as a
+passed local or real-path check.
+
 For an approved wide mechanical migration, keep a temporary bridge only while
 its `Transition` names the issue responsible for removing it and the final
 removal check. That final issue must remove the bridge before completion.
@@ -89,4 +113,4 @@ satisfied. If a target is unmet, leave it open and report the expected and
 observed values, source, and observation window. Report the delivered behavior,
 verification, and unresolved deviations in the user's language. Continue the
 remaining authorized work; commits, deployment, and unrelated changes still
-require their own task authorization.
+require their own task authorization. Pushes and PR mutations do too.

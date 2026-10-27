@@ -52,6 +52,8 @@ owning source or scenario first, then regenerate the artifact. When a generator
 extracts a summary from owner prose, make the extracted sentence complete for
 that surface. When maintained language counterparts exist, update the
 counterpart minimally and verify that their shared facts still agree.
+Do not invent paired-language files or a translation registry where the target
+project does not already maintain them.
 
 ## Preserve the complete proposition
 

@@ -14,6 +14,9 @@ source inspection, an existing check, a CLI invocation, or an authorized runtime
 path. Decide what outcome would distinguish the plausible explanations. A
 configuration value, passing unit test, process exit, or HTTP status proves only
 what it directly observes; it is not automatically evidence of business success.
+A checksum proves byte identity against its reference, not runtime behavior.
+Use it for asset or dependency integrity when that is the actual question;
+observe the requested outcome for behavioral acceptance.
 
 Use current tool schemas and existing entry points. Investigate a failed call's
 actual error before concluding that a whole tool or environment is unavailable.

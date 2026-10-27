@@ -1,6 +1,6 @@
 {
   "name": "agent-skill-forge",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Composable agent skills for engineering, productivity, and research workflows.",
   "author": {
     "name": "charSLee013",
@@ -23,9 +23,15 @@
     "./skills/engineering/prototype",
     "./skills/engineering/domain-modeling",
     "./skills/engineering/codebase-design",
+    "./skills/engineering/code-review",
+    "./skills/engineering/error-handling",
     "./skills/engineering/implement",
+    "./skills/engineering/implement-spec",
+    "./skills/engineering/pr",
     "./skills/engineering/real-path-verification",
-    "./skills/engineering/resolving-merge-conflicts",
+    "./skills/engineering/retro",
+    "./skills/engineering/test-reliability",
+    "./skills/engineering/wizard",
     "./skills/engineering/zoom-out",
     "./skills/productivity/grilling",
     "./skills/productivity/humanizer",
@@ -41,6 +47,7 @@
     "./skills/productivity/writing-great-skills",
     "./skills/research/arxiv-doc-builder",
     "./skills/research/arxiv-lookup",
+    "./skills/research/research",
     "./skills/research/research-loop",
     "./skills/research/antidetect-browser-lab"
   ]

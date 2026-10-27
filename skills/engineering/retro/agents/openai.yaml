@@ -1,0 +1,5 @@
+interface:
+  display_name: "Retro"
+  short_description: "Review actual workflow friction and outcomes"
+policy:
+  allow_implicit_invocation: false

@@ -13,13 +13,21 @@ manifest. Reading the reference does not start an implementation task.
 
 ## Entry contract
 
-Run only when a parent acceptance criterion has `real-path` evidence, or when a `target` criterion names an approved real runtime path as its measurement source.
+Run when the user explicitly requests verification of a named behavior through
+a real runtime path, a parent criterion has `real-path` evidence, or a `target`
+criterion names an approved real runtime path as its source. An ordinary
+natural-language request need not be converted into a PRD first.
 
-Consume the parent task's existing goal, scope, non-goals, acceptance criteria, inline evidence, oracle, environment, risk decision, and known runtime entrypoint. Do not re-interview, repartition the work, or expand the scope.
+Consume the current request's goal, scope, acceptance conditions, oracle,
+environment, risk decision, and known runtime entrypoint, including any
+formal work item when present. Do not re-interview, repartition the work,
+or expand the scope.
 
 ## Safety gate
 
-Before any action that can write data, send traffic, incur material cost, expose sensitive data, change shared state, or require production credentials, show the user:
+Before an action that can change shared or production state, send consequential
+external traffic, incur material cost, expose sensitive data, or require
+production credentials, show the user:
 
 - the exact environment and runtime path;
 - the expected side effect, traffic volume, cost, and data exposure;
@@ -27,7 +35,11 @@ Before any action that can write data, send traffic, incur material cost, expose
 - the observable result that will decide the conclusion;
 - the remaining uncertainty.
 
-If the parent task already records the user's concrete risk choice and the actual action has not widened, consume that choice instead of asking again. Ask again only when the actual environment, side effect, traffic, cost, or data exposure differs. A read-only local inspection of an existing command does not need this gate.
+If the current request already records the user's concrete risk choice and the
+actual action has not widened, consume that choice instead of asking again.
+Ask again only when the actual environment, side effect, traffic, cost, or data
+exposure differs. Ordinary reversible local checks and read-only inspection of
+an existing command need no separate safety presentation.
 
 ## Evidence boundary
 
@@ -39,12 +51,12 @@ Only if an existing entrypoint cannot execute without a temporary input or outpu
 
 ## Workflow
 
-1. Read the parent acceptance criteria and identify the final oracle. If no criterion names the behavior and its evidence, stop and report the contract gap.
+1. Read the user's request and any parent criteria to identify the behavior and final oracle. If the requested outcome or necessary observation is unclear, resolve that material gap before taking a consequential runtime action; do not invent a formal work item.
 2. Locate an existing runnable entrypoint: project command, deployed endpoint, CLI, browser flow, captured production trace, or approved replay command. Do not create a Python test, temporary harness, mock service, or new runner when no entrypoint exists.
 3. If no suitable entrypoint exists, stop. Report the missing environment, command, data, credentials, traffic, or equivalence evidence needed; do not substitute a smoke test.
 4. A production runtime observation, or an equivalent path with relevant parity established, can satisfy a real-path criterion. Staging, unit, mock, smoke, tracer, and minimal-repro results are supporting only; leave a real-path criterion unverified when they are the strongest available observation.
 5. Run the existing path in the declared environment. Observe only the facts needed for the conclusion: actual oracle value, environment, version or deploy, time window, existing trace/request ID or observation link, and any applicable side-effect cleanup result.
-6. Compare observed behavior with every selected acceptance criterion. Do not convert a passing process exit, HTTP 2xx, or smoke result into a business success without checking the criterion's oracle.
+6. Compare observed behavior with every selected acceptance criterion. A SHA-256 match, passing process exit, HTTP 2xx, or smoke result cannot establish business success without observing the criterion's behavioral oracle. Hashes may still establish asset integrity when integrity itself is the question.
 7. Return the conclusion first, followed only by its minimum necessary basis:
 
    - `Conclusion`: passed, failed, or unverified.

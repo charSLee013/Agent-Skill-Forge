@@ -88,3 +88,10 @@ Only offer to create an ADR when all three are true:
 3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons
 
 If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
+
+Before writing an authorized ADR, inspect the existing records for the same
+decision. Update the established owner when the decision is unchanged. If a
+new decision supersedes it, preserve the old rationale and link the actual
+successor through the existing ADR status convention; never create a duplicate
+record or an archive merely to show progress. For a broader record-retention
+audit, recommend the manual `doc-standards` workflow instead of starting it.

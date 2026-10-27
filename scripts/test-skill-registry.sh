@@ -22,7 +22,8 @@ compare_sets() {
 command -v jq >/dev/null || fail "jq is required"
 
 for skill_dir in skills/productivity/grill-me skills/engineering/grill-with-docs \
-  skills/engineering/evidence-first skills/productivity/ponytail; do
+  skills/engineering/evidence-first skills/productivity/ponytail \
+  skills/engineering/resolving-merge-conflicts; do
   [[ ! -e "$skill_dir" && ! -L "$skill_dir" ]] || fail "retired skill remains: $skill_dir"
 done
 for retired_file in .codex/hooks.json commands/ponytail.toml hooks/ponytail.js \
@@ -50,6 +51,11 @@ jq -e '
 
 jq -r '.skills[] | sub("^\\./"; "")' .claude-plugin/plugin.json \
   | sort -u >"$tmp_dir/manifest"
+
+jq -e '(.skills | length) == (.skills | unique | length) and
+  (.skills | map(split("/")[-1]) | length) ==
+  (.skills | map(split("/")[-1]) | unique | length)' \
+  .claude-plugin/plugin.json >/dev/null || fail "duplicate installed skill name or manifest entry"
 
 find skills -path '*/agents/openai.yaml' -type f -print \
   | sed 's#/agents/openai.yaml$##' \

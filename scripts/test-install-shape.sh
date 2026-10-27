@@ -27,7 +27,7 @@ printf 'keep me\n' >"$home/.agents/skills/user-custom/marker.txt"
 mkdir -p "$home/.agents/skills/teach"
 printf 'stale\n' >"$home/.agents/skills/teach/stale.txt"
 
-for name in grill-me grill-with-docs evidence-first; do
+for name in grill-me grill-with-docs evidence-first resolving-merge-conflicts; do
   mkdir -p "$home/.agents/skills/$name"
   printf 'user-modified old skill\n' >"$home/.agents/skills/$name/SKILL.md"
 done
@@ -45,11 +45,14 @@ fi
 assert_file "$home/.agents/skills/external-skill/marker.txt"
 assert_file "$home/.agents/skills/user-custom/marker.txt"
 assert_file "$tmp_dir/symlink-target/marker"
-for name in grill-me grill-with-docs evidence-first ponytail; do
+for name in grill-me grill-with-docs evidence-first ponytail resolving-merge-conflicts; do
   assert_absent "$home/.agents/skills/$name"
 done
 
-for resource in grilling/references/communication.md implement/references/evidence.md implement/LICENSE; do
+for resource in grilling/references/communication.md implement/references/evidence.md implement/LICENSE \
+  code-review/LICENSE error-handling/LICENSE test-reliability/LICENSE \
+  implement-spec/LICENSE pr/LICENSE retro/LICENSE wizard/LICENSE research/LICENSE \
+  writing-great-skills/LICENSE; do
   assert_file "$home/.agents/skills/$resource"
 done
 cmp skills/productivity/grilling/references/communication.md \
@@ -113,7 +116,7 @@ assert_absent "$tmp_dir/remote-home/.agents/skills/grill-me"
 assert_absent "$tmp_dir/remote-home/.agents/skills/ponytail"
 
 mkdir -p "$tmp_dir/copy-fail-bin"
-for name in grill-me grill-with-docs evidence-first ponytail; do
+for name in grill-me grill-with-docs evidence-first ponytail resolving-merge-conflicts; do
   mkdir -p "$home/.agents/skills/$name"
   printf 'preserve until replacement succeeds\n' >"$home/.agents/skills/$name/SKILL.md"
 done
@@ -131,7 +134,7 @@ if PATH="$tmp_dir/copy-fail-bin:$PATH" REAL_CP="$real_cp" \
   bash scripts/install.sh >"$tmp_dir/copy-failure.out" 2>&1; then
   fail "installer ignored a replacement failure"
 fi
-for name in grill-me grill-with-docs evidence-first ponytail; do
+for name in grill-me grill-with-docs evidence-first ponytail resolving-merge-conflicts; do
   assert_file "$home/.agents/skills/$name/SKILL.md"
 done
 if rg -q '^Done\.$' "$tmp_dir/copy-failure.out"; then

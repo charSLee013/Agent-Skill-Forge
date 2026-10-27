@@ -17,7 +17,10 @@ stages of every change.
 | [real-path-verification](./real-path-verification/SKILL.md) | Model or user | Verify an approved criterion through its selected real runtime path. |
 | [domain-modeling](./domain-modeling/SKILL.md) | Model or user | Resolve domain terms and record authorized durable decisions. |
 | [codebase-design](./codebase-design/SKILL.md) | Model or user | Provide module design methods for explicit interface or architecture work. |
-| [resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md) | Model or user | Resolve an active merge or rebase conflict while preserving both intentions. |
+| [code-review](./code-review/SKILL.md) | Model or user | Review a change against its intent and engineering risks without modifying it. |
+| [error-handling](./error-handling/SKILL.md) | Model or user | Reason about state, containment, recovery, and reporting on affected failure paths. |
+| [test-reliability](./test-reliability/SKILL.md) | Model or user | Verify isolation and cleanup only for tests with asynchronous or shared-resource risks. |
+| [pr](./pr/SKILL.md) | Model or user | Describe a requested pull request using actual changes and evidence. |
 | [triage](./triage/SKILL.md) | User only | Triage local issues while preserving separate implementation completion state. |
 | [improve-codebase-architecture](./improve-codebase-architecture/SKILL.md) | User only | Report architecture opportunities and follow the user's selected scope. |
 | [find-simplifications](./find-simplifications/SKILL.md) | User only | Audit evidence-backed simplification opportunities without changing code. |
@@ -25,6 +28,9 @@ stages of every change.
 | [issues-to-execution-brief](./issues-to-execution-brief/SKILL.md) | User only | Compile selected executable issues into a brief for a fresh session. |
 | [prototype](./prototype/SKILL.md) | User only | Build a disposable executable experiment for a concrete design question. |
 | [zoom-out](./zoom-out/SKILL.md) | User only | Map unfamiliar code and its callers in the surrounding system. |
+| [implement-spec](./implement-spec/SKILL.md) | User only | Complete an explicitly chosen specification in issue dependency order. |
+| [retro](./retro/SKILL.md) | User only | Review observed workflow friction after a session, without automatic environment edits. |
+| [wizard](./wizard/SKILL.md) | User only | Generate a bounded script for a human-only procedure. |
 
 Planning creates only requested artifacts under the private local
 `.codex/agents/` workspace. Existing configuration takes precedence; shipped
@@ -38,3 +44,5 @@ paths or the source plugin manifest, because installation flattens the buckets.
 Model invocation does not authorize additional work. Continue across phases
 when the user already requested the subsequent result; finish at the requested
 deliverable or a real unresolved decision, permission, or dependency.
+No skill requires test-first sequencing. Asset hashes check integrity, not the
+requested runtime behavior.

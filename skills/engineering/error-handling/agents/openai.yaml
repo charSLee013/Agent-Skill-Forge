@@ -1,0 +1,3 @@
+interface:
+  display_name: "Error Handling"
+  short_description: "Reason about failure state, ownership, and recovery"

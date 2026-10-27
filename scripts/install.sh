@@ -80,7 +80,7 @@ for i in "${!skill_names[@]}"; do
 done
 
 # Remove only the retired entrypoints after all replacements are verified.
-for name in grill-me grill-with-docs evidence-first ponytail; do
+for name in grill-me grill-with-docs evidence-first ponytail resolving-merge-conflicts; do
   dest="$dest_root/$name"
   if [[ -e "$dest" || -L "$dest" ]]; then
     rm -rf -- "$dest"

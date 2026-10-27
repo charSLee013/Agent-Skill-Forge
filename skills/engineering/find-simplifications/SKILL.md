@@ -28,6 +28,10 @@ repository's existing workflow.
 - Read the local `.codex/agents/` conventions when present. Use existing issue and
   ADR workflows as the only durable decision path; do not create another notes tree,
   tracker, state machine, or archive mechanism.
+- For requested documentation or record-retention changes, recommend
+  `doc-standards` for the owning review; reading its references does not invoke
+  its manual workflow. Do not delete a superseded decision just because its
+  implementation changed.
 - If one of these files is absent, continue. Absence reduces context sharpness; it is
   not a reason to invent a replacement document or stop the read-only audit.
 

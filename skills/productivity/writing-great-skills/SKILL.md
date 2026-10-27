@@ -1,6 +1,7 @@
 ---
 name: writing-great-skills
 description: Reference for writing and editing predictable agent-consumed documents, including skills and repository instruction maps.
+license: MIT
 argument-hint: "Which agent-consumed document or behavior contract should be written or reviewed?"
 disable-model-invocation: true
 ---
@@ -11,6 +12,11 @@ An agent-consumed document exists to create **predictability** in a stochastic
 system: the agent takes the same process on each run, rather than producing the
 same output. Packaging differs between a skill, an `AGENTS.md` or `CLAUDE.md`,
 and a document reached through a pointer; the writing levers are the same.
+
+This guidance incorporates Matt Pocock's `writing-for-agents` and the
+model-facing `agent-experience` principles from
+`deepseek-ai/deepseek-harness@22ddee3792402c3e70ec5f86a63c3e3e895a2f60`.
+It does not require either upstream runtime or documentation structure.
 
 This skill supplies writing reference. It does not expand the requested scope or
 authorize edits to another document. In particular:
@@ -58,6 +64,14 @@ Material behind a pointer reduces context load at the cost of the pointer.
 Material with no pointer relies entirely on human memory. Spend context load
 where autonomous discovery matters and cognitive load where human judgment
 should retain control.
+
+For model-facing tools and skill catalogs, apply the portable `agent-experience`
+principle from DeepSeek Harness: disclose purpose, available actions, and
+critical constraints first, then provide a reliable path to deferred detail.
+Keep returned content bounded with a pointer to further results and say when
+it is truncated. Compare total work, not prompt size alone: a shorter pointer
+that causes repeated searches or missed constraints is a regression. Do not
+copy DSH tool schemas or its runtime loader into this skill.
 
 ## Information hierarchy
 

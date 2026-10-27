@@ -1,0 +1,5 @@
+interface:
+  display_name: "Implement Spec"
+  short_description: "Deliver a full feature in dependency order"
+policy:
+  allow_implicit_invocation: false
