@@ -143,12 +143,6 @@ CTF 包从 `ljagiello/ctf-skills` 的提交 `d6662d26b5ed3caa56f5eaf6eb887964f37
 
 ## 验证
 
-```bash
-./scripts/list-skills.sh
-bash scripts/test-skill-registry.sh
-bash scripts/test-install-shape.sh
-bash scripts/test-ctf-bundle-install.sh
-git diff --check
-```
+修改技能说明或文档后，直接审读改动及相关引用，核对事实、前后含义和适用范围，并用具体任务检查指令是否合理。新增、删除或重命名技能时，同时检查 README、调用元数据和插件登记。
 
-这些命令检查技能清单和安装过程，不测试模型在实际任务中的表现。
+安装逻辑有变更时，运行 `bash scripts/test-install-shape.sh`；涉及 CTF 包安装时，运行 `bash scripts/test-ctf-bundle-install.sh`。它们检查安装行为。`git diff --check` 只检查空白错误。文字质量靠审读判断，模型执行效果需要实际任务验证。

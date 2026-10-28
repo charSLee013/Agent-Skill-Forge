@@ -17,6 +17,13 @@ For other work, use the supplied material; a repository is not a prerequisite.
 Identify the outcome, important constraints, and unresolved choices. If they
 are already clear, continue the requested task without manufacturing an interview.
 
+For resource or quality tradeoffs, distinguish the user's objective from a
+budget or minimum acceptance threshold. Derive priorities from the request
+before asking; a memory ceiling alone does not mean memory use should be
+minimized. Ask only when competing objectives would materially change the
+choice and the user's preference cannot be inferred. Leave reversible tuning
+parameters to investigation rather than asking the user to design the solution.
+
 ## Resolve important choices
 
 Investigate facts the available sources can answer. Ask when the answer could

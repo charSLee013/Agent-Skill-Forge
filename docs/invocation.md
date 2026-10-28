@@ -12,7 +12,9 @@ work across phases. A phase change alone is not a reason to wait for another
 command. A read-only request or a request to review a draft still limits what
 may happen next. Other explicitly manual skills retain their restrictions.
 
-Bucket `README.md`s and the top-level `README.md` identify each skill's invocation mode. `scripts/test-skill-registry.sh` checks the shipped directory, manifest, README, sidecar, and invocation-policy sets together.
+Bucket `README.md`s and the top-level `README.md` identify each skill's invocation
+mode. When an entry or invocation policy changes, inspect its skill directory,
+manifest entry, README entries, and sidecar together for consistency.
 
 ## Dependencies between them
 

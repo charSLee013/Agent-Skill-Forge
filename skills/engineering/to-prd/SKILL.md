@@ -67,6 +67,13 @@ Use `target` for an actual measurable acceptance target, not an invented metric
 that merely restates a structural constraint. Do not replace required runtime
 evidence with source inspection.
 
+When the request includes optimization, also state what should improve and in
+which direction, the user's tradeoff priorities, hard limits, and any authorized
+effort budget. Keep minimum acceptance separate from the improvement objective.
+Preserve a supplied stopping condition; otherwise bound effort by the task and
+stop when further feasible changes have little expected benefit. Do not invent
+a numeric score or turn a resource ceiling into a minimization objective.
+
 ## Implementation Decisions
 
 A list of implementation decisions that were made. This can include:

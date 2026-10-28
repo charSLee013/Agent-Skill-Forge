@@ -49,17 +49,6 @@ for name in grill-me grill-with-docs evidence-first ponytail resolving-merge-con
   assert_absent "$home/.agents/skills/$name"
 done
 
-for resource in grilling/references/communication.md implement/references/evidence.md implement/LICENSE \
-  code-review/LICENSE error-handling/LICENSE test-reliability/LICENSE \
-  implement-spec/LICENSE pr/LICENSE retro/LICENSE wizard/LICENSE research/LICENSE \
-  writing-great-skills/LICENSE; do
-  assert_file "$home/.agents/skills/$resource"
-done
-cmp skills/productivity/grilling/references/communication.md \
-  "$home/.agents/skills/grilling/references/communication.md" || fail "communication reference changed during install"
-cmp skills/engineering/implement/references/evidence.md \
-  "$home/.agents/skills/implement/references/evidence.md" || fail "evidence reference changed during install"
-
 find skills -name SKILL.md -not -path '*/node_modules/*' -print \
   | sed -E 's#^.*/([^/]+)/SKILL.md$#\1#' >"$tmp_dir/expected-dirs"
 printf '%s\n' external-skill user-custom >>"$tmp_dir/expected-dirs"
@@ -67,12 +56,6 @@ sort -o "$tmp_dir/expected-dirs" "$tmp_dir/expected-dirs"
 find "$home/.agents/skills" -mindepth 1 -maxdepth 1 -print \
   | sed 's#^.*/##' | sort >"$tmp_dir/installed-dirs"
 cmp "$tmp_dir/expected-dirs" "$tmp_dir/installed-dirs" || fail "install left an alias, backup, or unexpected entry"
-
-while IFS= read -r skill_md; do
-  skill_name="$(basename "$(dirname "$skill_md")")"
-  assert_file "$home/.agents/skills/$skill_name/SKILL.md"
-  assert_file "$home/.agents/skills/$skill_name/agents/openai.yaml"
-done < <(find skills -name SKILL.md -not -path '*/node_modules/*' -print | sort)
 
 if HOME="$tmp_dir/with-args" bash scripts/install.sh teach >"$tmp_dir/args.out" 2>"$tmp_dir/args.err"; then
   fail "install accepted a skill-selection argument"

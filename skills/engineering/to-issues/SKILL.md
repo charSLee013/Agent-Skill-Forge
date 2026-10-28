@@ -47,6 +47,12 @@ Break the plan into independently verifiable issues. Use a thin vertical slice w
 
 For every source acceptance criterion covered by a slice, copy its behavior and inline `Evidence` facts into the issue. When a natural-language plan lacks formal evidence, establish it from the requested behavior and existing checks. Ask only when a material acceptance choice cannot be settled from those sources, including a `target` without a falsifiable predicate; resolve it before publication. An issue has one effective evidence requirement. When its criteria differ, use the strongest evidence: `target` > `real-path` > `static` only when it satisfies every retained criterion's original oracle. Otherwise split the slice before publishing. Never weaken or substitute an existing agreed evidence requirement during slicing.
 
+Carry any optimization objective, priority tradeoffs, hard limits, and stopping
+condition into the issues that own them. A per-issue check must not replace a
+feature-level outcome: name the issue that verifies the combined result. Keep
+a shared resource budget shared rather than allocating its full amount to each
+slice or treating its unused portion as success.
+
 ### 3a. Wide mechanical migration
 
 A wide mechanical migration is an exception to vertical slicing. Use it only when a shared mechanical change must touch many callers and no individual vertical slice can remain buildable, verifiable, or deployable. Do not use it for a normal cross-layer feature, a speculative abstraction, an unapproved refactor, or a change that can move through an existing seam in small green slices.

@@ -23,6 +23,14 @@ can be checked. Investigate discoverable facts and choose routine reversible
 details; use `grilling` only when an important unresolved choice affects the
 outcome. Existing authorization carries across these steps.
 
+Identify what makes one feasible result better for this user, separately from
+acceptance conditions and hard constraints. Preserve their priority among
+quality, throughput, latency, cost, or other relevant outcomes; do not invent a
+score or silently make resource economy the objective. For an optimization
+request, a minimum acceptance threshold does not replace the requested best
+achievable result within the authorized budget. An ordinary bounded change
+does not acquire an optimization phase merely by entering this workflow.
+
 Keep the user's unfinished outcome ahead of supporting work. A broken optional
 diagnostic, test helper, or documentation path is not a blocker when an existing
 path can still deliver and verify the requested behavior. Repair a support path
@@ -53,6 +61,18 @@ mechanism, standard library, platform capability, or installed dependency over
 new machinery. Choose by correctness, readability, and fit rather than a fixed
 ranking or line count. A requested redesign may require substantial change;
 minimality must not silently restore constraints the user explicitly removed.
+
+When resource allocation or a design parameter materially affects the requested
+outcome, trace the limiting stage and compare plausible settings using existing
+observations or a bounded trial. Treat a conservative initial setting as
+provisional. Increase useful capacity within the user's limits when it improves
+the result, accounting for transient peaks and all relevant consumers; retain
+headroom justified by that workload and uncertainty. More utilization alone is
+not an improvement. Keep the best feasible setting and explain why it serves
+the user's priority. Continue promising improvements while their expected gain
+justifies the remaining authorized effort. Stay within capacity limits, and
+stop when the time or spending budget is exhausted or evidence shows little
+further benefit. Identify the limit on the conclusion.
 
 Preserve required behavior, error handling, security boundaries, accessibility,
 and compatibility. Add supporting changes only when necessary for the requested

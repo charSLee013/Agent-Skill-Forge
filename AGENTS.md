@@ -45,12 +45,16 @@ This repository itself should not keep long-horizon run artifacts, release-proce
 
 ## Validation
 
-Run these checks after changing a skill, installer, or repository contract:
+For skill instructions and documentation, read the complete changed passages
+and their relevant references. Check meaning, factual accuracy, contradictions,
+authorization boundaries, and whether the instructions serve the requested
+outcome. Walk through relevant examples and counterexamples. File presence,
+keyword matches, and installer success do not establish writing quality.
 
-```bash
-./scripts/list-skills.sh
-bash scripts/test-skill-registry.sh
-bash scripts/test-install-shape.sh
-bash scripts/test-ctf-bundle-install.sh
-git diff --check
-```
+When adding, removing, or renaming a skill, inspect its metadata, references,
+README entries, and plugin registration directly for consistency.
+
+Run `bash scripts/test-install-shape.sh` when core installation behavior changes.
+Run `bash scripts/test-ctf-bundle-install.sh` when bundle installation changes or
+a core installer change affects that path. Text-only edits do not require these
+tests. Use `git diff --check` for whitespace errors, not semantic validation.

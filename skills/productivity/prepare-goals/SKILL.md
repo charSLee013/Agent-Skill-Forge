@@ -53,6 +53,12 @@ Write each launcher as `/goal <objective>`, under the current 4,000-character ob
 4. **Constraints** - required compatibility, safety, architecture, tools, and explicitly rejected approaches.
 5. **Verification** - tests, measurements, inspections, or review criteria that prove the end state.
 
+For an optimization task, carry the improvement objective, user priorities,
+hard resource limits, and stopping condition into the launcher. Distinguish a
+minimum passing threshold from the result the user wants maximized. Preserve
+the authorized effort budget without inventing one; do not substitute minimum
+resource use for the user's objective or multiply a shared budget across Goals.
+
 Use task-appropriate evidence. TDD, fixed phase names, persistent progress ledgers, repository-wide hashes, and mandatory subagent review are not defaults; include one only when the governing work item or repository policy requires that exact mechanism.
 
 Do not invent a token budget. Include one only when the user explicitly supplied it and the current Goal surface supports it.
