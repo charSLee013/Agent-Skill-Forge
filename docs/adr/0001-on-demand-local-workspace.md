@@ -22,3 +22,12 @@ and legacy reading support remain intact.
 This replaces the earlier hard-dependency setup requirement. Default conventions
 are sufficient for ordinary planning; requiring full setup also imposed changes
 to project instructions that the planning task did not need.
+
+## Current support scope
+
+The historical decision above retained decision-layout migration and reading
+compatibility. Those promises are superseded: supported decision files live
+under `decisions/`, implementation issues under `issues/`, and setup customizes
+configuration without migrating decision layouts. The on-demand workspace,
+explicit local configuration precedence, separate status meanings, and user-file
+protection still apply. Existing user data is not deleted or moved by this change.

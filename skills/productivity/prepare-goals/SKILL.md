@@ -41,7 +41,9 @@ One Goal owns one result and one stopping condition. Combine work only when all 
 
 When multiple Goals are independent, note that each belongs in a separate chat. For coding work, do not recommend parallel Goals against the same checkout when their write scopes can overlap; use isolated worktrees or run them sequentially.
 
-Preserve the approved issue slices. Do not merge independent issues into a super-Goal merely because they share a PRD, and do not split one coherent vertical slice into layer-by-layer Goals.
+Preserve the approved issue slices. Do not merge independent issues into a
+super-Goal merely because they share a PRD, or split one coherent vertical slice
+into layer-by-layer Goals. Evidence kinds alone do not require separate Goals.
 
 ## 4. Write Each Goal
 
@@ -58,6 +60,13 @@ hard resource limits, and stopping condition into the launcher. Distinguish a
 minimum passing threshold from the result the user wants maximized. Preserve
 the authorized effort budget without inventing one; do not substitute minimum
 resource use for the user's objective or multiply a shared budget across Goals.
+
+Preserve every criterion's required observations and expected results, including
+multiple kinds under one criterion. Read `implement`'s `references/evidence.md`
+through host discovery or the source plugin manifest for their meanings. Existing
+single `Evidence` records remain valid. Name the owner of combined acceptance;
+local Goal completion does not replace it. Shared observations may cover several
+criteria when their coverage is explicit.
 
 Use task-appropriate evidence. TDD, fixed phase names, persistent progress ledgers, repository-wide hashes, and mandatory subagent review are not defaults; include one only when the governing work item or repository policy requires that exact mechanism.
 

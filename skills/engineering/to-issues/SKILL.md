@@ -15,7 +15,7 @@ when working from source. Reading references does not invoke their workflows.
 
 Resolve an optional local map before slicing. If an explicit `MAP.md` path was supplied but does not exist, stop and report the missing path. Without an explicit map path, use `MAP.md` from an explicit PRD or issue's feature directory when present; otherwise search by exact feature slug or Destination under `.codex/agents/work/`. If multiple maps match, stop and ask for the exact `MAP.md` path. If no matching map exists and no explicit `MAP.md` path was supplied, continue when the source material is clear enough for this skill; a map is optional.
 
-When a map exists, read it before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If the map uses the legacy decision path under `issues/`, read it in place and do not migrate or mix layouts; `setup-agent-skills` is the migration entry point. If material decisions remain, resolve them through `wayfinder` when that work is already authorized; otherwise report the next frontier issue. Do not turn an unresolved decision into an implementation slice.
+When a map exists, read it before drafting implementation slices. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If material decisions remain, resolve them through `wayfinder` when that work is already authorized; otherwise report the next frontier issue. Do not turn an unresolved decision into an implementation slice.
 
 Read existing local workspace configuration when present. Otherwise use the
 shipped workspace conventions and default labels, creating only the requested
@@ -45,7 +45,17 @@ Break the plan into independently verifiable issues. Use a thin vertical slice w
 
 </vertical-slice-rules>
 
-For every source acceptance criterion covered by a slice, copy its behavior and inline `Evidence` facts into the issue. When a natural-language plan lacks formal evidence, establish it from the requested behavior and existing checks. Ask only when a material acceptance choice cannot be settled from those sources, including a `target` without a falsifiable predicate; resolve it before publication. An issue has one effective evidence requirement. When its criteria differ, use the strongest evidence: `target` > `real-path` > `static` only when it satisfies every retained criterion's original oracle. Otherwise split the slice before publishing. Never weaken or substitute an existing agreed evidence requirement during slicing.
+For every source acceptance criterion covered by a slice, copy its behavior,
+all required observations, and expected results into the issue. `implement`'s
+`references/evidence.md` owns `static`, `real-path`, and `target` meanings; they
+are complementary, not ranked. One criterion or issue may need several kinds.
+Keep existing single `Evidence` records valid without converting them.
+
+When a natural-language plan lacks formal evidence, establish the observations
+from the behavior and available checks. Resolve only material acceptance choices
+that sources cannot settle before publication. Split by complete deliverables,
+dependencies, and ownership; evidence kinds alone do not force a split. Never
+weaken or substitute an agreed observation while slicing.
 
 Carry any optimization objective, priority tradeoffs, hard limits, and stopping
 condition into the issues that own them. A per-issue check must not replace a
@@ -116,9 +126,14 @@ Avoid specific file paths or code snippets — they go stale fast. Exception: if
 ## Acceptance criteria
 
 - [ ] Copy the source criterion's observable behavior.
-  Evidence: copy the source `static`, `real-path`, or `target` facts exactly.
+  Evidence:
+    - <kind>: <source observation, executable facts, and expected result>
+    - <kind>: <another necessary observation and expected result, when applicable>
 
-Retain every source criterion covered by this issue. State the one effective evidence requirement when it satisfies every source oracle; otherwise split the issue before publishing.
+Retain every source criterion covered by this issue and every observation needed
+for it. A single `Evidence: <kind>: ...` remains sufficient when that is the
+whole evidence requirement. Name the owner of combined feature acceptance and
+retain shared budgets without multiplying them across issues.
 
 ## Blocked by
 

@@ -49,7 +49,7 @@ directories. Missing setup does not block planning.
 
 ## Local artifacts
 
-New maps use one feature directory:
+Maps use one feature directory:
 
     .codex/agents/work/<feature-slug>/
     +-- MAP.md
@@ -57,7 +57,7 @@ New maps use one feature directory:
         +-- 01-<decision>.md
         +-- 02-<decision>.md
 
-Implementation issues, when later published by `to-issues`, remain under the sibling `issues/` directory. Do not mix decision files and implementation files in one new map.
+Implementation issues, when later published by `to-issues`, remain under the sibling `issues/` directory. Keep decision and implementation files in their respective directories.
 
 `MAP.md` contains only:
 
@@ -77,11 +77,9 @@ Each decision issue contains:
 - a `Question` heading;
 - an `Answer` heading after resolution.
 
-Whenever Wayfinder shows a decision issue to the user, format it as `<decision title> (<feature-root-relative path>)`. The path remains the stable identity in `Blocked by`, map links, handoffs, and file operations; the title is display text and may change. Duplicate titles are disambiguated by their paths. For a legacy issue without a first-level heading, derive display text from its filename without rewriting the file. Never replace the relative path with a tracker ID.
+Whenever Wayfinder shows a decision issue to the user, format it as `<decision title> (<feature-root-relative path>)`. The path remains the stable identity in `Blocked by`, map links, handoffs, and file operations; the title is display text and may change. Duplicate titles are disambiguated by their paths. Never replace the relative path with a tracker ID.
 
 Keep the existing triage `Status` field separate. Add it only when the user deliberately hands a decision issue to triage. Do not add another tracker or triage state family, and do not change the meaning of `ready-for-agent`.
-
-If an existing map still uses the legacy decision path `issues/`, keep that map internally consistent and readable until the user reruns `setup-agent-skills`. Do not migrate files during Wayfinder, and do not create a mixed legacy/modern map.
 
 ## Chart the map
 
@@ -90,13 +88,13 @@ If an existing map still uses the legacy decision path `issues/`, keep that map 
 3. If the route is already clear, create no map and continue the smallest workflow already authorized by the request, or deliver the requested planning conclusion.
 4. Keep only questions sharp enough to state now as decision issues. Put foreseeable but unclear questions in `Not yet specified`; do not pre-slice the fog.
 5. Establish the destination, initial questions, dependencies, risks, and useful evidence from the request. Ask when a material scope choice remains or the user requested review first. Otherwise create the authorized map without a separate approval round.
-6. Create only the issues currently sharp. Record feature-root-relative blockers. A decision requires `Wayfinder status: resolved`; an implementation requires `Completion: done`. Legacy decisions still use Wayfinder status. If the request includes resolving questions, proceed into the work loop; a request only to produce a map ends with that map.
+6. Create only the issues currently sharp. Record feature-root-relative blockers. A decision requires `Wayfinder status: resolved`; an implementation requires `Completion: done`. If the request includes resolving questions, proceed into the work loop; a request only to produce a map ends with that map.
 
 ## Work through the map
 
 1. Load `MAP.md`, then read only the selected decision issue and the linked context needed for it.
 2. Choose the user-named issue, or the first open, unblocked, unclaimed decision issue in numeric filename order. Show the selected issue as its title plus feature-root-relative path.
-3. Before working, re-read the issue. If it is claimed by another owner, report `Claimed by` and `Claimed at` and wait for explicit user approval before taking it over. A legacy claim without `Claimed at` has unknown age and is not automatically stale.
+3. Before working, re-read the issue. If it is claimed by another owner, report `Claimed by` and `Claimed at` and wait for explicit user approval before taking it over. A claim without `Claimed at` has unknown age and is not automatically stale.
 4. Claim it by writing:
 
    ```text
@@ -113,7 +111,7 @@ If an existing map still uses the legacy decision path `issues/`, keep that map 
    are resolved and their deliverable is already authorized. `prototype` and
    `zoom-out` remain manual skills; recommend them when the user has not chosen
    them. Release a claim to `open` before a planned handoff or user wait.
-6. Keep the work limited to the question. Use existing commands and artifacts first. Put temporary experiments and research artifacts under the system temporary directory, or an isolated copy/worktree inside it, not in the repository. A prototype's co-location rule applies inside that isolated copy. Experiments that modify project code or runtime state require explicit user approval with risk, cleanup, and stop conditions. This does not require another approval for the map and decision updates already requested.
+6. Keep the work limited to the question. Use existing commands and artifacts first. If necessary and covered by task authorization, add narrowly scoped experimental support. Keep scratch work under the system temporary directory or an isolated copy/worktree inside it. A prototype's co-location rule applies there. Resolve new unapproved effects before execution; use cleanup and recovery proportionate to the actual consequences. Map and decision updates already requested need no additional approval.
 7. Record the answer, relevant non-sensitive evidence, unresolved uncertainty, and any newly sharp question. Set the issue to `resolved` or `out-of-scope`, then update `Decisions so far` or `Out of scope` in the map.
 8. A decision marked `out-of-scope` does not automatically unblock a dependent issue. Re-scope the dependent, rewrite its blocker, or close it through its own terminal state and record the required `Dependency resolution` section.
 9. Before every write, re-read the issue and stop if its owner or status changed. On a planned handoff, return a claimed issue to `open` and record the progress in the handoff.
@@ -145,8 +143,11 @@ Otherwise deliver the planning result with the useful next recommendation.
 
 ## Boundaries
 
-- Keep all artifacts in the local `.codex/agents/` workspace.
+- Keep planning artifacts in the local `.codex/agents/` workspace and scratch
+  experiments in the system temporary directory.
 - Use the existing local fields and file relationships; do not add another tracker, label family, dependency system, or vendor-specific setup command.
-- Do not create tests, harnesses, CLIs, production changes, commits, or unrelated issues as part of charting.
+- Charting creates only the requested planning artifacts. Experimental support
+  must serve an authorized investigation; it does not authorize product delivery,
+  production changes, commits, or unrelated issues.
 - A task issue may perform an explicitly authorized prerequisite, but it is not permission to deliver the destination.
 - Preserve project rules, user-approved scope, and the safety gates of any workflow used to resolve a decision.

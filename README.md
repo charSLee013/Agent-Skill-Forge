@@ -46,7 +46,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 
 如果运行环境限制写入 `.git` 或 `.codex`，需要通过该环境的正常授权机制开放路径；运行 setup 不能代替权限授权。
 
-只有明确要求定制配置或迁移旧决策布局时，才使用 `setup-agent-skills`。它会先展示拟对 Agent 指令文件作出的完整修改；普通规划不会自动调用它。
+只有明确要求定制配置时，才使用 `setup-agent-skills`。它会先展示拟对 Agent 指令文件作出的完整修改；首次创建和后续更新都会加入随技能提供的固定版本执行协议，重复运行时原位维护。普通规划不会自动调用它。
 
 [调用规则](./docs/invocation.md) 区分技能是否可被模型选用，以及当前任务允许它做什么。安装后各技能位于同一层目录，跨技能参考不能依赖仓库中的分类路径。
 
@@ -74,7 +74,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [triage](./skills/engineering/triage/SKILL.md) | 手动 | 筛选本地待办并更新分诊状态，保留独立的实现完成状态。 |
 | [improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md) | 手动 | 生成架构改进报告，再按用户授权探索或实现选定方案。 |
 | [find-simplifications](./skills/engineering/find-simplifications/SKILL.md) | 手动 | 只读寻找有证据支持的删除、合并或替换机会。 |
-| [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 手动 | 显式定制工作区、领域文档配置或迁移旧决策布局。 |
+| [setup-agent-skills](./skills/engineering/setup-agent-skills/SKILL.md) | 手动 | 显式定制工作区、领域文档配置，并在创建与更新时维护执行协议。 |
 | [issues-to-execution-brief](./skills/engineering/issues-to-execution-brief/SKILL.md) | 手动 | 将选定的可执行任务整理成供新会话使用的执行简报。 |
 | [prototype](./skills/engineering/prototype/SKILL.md) | 手动 | 用可运行的临时原型回答具体逻辑或界面问题。 |
 | [zoom-out](./skills/engineering/zoom-out/SKILL.md) | 手动 | 查看陌生代码区域及其调用方在系统中的位置。 |
@@ -106,7 +106,7 @@ curl -fsSL https://raw.githubusercontent.com/charSLee013/Agent-Skill-Forge/maste
 | [arxiv-lookup](./skills/research/arxiv-lookup/SKILL.md) | 按意图选用 | 查询 arXiv 论文身份、元数据和期刊 DOI。 |
 | [arxiv-doc-builder](./skills/research/arxiv-doc-builder/SKILL.md) | 按意图选用 | 获取论文 source/PDF 并转成供阅读使用的 Markdown。 |
 | [research](./skills/research/research/SKILL.md) | 按意图选用 | 按范围调查来源并默认在对话中交付结果。 |
-| [research-loop](./skills/research/research-loop/SKILL.md) | 手动 | 为明确的改进目标设计并运行可审计的研究循环；包含裁判、变异面、账本与退化诊断。 |
+| [research-loop](./skills/research/research-loop/SKILL.md) | 手动 | 为明确的改进目标设计并运行可审计的研究循环；检查评价可信度、保留最好结果并说明局限。 |
 | [antidetect-browser-lab](./skills/research/antidetect-browser-lab/SKILL.md) | 手动 | 安装或操作用户自有的 Donut/Wayfern 浏览器 profile；使用显式代理与本地 CDP。 |
 
 ## 课程与论文工具

@@ -12,5 +12,5 @@ Model- or user-reachable when the task needs paper lookup, paper fetching, or re
 
 ## User-invoked
 
-- **[research-loop](./research-loop/SKILL.md)** — designs and runs an auditable, iterative research-improvement loop with a protected judge, an open mutation surface, and a retained experiment ledger; invoke it explicitly when this operating model is wanted.
+- **[research-loop](./research-loop/SKILL.md)** — runs bounded, iterative research with credible evaluation, an authorized exploration space, and retention of the best supported result; persistent experiment records are useful for large explorations, not a prerequisite for ordinary tuning. Invoke it explicitly when this operating model is wanted.
 - **[antidetect-browser-lab](./antidetect-browser-lab/SKILL.md)** — installs or operates a user-owned Donut/Wayfern browser profile with an explicit proxy and loopback CDP; invoke it explicitly when this local browser workflow is wanted.

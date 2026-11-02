@@ -30,15 +30,15 @@ required path is not writable, report the exact permission needed and use the
 host's normal approval mechanism when available. Do not bypass the restriction,
 run setup as a workaround, or report an unpublished artifact as saved.
 
-`setup-agent-skills` is optional for explicit configuration and legacy layout
-migration. Reading these conventions does not invoke it.
+`setup-agent-skills` is optional for explicit configuration. Reading these
+conventions does not invoke it.
 
 ## Conventions
 
 - One feature per directory: `.codex/agents/work/<feature-slug>/`
 - The map is `.codex/agents/work/<feature-slug>/MAP.md`
 - The PRD is `.codex/agents/work/<feature-slug>/PRD.md`
-- New Wayfinder decision issues are `.codex/agents/work/<feature-slug>/decisions/<NN>-<slug>.md`, numbered from `01`
+- Wayfinder decision issues are `.codex/agents/work/<feature-slug>/decisions/<NN>-<slug>.md`, numbered from `01`
 - Implementation issues are `.codex/agents/work/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01`
 - Triage state is recorded as a `Status:` line near the top of implementation issues (see `triage-labels.md` for the role strings)
 - Implementation completion is recorded separately as `Completion: open` or `Completion: done`
@@ -58,7 +58,7 @@ still has material decisions open. The model may select it from the user's
 intent. It uses the same local workspace and can continue through already
 authorized questions and delivery steps.
 
-### Modern layout
+### Layout
 
 - Map: `.codex/agents/work/<feature-slug>/MAP.md`
 - Decision issues: `.codex/agents/work/<feature-slug>/decisions/<NN>-<slug>.md`
@@ -76,7 +76,7 @@ Each decision issue has:
 - `Blocked by` with feature-root-relative paths when applicable
 - `Question`, followed by `Answer` after resolution
 
-Human-facing references use `<decision title> (<feature-root-relative path>)`. The relative path is the stable identity used by fields, map links, handoffs, and file operations; the title is display text and may change. Duplicate titles remain distinct because their paths differ. For a legacy issue without a first-level heading, derive display text from its filename without rewriting it. Never substitute a tracker ID for the path.
+Human-facing references use `<decision title> (<feature-root-relative path>)`. The relative path is the stable identity used by fields, map links, handoffs, and file operations; the title is display text and may change. Duplicate titles remain distinct because their paths differ. Never substitute a tracker ID for the path.
 
 Wayfinder status belongs to decision issues. Triage `Status` belongs to triage-managed implementation issues. `Completion` is only the implementation dependency oracle; it does not add triage roles. If a decision issue is deliberately handed to triage, its Wayfinder fields remain authoritative for decision progress and its additional `Status` must not reinterpret them.
 
@@ -91,9 +91,10 @@ Blocked by: issues/01-build-api.md
 
 A target under `decisions/` unblocks only when it has `Wayfinder status: resolved`.
 
-A modern target under `issues/` unblocks only when it has `Completion: done`.
-
-A legacy target under `issues/` that carries both top-level Wayfinder fields remains a decision target and uses `Wayfinder status: resolved` until migration succeeds. A legacy implementation issue without `Completion` is treated as `Completion: open`.
+A target under `issues/` unblocks only when it has `Completion: done`. A missing
+`Completion` is treated as open, never inferred from triage state. A layout or
+field conflict blocks the affected operation; report it without moving or
+rewriting user files, and continue independent authorized work.
 
 The target type, not the source type, selects the oracle for decision-to-decision, implementation-to-implementation, and cross-type dependencies. Triage `Status` never satisfies a blocker.
 
@@ -128,32 +129,10 @@ Claimed at: <ISO-8601 timestamp>
 
 Claims are advisory coordination, not a hard file lock. If another owner is present, report the owner and timestamp and do not overwrite it. A takeover requires explicit user approval; record the new owner and timestamp and preserve the old owner in comments. Release a claim by returning the issue to `open` before a planned handoff. Re-read the file immediately before writing and stop if its owner or status changed.
 
-If a legacy claimed issue has no `Claimed at`, treat its age as unknown, not as stale. Do not infer that it is safe to take over without explicit user approval.
-
-### Legacy layout
-
-Before setup migration, an existing MAP that links decision issues under `issues/` remains readable as a legacy map. Keep all new decision files for that map in its existing layout until migration; do not mix `issues/` and `decisions/` within one map. New maps always use `decisions/`.
-
-Legacy decision issues are identified only when they contain both top-level `Wayfinder type:` and `Wayfinder status:` fields. An implementation issue with the same numeric prefix is not a legacy decision issue.
-
-## Setup migration
-
-`setup-agent-skills` is the only migration entry point. It discovers legacy decision files during exploration, includes a dry-run summary in the normal setup draft, and automatically migrates unambiguous features after that draft is approved. There is no separate migration question.
-
-Migration must:
-
-1. Preflight every legacy decision, destination, and inbound reference in a feature before changing it. A conflict leaves the whole feature untouched while other features may continue.
-2. Copy the entire feature directory to a unique system temporary directory and verify the rollback snapshot before writing.
-3. Move each legacy decision to `decisions/` with the same basename, preserving its content and existing `Status` if present.
-4. Scan every Markdown file under the feature and update only exact local references to moved paths. Convert a bare numeric blocker only when it resolves uniquely.
-5. Refuse to overwrite a destination or proceed through an ambiguous reference.
-6. Verify that new paths exist, old paths are gone, and all rewritten paths resolve from the feature directory.
-7. Restore the entire feature snapshot after any move, rewrite, or verification failure. Delete the snapshot only after success.
-
-No other skill silently moves files. `wayfinder`, `to-prd`, `to-issues`, and `handoff` remain read-compatible with a legacy MAP and report that setup migration is available when normalization is needed.
+If a claimed issue has no `Claimed at`, treat its age as unknown, not as stale. Do not infer that it is safe to take over without explicit user approval.
 
 ## Triage boundary
 
-By default, triage scans implementation issue files under `issues/`. It excludes `MAP.md`, `PRD.md`, modern `decisions/`, and legacy files carrying Wayfinder fields. A decision issue is triageable only when the user explicitly supplies its path.
+By default, triage scans implementation issue files under `issues/`. It excludes `MAP.md`, `PRD.md`, and `decisions/`. A decision issue is triageable only when the user explicitly supplies its path.
 
 Do not add another tracker, label family, vendor-specific setup command, or independent triage state system. Preserve the existing `.codex/agents/` workspace and the meaning of `ready-for-agent`.

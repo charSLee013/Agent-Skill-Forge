@@ -5,161 +5,102 @@ description: Diagnosis loop for hard bugs and performance regressions. Use when 
 
 # Diagnosing Bugs
 
-A discipline for hard bugs. Use only the phases that resolve the current uncertainty, and record why any phase was skipped.
+Reduce uncertainty about the reported failure, then deliver the supported
+conclusion or authorized fix. Start with the symptom, impact, conditions, and
+available evidence. Choose the next observation by which plausible explanations
+it can distinguish, its cost, and its side effects. Repeat as the evidence changes.
 
-When verifying a behavior claim, read `implement`'s `references/evidence.md`.
-Locate it through host-discovered skill paths or the repository plugin manifest.
-Reading it does not authorize implementation; a diagnosis-only request stays
-read-only. Use the fix phase only when the user requested a fix.
+For behavior claims, read `implement`'s `references/evidence.md` through
+host-discovered skill paths or the source plugin manifest. It owns the shared
+evidence boundaries. A diagnosis-only request stays read-only; implement a fix
+only when requested. Routine failed commands and obvious fixes can use their
+existing signal without entering a larger investigation.
 
-Do not enter this workflow for a routine failed command, an obvious one-line fix, or a documentation/configuration edit with an existing verification signal. Use the existing signal first. A new test or harness is justified only when it is the smallest correct oracle for the reported bug.
+Read relevant domain context and ADRs when they help identify the affected
+modules and contracts.
 
-When exploring the codebase, read `CONTEXT.md` (if it exists) to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
+## Establish what is known
 
-## Phase 1 — Build a feedback loop
+Separate the user's symptom from nearby failures. Inspect available reports,
+versions, inputs, workload, recent changes, traces, and source. Distinguish
+observed facts from assumptions. Consider competing causes, including a faulty
+measurement or environmental difference, rather than accepting the first
+plausible explanation.
 
-**This is the skill.** Everything else is mechanical. If you have a **tight** pass/fail signal for the bug — one that goes red on _this_ bug — you will find the cause; bisection, hypothesis-testing, and instrumentation all just consume it. If you don't have one, no amount of staring at code will save you.
+For each live explanation, identify a prediction and an observation that could
+support or weaken it. Prioritize by fit to the evidence, impact, and the cost of
+learning more. Ask about missing domain facts or consequential choices only when
+they affect the investigation; continue discoverable work in the meantime.
 
-Spend effort proportional to the uncertainty and blast radius. Prefer the smallest feedback loop that can distinguish the likely causes.
+## Choose the next observation
 
-### Ways to construct one — reuse the smallest existing signal first
+Reuse suitable existing checks, CLI or browser flows, captured traces, profilers,
+replays, or comparisons with a known-good version. There is no fixed tool order:
 
-Try these existing paths in roughly this order:
+- Reproduce when execution can reveal the failure or test a causal prediction.
+  A short deterministic loop is useful when feasible, not an entry condition.
+- Reduce inputs, callers, configuration, or steps when that distinguishes causes.
+  Preserve the original scenario; further minimization need not delay a supported fix.
+- Inspect logs or use a debugger to observe the boundary where explanations differ.
+  Account for instrumentation that changes timing or resource use.
+- For performance problems, choose measurements that expose the limiting stage:
+  profiles, query plans, allocation growth, queue waits, or workload timings.
+- For intermittent failures, use controlled scheduling, stress, repeated runs,
+  or existing incidents as the symptom warrants. Choose duration and repetitions
+  from occurrence rates and the decision needed, within the authorized budget.
 
-1. **Existing test or check** at the seam that reaches the bug — unit, integration, or e2e.
-2. **Existing curl / HTTP command** against a running service.
-3. **Existing CLI invocation** with a fixture input and a known-good output or oracle.
-4. **Existing browser flow** — use the project's current Playwright/Puppeteer path when one exists.
-5. **Existing captured trace or replay** — use the real request, payload, or event log already available.
-6. **Existing differential or versioned path** — compare the affected version/configuration with a known-good one when that is how the symptom is defined.
+A slow leak may need a long observation window. A rare race may remain
+probabilistic. Production-only records can support a causal inference without a
+local reproduction. None must first become a single-command, seconds-long,
+unattended test. When human interaction is useful, coordinate it directly; the
+optional [interactive template](scripts/hitl-loop.template.sh) is only a
+convenience for an interactive terminal, not a required route.
 
-Only when no existing signal can expose the reported symptom may you propose an
-additional oracle. Add a regression test only when the task needs durable
-regression evidence and a correct seam exists. A temporary diagnostic probe
-or harness requires a concrete reason and user/task authorization; keep its
-artifacts under the system temporary directory, not in the repository. Do not
-create a standalone Python test merely because the existing command is
-inconvenient. If a support tool fails but an existing path still exposes the
-original bug and its result, continue the fix instead of turning the support
-tool into the goal.
+If a necessary observation needs small instrumentation, a temporary input, or a
+measurement helper, judge it by necessity, cost, side effects, and existing task
+authorization. Keep scratch work in the system temporary directory and arrange
+reasonable cleanup. Read-only diagnosis does not authorize source changes or
+new external effects. If a helper fails, investigate that failure only as far as
+needed to obtain evidence for the original problem.
 
-Property/fuzz loops, bisection, stress runs, and human-in-the-loop scripts are specialized options for symptoms that require them, not default escalation steps. Choose them only when the symptom and expected evidence justify their cost.
+## Update the explanation
 
-Build the right feedback loop before spending effort on a fix.
+Compare the observation with the predictions. Reject or revise explanations
+that conflict with it; seek a discriminating check when alternatives remain.
+Isolate variables where practical, and account for interactions when a combined
+change prevents causal attribution. Do not equate correlation with proof or a
+failure-free short run with absence of a rare fault.
 
-### Tighten the loop
+Improving feedback speed or repeatability is useful when it changes the next
+decision. Stop refining the diagnostic method when it adds little information.
+If necessary access, records, or runtime conditions are unavailable, identify
+the gap and continue independent authorized investigation. A diagnosis can
+finish with an evidence-backed limited conclusion and a specific next
+observation; do not label it a reproduced cause or verified fix.
 
-Tighten the loop only when the current signal is too slow, noisy, or non-deterministic to support the next decision:
+## Fix and verify when authorized
 
-- Can I make it faster? (Cache setup, skip unrelated init, narrow the test scope.)
-- Can I make the signal sharper? (Assert on the specific symptom, not "didn't crash".)
-- Can I make it more deterministic? (Pin time, seed RNG, isolate filesystem, freeze network.)
+Apply a change that addresses the supported cause through `implement`, preserving
+required behavior. Choose verification from the actual failure and acceptance
+conditions. Revisit the original scenario when available, and cover relevant
+failure paths. For a race or slow leak, state the workload, observation window,
+and residual uncertainty rather than promising certainty from a short run.
 
-A 30-second flaky loop is barely better than no loop; a 2-second deterministic one is tight — a debugging superpower.
+Add regression coverage when a durable check of a meaningful failure or invariant
+is needed and the seam exercises the real bug pattern. Choose timing before or
+after the fix from the diagnosis; do not require or default to TDD, test-first
+sequencing, or a red-green ritual. A shallow test that cannot reach the failure
+is not regression evidence. Missing coverage may be a limitation without proving
+an architectural defect or requiring an architecture review.
 
-### Non-deterministic bugs
+## Deliver an honest conclusion
 
-When the symptom is non-deterministic, increase the reproduction rate only as much as needed to distinguish the hypotheses. Start with a small repeat count; add stress, parallelism, or timing perturbation only when the observed failure rate and expected evidence justify the cost.
+Remove temporary instrumentation and scratch artifacts actually created for
+this investigation, preserving user work and useful authorized changes. Verify
+cleanup against the task baseline rather than a universal debug-prefix ritual.
 
-### When you genuinely cannot build a loop
-
-Report what could and could not be established. Source inspection and existing
-artifacts can still support a provisional explanation; label it as inference,
-state the missing observation, and do not call it a reproduced cause or verified
-fix. Ask for access, a captured artifact, or instrumentation permission only
-when that evidence is needed to answer the request. A diagnosis-only task can
-finish with this bounded finding without creating a harness or changing code.
-
-### Completion criterion — a tight loop that goes red
-
-Phase 1 is done when the loop is **tight** and **red-capable**: you can name **one command** — a script path, a test invocation, a curl — that you have **already run at least once** (paste the invocation and its output), and that is:
-
-- [ ] **Red-capable** — it drives the actual bug code path and asserts the **user's exact symptom**, so it can go red on this bug and green once fixed. Not "runs without erroring" — it must be able to _catch this specific bug_.
-- [ ] **Deterministic** — same verdict every run (flaky bugs: a pinned, high reproduction rate, per above).
-- [ ] **Fast** — seconds, not minutes.
-- [ ] **Agent-runnable** — you can run it unattended; a human in the loop only via `scripts/hitl-loop.template.sh`.
-
-Use source inspection to find the relevant path and form testable hypotheses.
-An executed reproduction is required to claim reproduction, not to read code
-or report a clearly qualified hypothesis. Without it, do not claim Phase 2 or a
-verified fix is complete.
-
-## Phase 2 — Reproduce + narrow
-
-Run the loop. Watch it go red — the bug appears.
-
-Confirm:
-
-- [ ] The loop produces the failure mode the **user** described — not a different failure that happens to be nearby. Wrong bug = wrong fix.
-- [ ] The failure is reproducible across multiple runs (or, for non-deterministic bugs, reproducible at a high enough rate to debug against).
-- [ ] You have captured the exact symptom (error message, wrong output, slow timing) so later phases can verify the fix actually addresses it.
-
-### Narrow when useful
-
-When the current scenario leaves competing causes plausible, narrow it until
-the evidence distinguishes them. Cut inputs, callers, config, data, or steps
-only when that reduction answers a real diagnostic question.
-
-Why bother: a minimal repro shrinks the hypothesis space in Phase 3 (fewer moving parts left to suspect) and can become a regression test in Phase 5 when the task needs durable evidence and the seam is correct.
-
-Do not postpone a supported fix merely to prove every remaining fixture
-element is necessary. Preserve the original scenario for final verification.
-
-## Phase 3 — Hypothesise
-
-Generate enough ranked hypotheses to cover the plausible causes. Usually this means two to five; if evidence strongly favors one, state which competing explanations were considered and why they are lower priority.
-
-Each hypothesis must be **falsifiable**: state the prediction it makes.
-
-> Format: "If <X> is the cause, then <changing Y> will make the bug disappear / <changing Z> will make it worse."
-
-If you cannot state the prediction, the hypothesis is a vibe — discard or sharpen it.
-
-Show the ranked list to the user before testing when their domain knowledge can change priority, scope, risk, or the chosen environment. Otherwise record the ranking in the diagnostic report and continue without turning it into a separate interview.
-
-## Phase 4 — Instrument
-
-Each probe must map to a specific prediction from Phase 3. **Change one variable at a time.**
-
-Tool preference:
-
-1. **Debugger / REPL inspection** if the env supports it. One breakpoint beats ten logs.
-2. **Targeted logs** at the boundaries that distinguish hypotheses.
-3. Never "log everything and grep".
-
-**Tag every debug log** with a unique prefix, e.g. `[DEBUG-a4f2]`. Cleanup at the end becomes a single grep. Untagged logs survive; tagged logs die.
-
-**Perf branch.** For performance regressions, logs are usually wrong. Prefer an existing benchmark, profiler, or query plan. Create a temporary measurement only when no existing signal answers the question and the extra artifact is authorized. Measure first, fix second.
-
-## Phase 5 — Fix + appropriate verification
-
-Add a regression test only when there is a **correct seam** and the task needs durable regression evidence. Do not add one solely to satisfy this workflow.
-
-A correct seam is one where the test exercises the **real bug pattern** as it occurs at the call site. If the only available seam is too shallow (single-caller test when the bug needs multiple callers, unit test that can't replicate the chain that triggered the bug), a regression test there gives false confidence.
-
-**If no correct seam exists, that itself is the finding.** Note it. The codebase architecture is preventing the bug from being locked down. Flag this for the next phase.
-
-If a correct seam exists and a regression test is justified, add it when it
-best supports this diagnosis; it need not precede the fix. When practical,
-observe that it catches the original failure, then check that it passes with
-the fix. Re-run the Phase 1 feedback loop against the original scenario either
-way. For flaky or resource-owning tests, read `test-reliability` for the actual
-execution topology.
-
-If no new regression test is justified, fix the code and re-run the existing Phase 1 loop plus the checks required by the task. Record which existing oracle was used and why it is sufficient.
-
-## Phase 6 — Cleanup
-
-For an authorized fix, check these before declaring it verified. A diagnosis-only
-request instead reports the evidence, best-supported cause, and remaining gaps:
-
-- [ ] Original repro no longer reproduces (re-run the Phase 1 loop)
-- [ ] The existing verification loop passes, and any added regression test passes (or the absence of a correct seam is documented)
-- [ ] All `[DEBUG-...]` instrumentation removed (`grep` the prefix)
-- [ ] Agent-created throwaway prototypes removed unless the user requested them as deliverables
-- [ ] The hypothesis that turned out correct is stated in the final report or handoff; commit/PR updates happen only when explicitly requested
-
-If the diagnosis exposed a recurring architectural cause, give one concrete
-follow-up recommendation after delivering the fix. A retrospective or
-architecture review is separate, explicitly selected work, not a completion
-condition for this bug.
+Report the relevant observations, best-supported explanation, competing causes
+still plausible, and any delivered change. Keep cause inference, reproduced
+failure, and verified repair distinct. Name unavailable checks and their effect
+on confidence. A follow-up investigation or architecture review is warranted
+only when a concrete remaining problem justifies it; it is not a completion gate.

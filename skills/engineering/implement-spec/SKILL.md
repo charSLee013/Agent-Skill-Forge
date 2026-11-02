@@ -42,8 +42,9 @@ blockers visible instead of assuming they are done.
 ## Deliver available work
 
 Work through the ready issues in dependency order using `implement`. Preserve
-each issue's behavior and original evidence oracle; choose tests based on risk
-and relevant existing coverage, without TDD or test-first sequencing. Use
+each issue's behavior, all original evidence observations, and expected results;
+choose tests based on risk and relevant existing coverage, without TDD or
+test-first sequencing. Use
 read-only, independent exploration in parallel only when the user and runtime
 permit it; implementation ownership stays with the executing agent.
 
@@ -53,7 +54,9 @@ other independent, already authorized issues. Re-evaluate the ready frontier
 after actual completion rather than adding planning files to simulate progress.
 
 The delivery is complete only when every in-scope implementation issue is done
-and the feature's original acceptance boundary is met. Report open issues and
-their exact blockers otherwise. An integration branch, commit, push, PR,
+and the feature's original acceptance boundary is met, including combined
+correctness, runtime, performance, compatibility, and shared resource conditions
+that apply. Do not sum local gains or count the same shared budget per issue.
+Report open issues and their exact blockers otherwise. An integration branch, commit, push, PR,
 deployment, or retro requires separate task authorization; none follows from
 selecting this skill.

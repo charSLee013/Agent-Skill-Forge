@@ -12,7 +12,7 @@ when working from source. Reading references does not invoke their workflows.
 
 Resolve an optional local map before synthesis. If an explicit `MAP.md` path was supplied but does not exist, stop and report the missing path. Without an explicit map path, use `MAP.md` from an explicit PRD or issue's feature directory when present; otherwise search by exact feature slug or Destination under `.codex/agents/work/`. If multiple maps match, stop and ask for the exact `MAP.md` path. If no matching map exists and no explicit `MAP.md` path was supplied, continue when the source material is clear enough for this skill; a map is optional.
 
-When a map exists, read it before synthesising the PRD and use its resolved `Decisions so far` and linked decision issues as the source of established decisions. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If the map uses the legacy decision path under `issues/`, read it in place and do not migrate or mix layouts; `setup-agent-skills` is the migration entry point. If material decisions remain, resolve them through `wayfinder` when that work is already authorized; otherwise report the next frontier issue. Do not guess their answers in the PRD.
+When a map exists, read it before synthesising the PRD and use its resolved `Decisions so far` and linked decision issues as the source of established decisions. Proceed only when its decision issues are resolved or explicitly out of scope, every out-of-scope dependency has a `Dependency resolution` record, and no dependent remains blocked. If material decisions remain, resolve them through `wayfinder` when that work is already authorized; otherwise report the next frontier issue. Do not guess their answers in the PRD.
 
 Read existing local workspace configuration when present. Otherwise use the
 shipped workspace conventions and default labels, creating only the requested
@@ -22,7 +22,7 @@ artifact and its directories. Missing setup is not a prerequisite failure.
 
 1. Explore the repo to understand the current state of the codebase, if you haven't already. Use the project's domain glossary vocabulary throughout the PRD, and respect any ADRs in the area you're touching.
 
-2. For each material behavior, record an observable acceptance criterion and its exact evidence. Prefer an existing verification seam and do not invent a test seam solely to complete the PRD.
+2. For each material behavior, record an observable acceptance criterion and its exact evidence. Prefer existing verification paths; identify necessary support within the task rather than inventing a seam merely to fill the document.
 
 Resolve verification facts from existing code and checks. Ask only about a
 material choice that the sources cannot settle; use `grilling` within this task
@@ -56,16 +56,28 @@ Use a capability statement when behavior has no meaningful user actor, such as a
 
 ## Acceptance Criteria
 
-Each criterion must map to a capability or user story and state exactly one `Evidence` value:
+Map each criterion to a capability or user story and record every observation
+needed to establish it, with its expected result. Use `implement`'s
+`references/evidence.md` for the meanings and limits of `static`, `real-path`,
+and `target`; locate it through host discovery or the source plugin manifest.
+These are descriptions, not a hierarchy. A criterion can require multiple kinds
+of evidence. Existing single `Evidence` entries remain valid without conversion.
 
-- `static`: name the existing relevant checks. For structural constraints they do not cover, also state the focused source-review predicate and its limits. Delivery hygiene and the final baseline-relative review remain required.
-- `real-path`: name the existing runtime path or replay and the observable oracle. The later real-path safety gate obtains approval for the actual action.
-- `target`: state a falsifiable target: metric or definition, comparison, threshold or named baseline, unit, measurement source, and observation window.
+For example, use this shape when more than one observation is necessary; omit
+unused entries and fill in the executable facts for each retained entry:
 
-Do not use an evidence value as a label without the facts needed to execute it.
-Use `target` for an actual measurable acceptance target, not an invented metric
-that merely restates a structural constraint. Do not replace required runtime
-evidence with source inspection.
+```markdown
+- [ ] <Capability/story and observable acceptance condition>
+  Evidence:
+    - static: <named check or review predicate; expected result and limits>
+    - target: <metric, comparison, threshold/baseline, unit, source, window; expected result>
+    - real-path: <runtime path/replay, environment, oracle; expected result>
+```
+
+A measurable target must be falsifiable. Do not invent a metric to restate a
+structural constraint, or replace required runtime evidence with source review.
+Carry combined feature acceptance and shared resource limits explicitly so
+later issue-level checks cannot silently replace them.
 
 When the request includes optimization, also state what should improve and in
 which direction, the user's tradeoff priorities, hard limits, and any authorized
@@ -92,7 +104,10 @@ Exception: if a prototype produced a snippet that encodes a decision more precis
 
 ## Verification Decisions
 
-Record only the decisions needed to execute the stated acceptance evidence. Reuse existing checks and seams. Do not invent a test, harness, seam, or alternate runtime path solely to complete the PRD.
+Record the decisions needed to obtain every required observation. Reuse suitable
+existing checks and paths. If narrowly scoped support is necessary, describe
+what it must enable and any unresolved authorization or equivalence facts.
+Do not create a harness or alternate path merely to fill the PRD.
 
 ## Out of Scope
 

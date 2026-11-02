@@ -18,9 +18,10 @@ make new product or architecture decisions, widen scope, or weaken evidence.
 Use exact issue paths supplied by the user or already established in the conversation.
 Read every selected issue in full, including comments. When given a feature directory,
 select its open implementation issues under `issues/` and report completed issues as
-excluded. Use tracker fields, not directory placement alone, to distinguish legacy
-decision issues from implementation issues. If no executable issue remains, stop and
-report that result. Do not silently choose between multiple features or similarly
+excluded. Decision issues belong under `decisions/` and are not implementation
+inputs. Use `setup-agent-skills`'s `issue-tracker-local.md` for workspace and
+dependency semantics, resolved through host discovery or the source plugin
+manifest. If no executable issue remains, stop and report that result. Do not silently choose between multiple features or similarly
 named issues.
 
 Read the local tracker conventions when present. Follow dependencies to their exact
@@ -41,13 +42,18 @@ Capture for every selected issue:
 - in-scope and excluded work;
 - implementation constraints and preservation requirements;
 - external calls, destructive effects, authorization, and safety gates;
-- every acceptance criterion and its original evidence oracle;
+- every acceptance criterion, all required observations, and expected results;
+- optimization priorities, shared budgets, and the owner of combined acceptance;
 - required completion report facts.
 
 Trace each source acceptance criterion to exactly one place in the brief. Preserve
 exact paths, identifiers, commands, limits, ordering rules, and evidence strength.
-Keep qualitative review as direct inspection and real-path evidence as real-path
-evidence; never replace either with length, keyword, score, mock, or structural
+Use `implement`'s `references/evidence.md` for evidence meanings, through the
+same lookup. A criterion may need multiple observations; preserve all of them
+without ranking their kinds or forcing separate issues. Existing single
+`Evidence` records remain valid. A shared observation may cover several criteria
+when the coverage is explicit. Keep qualitative review as direct inspection
+and real-path evidence as real-path evidence; never replace either with length, keyword, score, mock, or structural
 proxies.
 
 Complete this step only when every source criterion and constraint is represented and
@@ -96,7 +102,10 @@ Issue slices and execution order
 1. <exact issue path>
    Dependency: <exact blocker path or none>
    Deliverable: <behavior to implement>
-   Acceptance: <observable criteria and original evidence oracle>
+   Acceptance: <each criterion, all required observations, and expected results>
+
+Combined acceptance and shared budget
+<feature-level result, owning issue, and limits shared across the selected issues>
 
 Change scope
 <approved files, systems, records, and behaviors>

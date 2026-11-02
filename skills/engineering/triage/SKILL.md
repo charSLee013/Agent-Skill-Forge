@@ -10,7 +10,7 @@ Move implementation issues in `.codex/agents/work/*/issues/` through a small sta
 
 Preserve an implementation issue's `Completion` field. It is the dependency completion oracle and is separate from triage `Status`; triage must not set or reinterpret it.
 
-Decision maps, `PRD.md`, modern `decisions/`, and legacy issue files carrying both `Wayfinder type:` and `Wayfinder status:` are not part of the default triage queue. A decision issue may be triaged only when the maintainer explicitly supplies its path; keep its Wayfinder fields authoritative and add triage `Status` only as a separate, deliberate handoff.
+Decision maps, `PRD.md`, and `decisions/` are not part of the default triage queue. A decision issue may be triaged only when the maintainer explicitly supplies its path; keep its Wayfinder fields authoritative and add triage `Status` only as a separate, deliberate handoff.
 
 Every triage note added to a local issue **must** start with this disclaimer:
 
@@ -59,13 +59,13 @@ The maintainer invokes `/triage` and describes what they want in natural languag
 
 ## Show what needs attention
 
-Query implementation issue files under `.codex/agents/work/*/issues/` and present three buckets, oldest first. Exclude `MAP.md`, `PRD.md`, `decisions/`, and any legacy file with top-level Wayfinder fields:
+Query implementation issue files under `.codex/agents/work/*/issues/` and present three buckets, oldest first. Exclude `MAP.md`, `PRD.md`, and `decisions/`:
 
 1. **Unlabeled** — never triaged.
 2. **`needs-triage`** — evaluation in progress.
 3. **`needs-info` with reporter activity since the last triage notes** — needs re-evaluation.
 
-Show counts and a one-line summary per item. Let the maintainer pick. Do not migrate legacy Wayfinder files here; `setup-agent-skills` is the only migration entry point.
+Show counts and a one-line summary per item. Let the maintainer pick.
 
 ## Triage a specific issue
 
@@ -73,7 +73,7 @@ Show counts and a one-line summary per item. Let the maintainer pick. Do not mig
 
 2. **Recommend.** Tell the maintainer your category and state recommendation with reasoning, plus a brief codebase summary relevant to the request — including whether it's already implemented. Wait for direction.
 
-3. **Verify the claim.** Before any grilling, check that the claim holds up. For a bug, reproduce it from the reporter's steps. Report what happened: confirmed (with code path), failed, or insufficient detail (a strong `needs-info` signal). A confirmed verification makes a much stronger agent brief.
+3. **Verify the claim.** Before any grilling, check that the claim holds up. For a bug, use the reporter's steps when reproduction is useful and available; otherwise inspect existing records and the relevant source. Report reproduced failures, supported inferences, and missing observations separately. Use `diagnosing-bugs` for uncertainty that needs deeper investigation. Lack of a local reproduction alone does not force `needs-info` when the available evidence supports a clear brief.
 
 4. **Clarify when needed.** Use `grilling` for an unresolved choice that changes the requested outcome. Use `domain-modeling` only when recording established terms or qualifying decisions is authorized or required by project rules. Resolving an issue does not automatically require domain document edits.
 

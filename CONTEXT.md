@@ -3,7 +3,7 @@
 A neutral collection of agent skills loaded by supported agent runtimes. Skills
 are organized into buckets. Planning uses local configuration when present and
 shipped defaults otherwise; `/setup-agent-skills` is an optional customization
-and legacy migration workflow.
+workflow.
 
 ## Language
 

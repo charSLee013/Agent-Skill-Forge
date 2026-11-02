@@ -1,6 +1,11 @@
 # Writing Agent Briefs
 
-An agent brief is a structured triage note added to a local issue when it moves to `ready-for-agent`. It is the authoritative specification that an AFK agent will work from. The original body and discussion are context — the agent brief is the contract.
+An agent brief is a structured triage note added to a local issue when it moves
+to `ready-for-agent`. It gives an AFK agent a consolidated specification while
+preserving every governing source criterion, required observation, and expected
+result. The original body and
+discussion remain sources for details and conflicts, not permission to weaken
+acceptance in the brief.
 
 The brief states **what the agent should do** for a local issue. It should be durable enough that an AFK agent can start from the issue file later without needing this conversation.
 
@@ -12,8 +17,9 @@ The issue may sit in `ready-for-agent` for days or weeks. The codebase will chan
 
 - **Do** describe interfaces, types, and behavioral contracts
 - **Do** name specific types, function signatures, or config shapes that the agent should look for or modify
-- **Don't** reference file paths — they go stale
-- **Don't** reference line numbers
+- Avoid prescribing implementation file locations or line numbers that may change.
+  Preserve exact source-artifact paths, required verification commands, runtime
+  entry points, and evidence sources when they are part of the acceptance contract.
 - **Don't** assume the current implementation structure will remain the same
 
 ### Behavioral, not procedural
@@ -27,7 +33,12 @@ Describe **what** the system should do, not **how** to implement it. The agent w
 
 ### Complete acceptance criteria
 
-The agent needs to know when it's done. Every agent brief must have concrete, testable acceptance criteria. Each criterion should be independently verifiable.
+Every agent brief needs concrete acceptance criteria. Each criterion should be
+independently verifiable and retain all its required observations. Use `implement`'s `references/evidence.md` for `static`, `real-path`,
+and `target`, resolved through host discovery or the source plugin manifest.
+These kinds can coexist under one criterion. Preserve single `Evidence` entries
+when sufficient. Keep optimization priorities, shared limits, dependencies, and
+the owner of combined feature acceptance explicit.
 
 - **Good:** "Issues with `Status: needs-triage` appear in the local triage summary"
 - **Bad:** "Triage should work correctly"
@@ -59,8 +70,14 @@ Be specific about edge cases and error conditions.
 
 **Acceptance criteria:**
 - [ ] Specific, testable criterion 1
+  Evidence:
+    - <kind>: <required observation and expected result>
+    - <kind>: <additional necessary observation and expected result, if any>
 - [ ] Specific, testable criterion 2
-- [ ] Specific, testable criterion 3
+  Evidence: <kind>: <required observation and expected result>
+
+**Combined acceptance and shared limits:**
+- <feature criterion, owning issue, and shared budget when applicable>
 
 **Out of scope:**
 - Thing that should NOT be changed or addressed in this issue

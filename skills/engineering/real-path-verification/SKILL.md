@@ -1,76 +1,85 @@
 ---
 name: real-path-verification
-description: Verify an approved behavior through an existing real runtime path or a production-equivalent replay. Use during implement when an acceptance criterion explicitly requires production, real traffic, canary, shadow, replay, migration, release verification, or end-to-end evidence. Do not use for routine unit, smoke, mock, minimal-repro, documentation, or trivial-edit work.
+description: Verify an approved behavior through a real runtime path or a production-equivalent replay. Use during implement when an acceptance criterion explicitly requires production, real traffic, canary, shadow, replay, migration, release verification, or end-to-end evidence. Do not use for routine unit, smoke, mock, minimal-repro, documentation, or trivial-edit work.
 ---
 
 # Real Path Verification
 
-Verify the requested behavior at the runtime path that the acceptance criterion actually describes. This is an implement support phase, not a replacement for diagnosis, planning, or ordinary checks.
+Verify the behavior at the runtime path the acceptance condition describes.
+Consume the current goal, criteria, required observations, environment, known
+entry points, and established risk choices. Ordinary requests need no formal
+PRD, new interview, or repartitioning of the task.
 
-Read `implement`'s `references/evidence.md` when evaluating a behavior claim.
-Locate the owner through host-discovered skill paths or the repository plugin
-manifest. Reading the reference does not start an implementation task.
+Read `implement`'s `references/evidence.md` through host-discovered skill paths
+or the source plugin manifest. It owns evidence meanings and claim limits.
+This skill supplies the runtime-specific decisions below.
 
-## Entry contract
+## Authorization and consequences
 
-Run when the user explicitly requests verification of a named behavior through
-a real runtime path, a parent criterion has `real-path` evidence, or a `target`
-criterion names an approved real runtime path as its source. An ordinary
-natural-language request need not be converted into a PRD first.
+Before an action introduces an unapproved change to shared or production state,
+consequential external traffic, material cost, sensitive-data exposure, or use
+of production credentials, present the concrete environment, action, expected
+impact, cleanup or rollback, stop condition, and observation that decides the
+result. Obtain the missing authorization before that action.
 
-Consume the current request's goal, scope, acceptance conditions, oracle,
-environment, risk decision, and known runtime entrypoint, including any
-formal work item when present. Do not re-interview, repartition the work,
-or expand the scope.
+Consume the user's established choice when the actual action fits it. Revisit
+only a material change in environment, side effects, traffic, cost, or exposure.
+Ordinary reversible local support and read-only inspection need no separate
+safety presentation. A verification-only request does not authorize a product
+change or deployment to make the criterion pass.
 
-## Safety gate
+## Reach and observe the required path
 
-Before an action that can change shared or production state, send consequential
-external traffic, incur material cost, expose sensitive data, or require
-production credentials, show the user:
+Locate a suitable project command, deployed endpoint, CLI, browser flow,
+captured trace, or approved replay. Prefer existing entry points. If a necessary
+call, temporary input, or measurement is missing, supply narrowly scoped support
+when it fits the task's authorization, cost, and side-effect limits. A helper
+must reach or observe the required path; its existence or successful execution
+is not evidence that the business result occurred.
 
-- the exact environment and runtime path;
-- the expected side effect, traffic volume, cost, and data exposure;
-- the rollback, cleanup, and stop condition;
-- the observable result that will decide the conclusion;
-- the remaining uncertainty.
+Establish the relevant environment equivalence for a replay or alternative
+runtime: version, configuration, workload, data, dependencies, and effects that
+matter to the criterion. A staging path can qualify when that parity is
+established; its name alone proves nothing. Unit, mock, smoke, tracer, or
+minimal-repro results support only their observed boundary. They cannot replace
+a required production or parity-established observation.
 
-If the current request already records the user's concrete risk choice and the
-actual action has not widened, consume that choice instead of asking again.
-Ask again only when the actual environment, side effect, traffic, cost, or data
-exposure differs. Ordinary reversible local checks and read-only inspection of
-an existing command need no separate safety presentation.
+If a necessary environment, command, data set, permission, traffic source, or
+parity fact cannot be obtained within the task, mark the affected criterion
+unverified and describe the exact gap. Continue other available verification
+and independent authorized delivery. Do not substitute a weaker observation or
+stop the whole task merely because no ready-made command exists.
 
-## Evidence boundary
+Run the authorized path and compare observations with every selected criterion.
+Capture the actual business result, environment, version or deploy, and time
+window. Use existing telemetry, trace/request IDs, or observation links when
+available. Preserve all required observations for a criterion that also needs
+measurements or source review; runtime execution does not replace them.
 
-Return a conclusion, not a verification transcript. Do not create a run directory, stored bundle, raw response capture, replay copy, generated summary, verification file, or artifact path merely to document verification. Do not write experiment artifacts into the repository or modify production code.
+## Supporting artifacts and cleanup
 
-Use existing runtime output, telemetry, trace or request IDs, and observation links directly. Do not preserve raw command output, response bodies, logs, or payloads solely to make the result look auditable.
+Create or retain files only when they serve execution, analysis, recovery, or
+an explicitly requested deliverable. Use existing output directly where
+sufficient; a transcript directory or raw capture is not a default deliverable.
+Keep ordinary scratch inputs and helpers in the system temporary directory.
 
-Only if an existing entrypoint cannot execute without a temporary input or output file, create the smallest necessary file under the system temporary directory and arrange cleanup before invocation. Remove it on every reachable success, failure, timeout, interruption, or observation-read path; if that cleanup cannot be guaranteed, do not use the file-dependent invocation. Do not report its path. Retain material only when the user explicitly requests it or an external compliance obligation requires it; that retention is not a default skill artifact.
+Arrange reasonable cleanup before use, including failure handling or recovery
+where practical. Remove ordinary scratch material after the observation and
+report any cleanup failure requiring follow-up. Lack of a guarantee for every
+possible interruption does not prohibit an otherwise reasonable local run.
+Sensitive data, production changes, and shared resources require protection,
+retention limits, and cleanup/rollback appropriate to their actual consequences;
+if those cannot be met, do not take the affected action.
 
-## Workflow
+## Return to delivery
 
-1. Read the user's request and any parent criteria to identify the behavior and final oracle. If the requested outcome or necessary observation is unclear, resolve that material gap before taking a consequential runtime action; do not invent a formal work item.
-2. Locate an existing runnable entrypoint: project command, deployed endpoint, CLI, browser flow, captured production trace, or approved replay command. Do not create a Python test, temporary harness, mock service, or new runner when no entrypoint exists.
-3. If no suitable entrypoint exists, stop. Report the missing environment, command, data, credentials, traffic, or equivalence evidence needed; do not substitute a smoke test.
-4. A production runtime observation, or an equivalent path with relevant parity established, can satisfy a real-path criterion. Staging, unit, mock, smoke, tracer, and minimal-repro results are supporting only; leave a real-path criterion unverified when they are the strongest available observation.
-5. Run the existing path in the declared environment. Observe only the facts needed for the conclusion: actual oracle value, environment, version or deploy, time window, existing trace/request ID or observation link, and any applicable side-effect cleanup result.
-6. Compare observed behavior with every selected acceptance criterion. A SHA-256 match, passing process exit, HTTP 2xx, or smoke result cannot establish business success without observing the criterion's behavioral oracle. Hashes may still establish asset integrity when integrity itself is the question.
-7. Return the conclusion first, followed only by its minimum necessary basis:
+Report passed, failed, or unverified for each selected criterion, with expected
+and observed results, source and observation window, relevant side-effect and
+cleanup results, and any unverified boundary. A real-path pass needs the actual
+runtime observation and any required parity evidence. A SHA-256 match, process
+exit, or HTTP 2xx cannot establish the requested business result.
 
-   - `Conclusion`: passed, failed, or unverified.
-   - `Oracle`: expected value compared with observed value.
-   - `Source`: environment, version or deploy, time window, and an existing trace/request ID or observation link when available.
-   - `Side effect and cleanup`: only when applicable.
-   - `Unverified boundary`: only when one remains.
-
-## Completion
-
-The verification phase is complete only when:
-
-- every selected criterion maps to an oracle, environment, observation, and conclusion;
-- a production observation or relevant parity-established equivalent path supports every passed real-path criterion;
-- all non-read-only actions have a recorded risk choice and cleanup/rollback result;
-- missing parity, failed checks, and unverified claims are explicit;
-- no repository file, test file, harness, verification artifact, commit, or unrelated issue was added.
+Remove unnecessary agent-owned support, preserve user work, and continue any
+remaining authorized task. Verification is accounted for when every selected
+criterion has a supported conclusion; failed or unverified criteria remain
+unmet and prevent a claim of full acceptance.

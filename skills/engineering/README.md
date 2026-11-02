@@ -24,7 +24,7 @@ stages of every change.
 | [triage](./triage/SKILL.md) | User only | Triage local issues while preserving separate implementation completion state. |
 | [improve-codebase-architecture](./improve-codebase-architecture/SKILL.md) | User only | Report architecture opportunities and follow the user's selected scope. |
 | [find-simplifications](./find-simplifications/SKILL.md) | User only | Audit evidence-backed simplification opportunities without changing code. |
-| [setup-agent-skills](./setup-agent-skills/SKILL.md) | User only | Customize workspace configuration or migrate a legacy decision layout. |
+| [setup-agent-skills](./setup-agent-skills/SKILL.md) | User only | Configure workspace and domain docs, and maintain bundled execution protocols on creation and update. |
 | [issues-to-execution-brief](./issues-to-execution-brief/SKILL.md) | User only | Compile selected executable issues into a brief for a fresh session. |
 | [prototype](./prototype/SKILL.md) | User only | Build a disposable executable experiment for a concrete design question. |
 | [zoom-out](./zoom-out/SKILL.md) | User only | Map unfamiliar code and its callers in the surrounding system. |
@@ -34,8 +34,7 @@ stages of every change.
 
 Planning creates only requested artifacts under the private local
 `.codex/agents/` workspace. Existing configuration takes precedence; shipped
-defaults handle its absence. Explicit setup remains available for customization
-and legacy layout migration.
+defaults handle its absence. Explicit setup remains available for customization.
 
 Read-only verification can use `implement`'s `references/evidence.md` without
 starting implementation. Resolve shared references through the host's skill

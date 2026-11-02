@@ -39,7 +39,7 @@ see [docs/invocation.md](./docs/invocation.md).
 Engineering skills create only requested PRDs, issues, decision maps, and triage
 notes under a private repo-local `.codex/agents/` workspace. Existing local
 configuration takes precedence over shipped defaults. `/setup-agent-skills` is
-optional for explicit customization and legacy migration.
+optional for explicit customization.
 
 This repository itself should not keep long-horizon run artifacts, release-process artifacts, or upstream git history.
 

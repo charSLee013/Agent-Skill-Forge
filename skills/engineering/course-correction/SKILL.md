@@ -34,7 +34,7 @@ the repair is the evidence of accountability.
 Before cleanup, stop the behavior that caused the drift:
 
 - end the runaway experiment, repeated test loop, polling process, or delegation;
-- stop creating new files, reports, fixtures, wrappers, or phases;
+- stop auxiliary work that no longer contributes to the approved outcome;
 - return to the approved goal and decide whether the useful work already answers it;
 - do not start a replacement harness merely to justify the cleanup.
 
@@ -60,15 +60,21 @@ was left in the deliverable.
 
 ## Verify without relapsing
 
-Use the existing acceptance check or the cheapest sufficient observation. Do not
-create a new test project, harness, mock, report, or benchmark unless the user has
-explicitly authorized that artifact and it is necessary for the agreed acceptance.
+Use the existing acceptance check or the least costly sufficient observation.
+When necessary support is missing, judge a small invocation, temporary input,
+or measurement by its contribution to acceptance, cost, side effects, and
+existing task authorization. Read `implement`'s `references/evidence.md` through
+host discovery or the source plugin manifest for evidence boundaries. Supporting
+work must help finish the goal; creating artifacts is not progress by itself.
 Do not repeat a passing check without a new change, failure, or unresolved concern.
 
-If the task is now complete, report the result and the evidence. If it is not
-complete, report the exact unfinished condition and stop. Never call cleanup a
-successful implementation, never claim a check that was not run, and never use a
-partial check to imply full acceptance.
+After cleanup, reassess the original outcome and remaining work. If complete,
+report the result and evidence. Otherwise resume useful, independent, already
+authorized work. If a required permission, material, or runtime condition is
+missing, identify the affected portion and continue work that does not depend
+on it. Stop the affected action when it would create an unapproved external
+consequence. Never call cleanup a successful implementation, claim an unrun
+check, or use partial checks to imply full acceptance.
 
 ## Final response
 

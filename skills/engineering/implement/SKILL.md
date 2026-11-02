@@ -45,10 +45,9 @@ For an implementation issue with `Blocked by`, read the local workspace rules,
 or `setup-agent-skills`'s `issue-tracker-local.md` when no local rules exist.
 Resolve each dependency relative to the feature directory. A decision requires
 `Wayfinder status: resolved`; an implementation requires `Completion: done`,
-with a missing completion field treated as open. Legacy issues carrying both
-Wayfinder fields remain decisions. A missing, ambiguous, out-of-feature, or
-unfinished blocker prevents its dependent from starting; triage status is not
-completion. Continue other already authorized, independent work when possible.
+with a missing completion field treated as open. A missing, ambiguous,
+out-of-feature, or unfinished blocker prevents its dependent from starting;
+triage status is not completion. Continue other already authorized, independent work when possible.
 
 ## Implement and verify
 
@@ -62,17 +61,27 @@ new machinery. Choose by correctness, readability, and fit rather than a fixed
 ranking or line count. A requested redesign may require substantial change;
 minimality must not silently restore constraints the user explicitly removed.
 
-When resource allocation or a design parameter materially affects the requested
-outcome, trace the limiting stage and compare plausible settings using existing
-observations or a bounded trial. Treat a conservative initial setting as
-provisional. Increase useful capacity within the user's limits when it improves
-the result, accounting for transient peaks and all relevant consumers; retain
-headroom justified by that workload and uncertainty. More utilization alone is
-not an improvement. Keep the best feasible setting and explain why it serves
-the user's priority. Continue promising improvements while their expected gain
-justifies the remaining authorized effort. Stay within capacity limits, and
-stop when the time or spending budget is exhausted or evidence shows little
-further benefit. Identify the limit on the conclusion.
+For an optimization request, use a small evidence-driven loop: identify the
+limiting stage, choose a promising change, observe its effect against the best
+supported feasible result, keep useful improvements, then reassess the next
+bottleneck and likely gain. A failed trial can still eliminate an explanation.
+Revert only your own unsuccessful changes, preserving the best result and user
+work. Added complexity needs a practical benefit.
+
+Choose parameter, capacity, or algorithm changes from the workload. If workers
+are already fully supplied, adding queue slots may provide no gain; investigate
+the downstream stage. If a decoder frequently waits for input, a bounded trial
+of prefetch or capacity may help. Account for total resource use, transient peaks,
+and other consumers within the user's limit, with justified headroom. Capacity
+limits constrain feasible settings; they do not replace the improvement goal.
+
+Continue while the next feasible trial has worthwhile expected benefit within
+the authorized effort and budget. Stop at the requested outcome for a bounded
+change, or at the supplied stopping condition, exhausted effort budget, or low
+expected further benefit for optimization. Keep the best supported result and
+state the remaining bottleneck and limits of the comparison. Ordinary tuning
+needs no persistent research ledger; `research-loop` remains a manual option
+for a user-selected systematic exploration.
 
 Preserve required behavior, error handling, security boundaries, accessibility,
 and compatibility. Add supporting changes only when necessary for the requested
@@ -93,13 +102,14 @@ affected boundary. For failures whose recovery or partial effects matter, read
 `error-handling`. Locate supporting skills through host discovery or the source
 plugin manifest; reading them does not expand the task or authorize new work.
 
-When a formal work item records acceptance evidence, preserve its meaning:
-
-- `static`: run the named relevant checks.
-- `real-path`: use `real-path-verification` for the recorded runtime observation.
-- `target`: measure the recorded metric or definition against its comparison,
-  threshold or baseline, unit, source, and observation window. Use
-  `real-path-verification` when that source is an approved real runtime path.
+For every acceptance condition, preserve all recorded observations and expected
+results. `static`, `real-path`, and `target` describe complementary evidence;
+[references/evidence.md](references/evidence.md) owns their meanings. One issue
+or condition may require several of them. Existing single `Evidence` records
+remain valid. Use `real-path-verification` for required runtime observations,
+including target measurements whose source is an approved real runtime path.
+Neither a measurement nor a runtime pass replaces an independent correctness,
+compatibility, or content-review requirement.
 
 A checksum or byte-identical artifact can establish integrity, not that the
 requested runtime behavior worked. Do not replace the recorded behavioral
@@ -128,9 +138,12 @@ For an approved wide mechanical migration, keep a temporary bridge only while
 its `Transition` names the issue responsible for removing it and the final
 removal check. That final issue must remove the bridge before completion.
 
-Mark an implementation issue `Completion: done` only when every criterion is
-satisfied. If a target is unmet, leave it open and report the expected and
-observed values, source, and observation window. Report the delivered behavior,
+Mark an implementation issue `Completion: done` only when every criterion and
+all its required observations are satisfied. Verify the combined feature outcome
+at its owning issue or whole-task acceptance; completed local slices alone do
+not prove it. Retain shared resource limits across slices. If a target is unmet,
+leave its issue open and report the expected and observed values,
+source, and observation window. Report the delivered behavior,
 verification, and unresolved deviations in the user's language. Continue the
 remaining authorized work; commits, deployment, and unrelated changes still
 require their own task authorization. Pushes and PR mutations do too.

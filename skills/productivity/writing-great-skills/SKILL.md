@@ -1,6 +1,6 @@
 ---
 name: writing-great-skills
-description: Reference for writing and editing predictable agent-consumed documents, including skills and repository instruction maps.
+description: Reference for writing goal-directed agent-consumed documents, including skills and repository instruction maps.
 license: MIT
 argument-hint: "Which agent-consumed document or behavior contract should be written or reviewed?"
 disable-model-invocation: true
@@ -8,155 +8,108 @@ disable-model-invocation: true
 
 # Writing Great Skills
 
-An agent-consumed document exists to create **predictability** in a stochastic
-system: the agent takes the same process on each run, rather than producing the
-same output. Packaging differs between a skill, an `AGENTS.md` or `CLAUDE.md`,
-and a document reached through a pointer; the writing levers are the same.
+Write instructions that keep the agent accountable for the user's outcome while
+letting it choose methods from the evidence. Preserve goals, priorities, hard
+constraints, authorization boundaries, factual honesty, and delivery obligations.
+Let investigation depth, tools, experiment order, and resource allocation adapt
+to the task. Consistency means respecting these commitments across runs; it does
+not require taking the same process every time.
 
 This guidance incorporates Matt Pocock's `writing-for-agents` and the
 model-facing `agent-experience` principles from
 `deepseek-ai/deepseek-harness@22ddee3792402c3e70ec5f86a63c3e3e895a2f60`.
 It does not require either upstream runtime or documentation structure.
 
-This skill supplies writing reference. It does not expand the requested scope or
-authorize edits to another document. In particular:
+This skill supplies writing reference within the requested scope. `AGENTS.md`
+owns repository-wide operating constraints and navigation. Product behavior,
+feature scope, and task decisions belong in their owning specification, ADR,
+issue, or code. A correction from one task stays local unless the user requests
+a broader instruction change.
 
-- `AGENTS.md` owns repository-wide operating constraints and navigation.
-- Product behavior, feature scope, and task decisions belong in the product,
-  specification, ADR, issue, or code surface that owns them.
-- A correction from one task remains local unless the user explicitly requests
-  a repository-wide instruction change.
+When writing a skill, also read
+[`SKILL-MECHANICS.md`](SKILL-MECHANICS.md) for packaging and invocation.
 
-When the target is a skill, also read
-[`SKILL-MECHANICS.md`](SKILL-MECHANICS.md) for frontmatter, invocation, and
-routing mechanics.
+## Choose the right constraints
 
-## Context pointers
+Use a fixed sequence where an operation depends on an earlier result: for
+example, create and verify a migration destination before switching its callers,
+then remove the old form after those callers have moved. Explain the dependency
+so the order remains meaningful when circumstances change.
 
-A **context pointer** is text already in the agent's context that names material
-outside that context and states when to read it. A skill description is one. A
-line in `AGENTS.md` that routes a task to another document is the same object.
-The pointer's wording, not its target, determines when and how reliably the
-agent follows it.
+For diagnosis, research, and design, state the useful methods, when each applies,
+and how to choose the next action. A diagnostic loop can move between source
+inspection, traces, reproduction, and measurement as uncertainty changes. It
+need not complete every method or explain why every unused suggestion was skipped.
 
-A pointer states what the material is and names each distinct **branch** that
-should reach it. A branch is a materially different case handled by the target.
-Every word in an always-loaded pointer spends attention on every turn, so:
+Match detail to consequences. Keep strict permission and data-protection rules
+where they prevent concrete harm. Avoid turning one convenient tool, past
+failure, or example into a universal prerequisite. Check competing explanations
+and edge cases before prescribing a method.
 
-- Front-load a leading word that names the behavior.
-- Keep one trigger per branch; collapse synonyms for the same branch.
-- Remove identity and explanation already carried by the target document.
+## Context pointers and progressive disclosure
 
-Sharpen a weak pointer before moving its target inline. Inline only when the
-material is required on every relevant path and the pointer still fires
-unreliably.
+A context pointer names material outside the current context and says when to
+read it. Skill descriptions and navigation entries in `AGENTS.md` are pointers.
+Name each materially different case that should reach the target, collapse
+synonyms, and keep definitions in the target. Sharpen an unreliable pointer
+before moving its whole reference inline.
 
-## The two loads
+Always-loaded text spends context on every run. Hidden material without a
+pointer makes the human remember it. Spend context where autonomous discovery
+matters and rely on manual selection where human judgment should control entry.
 
-Every document and pointer spends one of two budgets:
+Apply DeepSeek Harness's portable `agent-experience` principle: disclose purpose,
+available actions, and critical constraints first, with a reliable path to
+conditional detail. Bound tool results, identify truncation, and point to further
+results. Judge total work: shortening a pointer at the cost of repeated searches
+or missed constraints is a regression. Do not copy DSH schemas or its loader.
 
-- **Context load** is always-loaded text in the model's context, such as an
-  instruction-map entry or model-facing skill description.
-- **Cognitive load** is what the human must remember: which documents or manual
-  skills exist and when to reach for each.
+## Information ownership
 
-Material behind a pointer reduces context load at the cost of the pointer.
-Material with no pointer relies entirely on human memory. Spend context load
-where autonomous discovery matters and cognitive load where human judgment
-should retain control.
+Keep what every execution needs in the entrypoint. Place substantial
+branch-specific material in a reference and link it where the branch becomes
+relevant. Steps, definitions, and conditional guidance may coexist; a reference
+skill does not need an execution sequence.
 
-For model-facing tools and skill catalogs, apply the portable `agent-experience`
-principle from DeepSeek Harness: disclose purpose, available actions, and
-critical constraints first, then provide a reliable path to deferred detail.
-Keep returned content bounded with a pointer to further results and say when
-it is truncated. Compare total work, not prompt size alone: a shorter pointer
-that causes repeated searches or missed constraints is a regression. Do not
-copy DSH tool schemas or its runtime loader into this skill.
+Keep a concept's definition, conditions, exceptions, and caveats together.
+Choose one owner for shared meanings and let consumers link to it with only the
+reminders their task needs. Avoid parallel definitions that drift independently.
 
-## Information hierarchy
+## Completion criteria
 
-Agent documents are built from **steps** and **reference**. The two mix freely:
-all steps, all reference, or both. Place each item on the lowest rung that still
-makes it reliably available:
+Describe the required end state and the observations needed to establish it.
+Cover every requested result, including combined behavior across subtasks and
+any explicit limits on what may be claimed. Completion does not mean using every
+suggested tool or exhausting every possible experiment.
 
-1. **In-file step**: an ordered action the agent must perform.
-2. **In-file reference**: a definition, rule, or fact consulted while acting.
-   A flat peer set is valid when the document is all reference.
-3. **Disclosed reference**: branch-specific material in another file, reached
-   through a context pointer. It may be a sibling file or an external owner.
-
-**Progressive disclosure** moves branch-specific reference down this hierarchy.
-It protects the action path from unrelated material; it is not merely a token
-optimization. Inline what every branch needs and disclose what only some
-branches need.
-
-**Co-location** governs material on the same rung. Keep a concept's definition,
-rules, exceptions, and caveats together so one read supplies the complete
-contract. Scattering fragments one meaning; duplication creates competing
-owners for it.
-
-**Sprawl** is a document that remains too long even when every line is live and
-unique. Disclose by branch or sequence until each execution path carries only
-what it needs.
-
-## Steps and completion criteria
-
-Every step ends on a **completion criterion**: the condition that distinguishes
-done from unfinished. Strong criteria have two properties:
-
-- **Clarity**: the agent can check whether the condition holds.
-- **Demand**: the condition accounts for every required result, not merely a
-  representative sample.
-
-Demand drives **legwork**, the investigation and production performed within
-the work. It is not step-bound: "every rule applied" binds flat reference just
-as "every step done" binds a sequence, so an all-reference document can still
-carry an exhaustive completion criterion. Visible **post-completion steps** can
-pull attention forward and cause **premature completion** when the current
-criterion is vague. Sharpen the criterion first. Split the sequence across a
-real context boundary only when the criterion cannot be made clear and the rush
-is observable.
-
-A completion criterion owns the required outcome, not a universal verification
-technique. Use the evidence required by the target repository, task, and risk.
+A diagnostic task may finish with a supported, qualified explanation when the
+necessary runtime evidence is unavailable. A migration may require every caller
+to move and the old form to disappear. Write these distinct obligations directly
+instead of fitting both into one phase template. Keep unmet requirements visible
+and continue independent authorized work when one part is blocked.
 
 ## When to split
 
-**Granularity** is how finely documents or skills are divided. Each split adds a
-pointer or something the human must remember, so make the cut earn that load:
+Split by branch when substantial detail applies to only some runs, and by
+invocation when a capability needs independent discovery; see
+[`SKILL-MECHANICS.md`](SKILL-MECHANICS.md). Split by sequence only when a real
+dependency or context boundary makes separate instructions useful. A long task
+alone does not justify more skills, phases, or approval gates. Each split must
+earn the pointer and human memory it adds.
 
-- **By sequence** when hiding later steps prevents premature completion.
-- **By branch** when a substantial body of reference belongs to only some runs.
-- **By invocation** when a skill must be discovered independently; see
-  [`SKILL-MECHANICS.md`](SKILL-MECHANICS.md).
+## Wording and pruning
 
-## Leading words
+Use familiar concepts to anchor behavior. Repeat a useful term where needed,
+without repeating its definition. State the desired action; reserve prohibitions
+for concrete boundaries and pair them with the permitted path forward.
 
-A **leading word** is a compact, pretrained concept that anchors behavior, such
-as _lesson_, _fog of war_, or _tracer bullets_. Repeat the token where the same
-behavior must be recruited; do not repeat its full definition. In a body it
-anchors execution, and in flat reference it focuses attention on the class of
-thing to inspect. In a pointer it anchors invocation.
+Review each passage for its effect on decisions. Remove duplicate definitions,
+stale compatibility, and advice that changes nothing. Keep environment facts
+only when looking them up repeatedly costs more than maintaining the reference.
+Preserve operational knowledge and source attribution when pruning prose.
 
-Prefer a familiar concept over a coined term because a familiar word recruits
-useful priors without a long definition. Replace repeated explanations with one
-strong leading word only when it preserves the full meaning.
-
-**Negation** is the neighboring failure mode: naming an unwanted behavior makes
-it more available. State the positive target. Reserve prohibitions for hard
-guardrails that cannot be expressed positively, and pair each with the desired
-behavior.
-
-## Pruning
-
-- Keep each meaning in a **single source of truth**. **Duplication** raises
-  maintenance cost and gives one rule accidental extra weight.
-- Treat the environment as a source of truth. A document that repeats an easy
-  lookup from configuration, directory layout, or command output is a **cache**;
-  keep it only when the lookup is expensive enough to justify drift risk.
-- Check **relevance**: every line must still bear on the document's behavior.
-  Stale layers form **sediment**, making live rules harder to find.
-- Run the **no-op check** sentence by sentence: would the agent behave
-  differently without it? Delete a sentence that does not change behavior.
-  This check is model-relative; settle uncertainty through observed behavior,
-  not additional explanatory prose.
+Read the complete revised path and try realistic examples and counterexamples.
+Check whether the instructions preserve the goal, permit an appropriate method,
+and support an honest completion claim. Keyword checks and file presence cannot
+establish these properties; distinguish a scenario walkthrough from an actually
+executed behavioral evaluation.

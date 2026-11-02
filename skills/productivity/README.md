@@ -18,7 +18,7 @@ later conversation style.
 | [prose-standard](./prose-standard/SKILL.md) | User only | Review or edit technical prose while preserving its complete contract. |
 | [trim-cot-leakage](./trim-cot-leakage/SKILL.md) | User only | Remove authoring-session residue while preserving durable facts. |
 | [doc-standards](./doc-standards/SKILL.md) | User only | Audit documentation and, when requested, the future value of existing decision records. |
-| [writing-great-skills](./writing-great-skills/SKILL.md) | User only | Write predictable skills and agent-consumed documentation. |
+| [writing-great-skills](./writing-great-skills/SKILL.md) | User only | Write goal-directed skills and agent-consumed documentation. |
 
 Model-invoked skills can be selected from task intent. Manual communication
 modes and specialized editorial workflows remain explicitly selected.
